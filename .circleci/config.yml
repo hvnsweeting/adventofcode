@@ -12,7 +12,8 @@ jobs:
 
     working_directory: ~/repo/adventofcode
     steps:
-      - checkout
+      - checkout:
+          path: ~/repo
 
       # specify any bash command here prefixed with `run: `
       - run: mix deps.get
