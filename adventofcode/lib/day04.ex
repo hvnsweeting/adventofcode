@@ -57,10 +57,6 @@ defmodule Day04 do
             end
           )
         )
-
-      true ->
-        IO.puts("ERROR")
-        true
     end
   end
 
