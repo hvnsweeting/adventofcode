@@ -24,6 +24,19 @@ defmodule Day05Test do
     assert Day05.react_stack("dabAcCaCBAcCcaDA") == "dabCBAcaDA"
   end
 
+  test "example part2" do
+    assert Day05.solve_part2("dabAcCaCBAcCcaDA") == 4
+  end
+
+
+  test "all uniq units in abaBacC is abc" do
+    assert Day05.all_uniq_units("abaBacC") == "abc"
+  end
+
+  test "remove a unit" do
+    assert Day05.remove_one_unit_type(List.first('a'), "dabAcCaCBAcCcaDA") == "dbCBcD"
+  end
+
 
   test "example part1" do
     #dabAcCaCBAcCcaDA  The first 'cC' is removed.

@@ -79,4 +79,36 @@ defmodule Day05 do
     abs(List.first(c1) - List.first(c2))
   end
 
+
+  # This is not super fast but still under 1 min, may have way to optimize it
+  def solve_part2(polymer) do
+    units = all_uniq_units(polymer)
+    units |> String.to_charlist |> Enum.map(fn c -> remove_one_unit_type(c, polymer) end)
+    |> Enum.min_by(&String.length/1) |> String.length
+  end
+
+  def remove_one_unit_type(unit_type, polymer) do
+    unit_order = unit_type
+    other_polarity = if unit_order >= List.first('a') do
+      unit_order - 32
+    else
+      unit_order + 32
+    end
+    String.replace(polymer, List.to_string([unit_order]), "") |> String.replace(List.to_string([other_polarity]), "") |> react_stack
+  end
+
+  def all_uniq_units(polymer) do
+    polymer |> String.downcase |> String.to_charlist |> do_all_units([])
+
+  end
+  def do_all_units([], result) do
+    result |> List.to_string
+  end
+  def do_all_units([h|t], result) do
+    if Enum.member?(result, h) do
+      do_all_units(t, result)
+    else
+      do_all_units(t, result ++ [h])
+    end
+  end
 end
