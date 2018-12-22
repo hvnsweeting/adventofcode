@@ -33,7 +33,7 @@ defmodule Day05Test do
   end
 
   test "remove a unit" do
-    assert Day05.remove_one_unit_type(List.first('a'), "dabAcCaCBAcCcaDA") == "dbCBcD"
+    assert Day05.remove_one_unit_type(List.first('a'), "dabAcCaCBAcCcaDA") == 6
   end
 
   test "example part1" do
