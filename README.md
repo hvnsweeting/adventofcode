@@ -10,3 +10,8 @@
 - String concat uses `<>` not `+`, DateTime comparation using `DateTime.compare`, not `>` or `<`.
 - Regex is super handy for parsing, `Regex.scan(~r{#(\d+)}, string)`
 - When defining a anonymous function, after `->`, enter to new line for reading sake.
+- `'a'` is a char list, `"a"` is a string, convertion is explicit. `String.to_charlist("a")`. Since `'a'` a list, get the codepoint of the char must use `List.first('a')`:
+  ```elixir
+  iex(14)> List.first('ứ')
+    7913
+  ```
