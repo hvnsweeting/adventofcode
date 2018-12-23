@@ -89,7 +89,7 @@ defmodule Day05 do
     polymer
     |> all_uniq_units
     |> Enum.map(fn c -> remove_one_unit_type(c, polymer) end)
-    |> Enum.min
+    |> Enum.min()
   end
 
   def remove_one_unit_type(unit_type, polymer) do
@@ -104,7 +104,8 @@ defmodule Day05 do
 
     String.replace(polymer, List.to_string([unit_order]), "")
     |> String.replace(List.to_string([other_polarity]), "")
-    |> react_stack |> String.length
+    |> react_stack
+    |> String.length()
   end
 
   def all_uniq_units(polymer) do
