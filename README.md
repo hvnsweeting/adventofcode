@@ -26,8 +26,8 @@
   Can add it
   ```elixir
     |> String.split("\n", trim: true)
-    |> IO.inspect   # here to view immediate result
+    |> IO.inspect   # here to view intermediate result
     |> Enum.map(&String.trim/1)
-    |> IO.inspect   # here to view immediate result
+    |> IO.inspect   # here to view intermediate result
     |> Enum.map(fn s -> String.split(s, ", ") end)
   ```
