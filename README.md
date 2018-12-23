@@ -15,3 +15,19 @@
   iex(14)> List.first('ứ')
     7913
   ```
+- `String.split(",")` is valid, even you forgot adding string to split `String.split(string, ",")`
+- `IO.inspect` returns its input, thus, make it transparent to the
+  pipeline, add it anywhere you want to debug. E.g
+  ```elixir
+    |> String.split("\n", trim: true)
+    |> Enum.map(&String.trim/1)
+    |> Enum.map(fn s -> String.split(s, ", ") end)
+  ```
+  Can add it
+  ```elixir
+    |> String.split("\n", trim: true)
+    |> IO.inspect   # here to view immediate result
+    |> Enum.map(&String.trim/1)
+    |> IO.inspect   # here to view immediate result
+    |> Enum.map(fn s -> String.split(s, ", ") end)
+  ```
