@@ -86,4 +86,29 @@ defmodule Day06 do
     |> Enum.max_by(fn {_k, v} -> v end)
     |> elem(1)
   end
+
+  def total_distance(coordinates, location) do
+    Enum.sum(
+      coordinates
+      |> Enum.map(&manhattan_distance(&1, location))
+    )
+  end
+
+  def find_region(coordinates, dist_limit \\ 32) do
+    locations = coordinates |> smallest_grid |> generate_grid_coords
+
+    Enum.count(
+      Enum.map(
+        locations,
+        &total_distance(coordinates, &1)
+      ),
+      &(&1 < dist_limit)
+    )
+  end
+
+  def solve_part2(inputstring, dist_limit \\ 10000) do
+    inputstring
+    |> string_to_coordinate
+    |> find_region(dist_limit)
+  end
 end
