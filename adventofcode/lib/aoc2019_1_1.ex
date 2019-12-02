@@ -24,7 +24,7 @@ defmodule Aoc2019Day1 do
   end
 
   def sum_of_fuel(modules) do
-    modules |> Enum.map(&calculate_fuel/1) |> Enum.sum
+    modules |> Enum.map(&calculate_fuel/1) |> Enum.sum()
   end
 
   def solve_1(modules) do
