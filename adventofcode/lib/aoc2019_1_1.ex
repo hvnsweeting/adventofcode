@@ -19,8 +19,7 @@ defmodule Aoc2019Day1 do
   """
 
   def calculate_fuel(mass) do
-    {int, _} = Integer.parse(Float.to_string(mass / 3))
-    int - 2
+    trunc(mass / 3) - 2
   end
 
   def sum_of_fuel(modules) do
