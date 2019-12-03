@@ -30,4 +30,32 @@ defmodule Aoc2019Day1 do
   def solve_1(modules) do
     sum_of_fuel(modules)
   end
+
+  @doc """
+  total_fuel calculate fuel requirements for mass, and the fuel itself
+  turtle all they way down.
+
+  Fuel itself requires fuel just like a module - take its mass, divide by three, round down, and subtract 2. However, that fuel also requires fuel, and that fuel requires fuel, and so on. Any mass that would require negative fuel should instead be treated as if it requires zero fuel; the remaining mass, if any, is instead handled by wishing really hard, which has no mass and is outside the scope of this calculation.
+  """
+  def total_fuel(mass, acc) do
+    fuel = calculate_fuel(mass)
+
+    if fuel <= 0 do
+      acc
+    else
+      total_fuel(fuel, acc + fuel)
+    end
+  end
+
+  def total_fuel(mass) do
+    total_fuel(mass, 0)
+  end
+
+  def sum_total_fuel(modules) do
+    modules |> Enum.map(&total_fuel/1) |> Enum.sum()
+  end
+
+  def solve_2(modules) do
+    sum_total_fuel(modules)
+  end
 end
