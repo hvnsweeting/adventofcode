@@ -47,6 +47,6 @@ defmodule Aoc2019Day1Test do
   test "solve 1_2" do
     {:ok, text} = File.read("test/input2019_01_1.txt")
     result = text |> String.split() |> Enum.map(&String.to_integer/1) |> Aoc2019Day1.solve_2()
-    assert result == 4_972_811
+    assert result == 4_982_961
   end
 end
