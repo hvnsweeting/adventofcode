@@ -3,26 +3,6 @@ defmodule Aoc2019Day4 do
   https://adventofcode.com/2019/day/4
   """
 
-  def has_six_digits_number?([h | t]) do
-    has_six_digits_number?([h | t], 0)
-  end
-
-  defp has_six_digits_number?([], count) do
-    if count == 6 do
-      true
-    else
-      false
-    end
-  end
-
-  defp has_six_digits_number?([h | t], count) do
-    if ?0 <= h && h <= ?9 do
-      has_six_digits_number?(t, count + 1)
-    else
-      false
-    end
-  end
-
   def has_at_least_to_same_adjacent_digits?([]) do
     false
   end
@@ -79,10 +59,7 @@ defmodule Aoc2019Day4 do
   end
 
   def valid_password?(password, start, stop) do
-    pw_charlist = String.to_charlist(password)
-
     Enum.all?([
-      has_six_digits_number?(pw_charlist),
       is_within_range?(password, start, stop),
       has_at_least_to_same_adjacent_digits?(String.to_charlist(password)),
       is_never_decrease?(String.to_charlist(password))
@@ -90,10 +67,7 @@ defmodule Aoc2019Day4 do
   end
 
   def valid_password2?(password, start, stop) do
-    pw_charlist = String.to_charlist(password)
-
     Enum.all?([
-      has_six_digits_number?(pw_charlist),
       is_within_range?(password, start, stop),
       has_two_adjacent_digits?(String.to_charlist(password)),
       is_never_decrease?(String.to_charlist(password))
