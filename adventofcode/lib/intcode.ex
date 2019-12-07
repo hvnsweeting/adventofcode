@@ -8,49 +8,54 @@ defmodule Intcode do
   @opcode_jump_if_true 5
   @param_position_mode 0
   @param_immediate_mode 1
+
+  def get_value_in_position_mode(ns, index) do
+    Enum.at(ns, Enum.at(ns, index))
+  end
+
   def compute(opcodes, position, input \\ 1) do
     oc = Enum.at(opcodes, position)
     # IO.inspect({"Opscodes", opcodes})
     # IO.inspect({"oc", oc, position})
     cond do
-      Enum.at(opcodes, position) == 99 ->
+      oc == 99 ->
         opcodes
 
-      Enum.at(opcodes, position) == @opcode_input_to ->
+      oc == @opcode_input_to ->
         n = Enum.at(opcodes, position + 1)
         opcodes = List.replace_at(opcodes, n, input)
         compute(opcodes, position + 2)
 
-      Enum.at(opcodes, position) == @opcode_output_value ->
-        IO.inspect({"--output", Enum.at(opcodes, Enum.at(opcodes, position + 1))})
+      oc == @opcode_output_value ->
+        IO.inspect({"--output", get_value_in_position_mode(opcodes, position + 1)})
         compute(opcodes, position + 2)
 
-      Enum.at(opcodes, position) == 1 ->
+      oc == 1 ->
         opcodes =
           List.replace_at(
             opcodes,
             Enum.at(opcodes, position + 3),
-            Enum.at(opcodes, Enum.at(opcodes, position + 1)) +
-              Enum.at(opcodes, Enum.at(opcodes, position + 2))
+            get_value_in_position_mode(opcodes, position + 1) +
+              get_value_in_position_mode(opcodes, position + 2)
           )
 
         compute(opcodes, position + 4)
 
-      Enum.at(opcodes, position) == 2 ->
+      oc == 2 ->
         opcodes =
           List.replace_at(
             opcodes,
             Enum.at(opcodes, position + 3),
-            Enum.at(opcodes, Enum.at(opcodes, position + 1)) *
-              Enum.at(opcodes, Enum.at(opcodes, position + 2))
+            get_value_in_position_mode(opcodes, position + 1) *
+              get_value_in_position_mode(opcodes, position + 2)
           )
 
         compute(opcodes, position + 4)
 
       # Opcode 5 is jump-if-true: if the first parameter is non-zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
       oc == @opcode_jump_if_true ->
-        arg1 = Enum.at(opcodes, Enum.at(opcodes, position + 1))
-        arg2 = Enum.at(opcodes, Enum.at(opcodes, position + 2))
+        arg1 = get_value_in_position_mode(opcodes, position + 1)
+        arg2 = get_value_in_position_mode(opcodes, position + 2)
 
         if arg1 != 0 do
           compute(opcodes, arg2)
@@ -60,8 +65,8 @@ defmodule Intcode do
 
       # Opcode 6 is jump-if-false: if the first parameter is zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
       oc == 6 ->
-        arg1 = Enum.at(opcodes, Enum.at(opcodes, position + 1))
-        arg2 = Enum.at(opcodes, Enum.at(opcodes, position + 2))
+        arg1 = get_value_in_position_mode(opcodes, position + 1)
+        arg2 = get_value_in_position_mode(opcodes, position + 2)
 
         if arg1 == 0 do
           compute(opcodes, arg2)
@@ -71,8 +76,8 @@ defmodule Intcode do
 
       # Opcode 7 is less than: if the first parameter is less than the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
       oc == 7 ->
-        arg1 = Enum.at(opcodes, Enum.at(opcodes, position + 1))
-        arg2 = Enum.at(opcodes, Enum.at(opcodes, position + 2))
+        arg1 = get_value_in_position_mode(opcodes, position + 1)
+        arg2 = get_value_in_position_mode(opcodes, position + 2)
         arg3 = Enum.at(opcodes, position + 3)
 
         if arg1 < arg2 do
@@ -85,8 +90,8 @@ defmodule Intcode do
 
       # Opcode 8 is equals: if the first parameter is equal to the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
       oc == 8 ->
-        arg1 = Enum.at(opcodes, Enum.at(opcodes, position + 1))
-        arg2 = Enum.at(opcodes, Enum.at(opcodes, position + 2))
+        arg1 = get_value_in_position_mode(opcodes, position + 1)
+        arg2 = get_value_in_position_mode(opcodes, position + 2)
         arg3 = Enum.at(opcodes, position + 3)
 
         if arg1 == arg2 do
@@ -98,7 +103,7 @@ defmodule Intcode do
         end
 
       true ->
-        param_opcode = Integer.to_string(Enum.at(opcodes, position))
+        param_opcode = Integer.to_string(oc)
         opcode = String.slice(param_opcode, -2, 2)
 
         param_modes =
