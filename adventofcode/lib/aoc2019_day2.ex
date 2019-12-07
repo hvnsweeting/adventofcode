@@ -1,4 +1,6 @@
 defmodule Aoc2019Day2 do
+  import Intcode
+
   @moduledoc """
   https://adventofcode.com/2019/day/2
   --- Day 2: 1202 Program Alarm ---
@@ -54,44 +56,6 @@ defmodule Aoc2019Day2 do
   Once you have a working computer, the first step is to restore the gravity assist program (your puzzle input) to the "1202 program alarm" state it had just before the last computer caught fire. To do this, before running the program, replace position 1 with the value 12 and replace position 2 with the value 2. What value is left at position 0 after the program halts?
 
   """
-  def state_to_int_list(state) do
-    state |> String.split(",") |> Enum.map(fn s -> String.to_integer(String.trim(s)) end)
-  end
-
-  def compute(opcodes, position) do
-    cond do
-      Enum.at(opcodes, position) == 99 ->
-        opcodes
-
-      Enum.at(opcodes, position) == 1 ->
-        opcodes =
-          List.replace_at(
-            opcodes,
-            Enum.at(opcodes, position + 3),
-            Enum.at(opcodes, Enum.at(opcodes, position + 1)) +
-              Enum.at(opcodes, Enum.at(opcodes, position + 2))
-          )
-
-        compute(opcodes, position + 4)
-
-      Enum.at(opcodes, position) == 2 ->
-        opcodes =
-          List.replace_at(
-            opcodes,
-            Enum.at(opcodes, position + 3),
-            Enum.at(opcodes, Enum.at(opcodes, position + 1)) *
-              Enum.at(opcodes, Enum.at(opcodes, position + 2))
-          )
-
-        compute(opcodes, position + 4)
-    end
-  end
-
-  def run(state) do
-    opcodes = state_to_int_list(state)
-    compute(opcodes, 0)
-  end
-
   @doc """
   To do this, before running the program, replace position 1 with the value 12 and replace position 2 with the value 2. What value is left at position 0 after the program halts?
   """
