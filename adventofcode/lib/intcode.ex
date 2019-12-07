@@ -13,9 +13,9 @@ defmodule Intcode do
     Enum.at(ns, Enum.at(ns, index))
   end
 
-  def compute(opcodes, position, input \\ 1, outputs \\ []) do
+  def compute(opcodes, position, input \\ [], outputs \\ []) do
     oc = Enum.at(opcodes, position)
-    # IO.inspect({"Opscodes", opcodes})
+    # IO.inspect({"Opscodes", Enum.with_index(opcodes), "input", input, "output", outputs})
     # IO.inspect({"oc", oc, position})
     cond do
       oc == 99 ->
@@ -23,8 +23,9 @@ defmodule Intcode do
 
       oc == @opcode_input_to ->
         n = Enum.at(opcodes, position + 1)
-        opcodes = List.replace_at(opcodes, n, input)
-        compute(opcodes, position + 2, input, outputs)
+        [h | t] = input
+        opcodes = List.replace_at(opcodes, n, h)
+        compute(opcodes, position + 2, t, outputs)
 
       oc == @opcode_output_value ->
         out = get_value_in_position_mode(opcodes, position + 1)
@@ -187,7 +188,7 @@ defmodule Intcode do
     end
   end
 
-  def run(state, input \\ 0) do
+  def run(state, input \\ [0]) do
     opcodes = state_to_int_list(state)
     {opcodes, _} = compute(opcodes, 0, input)
     opcodes
