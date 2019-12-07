@@ -65,16 +65,22 @@ defmodule Aoc2019Day2 do
     opcodes = state_to_int_list(state)
 
     modified_opcodes =
-      List.replace_at(opcodes, @noun_position, 12) |> List.replace_at(@verb_position, 2)
+      List.replace_at(opcodes, @noun_position, 12)
+      |> List.replace_at(@verb_position, 2)
+      |> Enum.map(&Integer.to_string/1)
+      |> Enum.join(",")
 
-    compute(modified_opcodes, 0) |> List.first()
+    run(modified_opcodes, 0) |> List.first()
   end
 
   def calculate(opcodes, noun, verb) do
     modified_opcodes =
-      List.replace_at(opcodes, @noun_position, noun) |> List.replace_at(@verb_position, verb)
+      List.replace_at(opcodes, @noun_position, noun)
+      |> List.replace_at(@verb_position, verb)
+      |> Enum.map(&Integer.to_string/1)
+      |> Enum.join(",")
 
-    compute(modified_opcodes, 0) |> List.first()
+    run(modified_opcodes, 0) |> List.first()
   end
 
   def solve_part_2(state) do

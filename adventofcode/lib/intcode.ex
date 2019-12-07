@@ -13,22 +13,22 @@ defmodule Intcode do
     Enum.at(ns, Enum.at(ns, index))
   end
 
-  def compute(opcodes, position, input \\ 1) do
+  def compute(opcodes, position, input \\ 1, outputs \\ []) do
     oc = Enum.at(opcodes, position)
     # IO.inspect({"Opscodes", opcodes})
     # IO.inspect({"oc", oc, position})
     cond do
       oc == 99 ->
-        opcodes
+        {opcodes, outputs}
 
       oc == @opcode_input_to ->
         n = Enum.at(opcodes, position + 1)
         opcodes = List.replace_at(opcodes, n, input)
-        compute(opcodes, position + 2)
+        compute(opcodes, position + 2, input, outputs)
 
       oc == @opcode_output_value ->
-        IO.inspect({"--output", get_value_in_position_mode(opcodes, position + 1)})
-        compute(opcodes, position + 2)
+        out = get_value_in_position_mode(opcodes, position + 1)
+        compute(opcodes, position + 2, input, outputs ++ [out])
 
       oc == 1 ->
         opcodes =
@@ -39,7 +39,7 @@ defmodule Intcode do
               get_value_in_position_mode(opcodes, position + 2)
           )
 
-        compute(opcodes, position + 4)
+        compute(opcodes, position + 4, input, outputs)
 
       oc == 2 ->
         opcodes =
@@ -50,7 +50,7 @@ defmodule Intcode do
               get_value_in_position_mode(opcodes, position + 2)
           )
 
-        compute(opcodes, position + 4)
+        compute(opcodes, position + 4, input, outputs)
 
       # Opcode 5 is jump-if-true: if the first parameter is non-zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
       oc == @opcode_jump_if_true ->
@@ -58,9 +58,9 @@ defmodule Intcode do
         arg2 = get_value_in_position_mode(opcodes, position + 2)
 
         if arg1 != 0 do
-          compute(opcodes, arg2)
+          compute(opcodes, arg2, input, outputs)
         else
-          compute(opcodes, position + 3)
+          compute(opcodes, position + 3, input, outputs)
         end
 
       # Opcode 6 is jump-if-false: if the first parameter is zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
@@ -69,9 +69,9 @@ defmodule Intcode do
         arg2 = get_value_in_position_mode(opcodes, position + 2)
 
         if arg1 == 0 do
-          compute(opcodes, arg2)
+          compute(opcodes, arg2, input, outputs)
         else
-          compute(opcodes, position + 3)
+          compute(opcodes, position + 3, input, outputs)
         end
 
       # Opcode 7 is less than: if the first parameter is less than the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
@@ -82,10 +82,10 @@ defmodule Intcode do
 
         if arg1 < arg2 do
           opcodes = List.replace_at(opcodes, arg3, 1)
-          compute(opcodes, position + 4)
+          compute(opcodes, position + 4, input, outputs)
         else
           opcodes = List.replace_at(opcodes, arg3, 0)
-          compute(opcodes, position + 4)
+          compute(opcodes, position + 4, input, outputs)
         end
 
       # Opcode 8 is equals: if the first parameter is equal to the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
@@ -96,10 +96,10 @@ defmodule Intcode do
 
         if arg1 == arg2 do
           opcodes = List.replace_at(opcodes, arg3, 1)
-          compute(opcodes, position + 4)
+          compute(opcodes, position + 4, input, outputs)
         else
           opcodes = List.replace_at(opcodes, arg3, 0)
-          compute(opcodes, position + 4)
+          compute(opcodes, position + 4, input, outputs)
         end
 
       true ->
@@ -138,47 +138,46 @@ defmodule Intcode do
           opcode == "01" ->
             f = &(&1 + &2)
             opcodes = List.replace_at(opcodes, Enum.at(opcodes, position + 3), f.(arg1, arg2))
-            compute(opcodes, position + 4)
+            compute(opcodes, position + 4, input, outputs)
 
           opcode == "02" ->
             f = &(&1 * &2)
             opcodes = List.replace_at(opcodes, Enum.at(opcodes, position + 3), f.(arg1, arg2))
-            compute(opcodes, position + 4)
+            compute(opcodes, position + 4, input, outputs)
 
           opcode == "04" ->
-            IO.inspect({"output", arg1})
-            compute(opcodes, position + 2)
+            compute(opcodes, position + 2, input, outputs ++ [arg1])
 
           opcode == "05" ->
             if arg1 != 0 do
-              compute(opcodes, arg2)
+              compute(opcodes, arg2, input, outputs)
             else
-              compute(opcodes, position + 3)
+              compute(opcodes, position + 3, input, outputs)
             end
 
           opcode == "06" ->
             if arg1 == 0 do
-              compute(opcodes, arg2)
+              compute(opcodes, arg2, input, outputs)
             else
-              compute(opcodes, position + 3)
+              compute(opcodes, position + 3, input, outputs)
             end
 
           opcode == "07" ->
             if arg1 < arg2 do
               opcodes = List.replace_at(opcodes, arg3, 1)
-              compute(opcodes, position + 4)
+              compute(opcodes, position + 4, input, outputs)
             else
               opcodes = List.replace_at(opcodes, arg3, 0)
-              compute(opcodes, position + 4)
+              compute(opcodes, position + 4, input, outputs)
             end
 
           opcode == "08" ->
             if arg1 == arg2 do
               opcodes = List.replace_at(opcodes, arg3, 1)
-              compute(opcodes, position + 4)
+              compute(opcodes, position + 4, input, outputs)
             else
               opcodes = List.replace_at(opcodes, arg3, 0)
-              compute(opcodes, position + 4)
+              compute(opcodes, position + 4, input, outputs)
             end
 
           true ->
@@ -188,8 +187,15 @@ defmodule Intcode do
     end
   end
 
-  def run(state, input) do
+  def run(state, input \\ 0) do
     opcodes = state_to_int_list(state)
-    compute(opcodes, 0, input)
+    {opcodes, _} = compute(opcodes, 0, input)
+    opcodes
+  end
+
+  def check_output(state, input) do
+    opcodes = state_to_int_list(state)
+    {_, outputs} = compute(opcodes, 0, input)
+    List.last(outputs)
   end
 end
