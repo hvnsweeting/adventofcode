@@ -28,4 +28,9 @@ defmodule Aoc2019Day2Test do
     {:ok, text} = File.read("test/input2019_02_1.txt")
     assert Aoc2019Day2.solve_part_1(text) == 3_850_704
   end
+
+  test "Solve part 2" do
+    {:ok, text} = File.read("test/input2019_02_1.txt")
+    assert Aoc2019Day2.solve_part_2(text) == 6718
+  end
 end

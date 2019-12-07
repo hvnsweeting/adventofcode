@@ -95,9 +95,30 @@ defmodule Aoc2019Day2 do
   @doc """
   To do this, before running the program, replace position 1 with the value 12 and replace position 2 with the value 2. What value is left at position 0 after the program halts?
   """
+  @noun_position 1
+  @verb_position 2
   def solve_part_1(state) do
     opcodes = state_to_int_list(state)
-    modified_opcodes = List.replace_at(opcodes, 1, 12) |> List.replace_at(2, 2)
+
+    modified_opcodes =
+      List.replace_at(opcodes, @noun_position, 12) |> List.replace_at(@verb_position, 2)
+
     compute(modified_opcodes, 0) |> List.first()
+  end
+
+  def calculate(opcodes, noun, verb) do
+    modified_opcodes =
+      List.replace_at(opcodes, @noun_position, noun) |> List.replace_at(@verb_position, verb)
+
+    compute(modified_opcodes, 0) |> List.first()
+  end
+
+  def solve_part_2(state) do
+    opcodes = state_to_int_list(state)
+
+    all =
+      for noun <- 1..99, verb <- 1..99, do: {100 * noun + verb, calculate(opcodes, noun, verb)}
+
+    all |> Enum.filter(fn {_, out} -> out == 19_690_720 end) |> List.first() |> elem(0)
   end
 end
