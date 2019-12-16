@@ -38,6 +38,9 @@ defmodule Aoc2019Day16Test do
   test "Input signal 12345678 -> FFT After 1 phase: 48226158" do
     assert Aoc2019Day16.solve1("12345678", 1) == "48226158"
   end
+  #test "Input signal 12345678 x 2-> FFT After 1 phase: 48226158" do
+  #  assert Aoc2019Day16.solve2("12345678", 1) == "48226158"
+  #end
 
   test "Input signal 12345678 -> FFT After 2 phase: 34040438" do
     assert Aoc2019Day16.solve1("12345678", 2) == "34040438"
@@ -52,12 +55,16 @@ defmodule Aoc2019Day16Test do
   end
 
   test "Input signal 80871224585914546619083218645595 -> FFT After 100 phases: 24176176" do
-    assert Aoc2019Day16.solve1("80871224585914546619083218645595", 100)
-           |> String.slice(0, 8) == "24176176"
+    assert Aoc2019Day16.solve1("80871224585914546619083218645595", 100) == "24176176"
   end
 
   test "solve 1" do
     {:ok, input} = File.read("test/input2019_16_1.txt")
     assert Aoc2019Day16.solve1(input) == "37153056"
   end
+
+  # test "03036732577212944063491565474664 x 10000 times -> FFT 100 phases  becomes 84462026 " do
+  #   input = "03036732577212944063491565474664"
+  #   assert Aoc2019Day16.solve2(input) == "84462026"
+  # end
 end
