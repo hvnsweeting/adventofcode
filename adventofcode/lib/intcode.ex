@@ -15,8 +15,9 @@ defmodule Intcode do
 
   def compute(opcodes, position, input \\ [], outputs \\ []) do
     oc = Enum.at(opcodes, position)
-    # IO.inspect({"Opscodes", Enum.with_index(opcodes), "input", input, "output", outputs})
-    # IO.inspect({"oc", oc, position})
+    IO.inspect({"Opscodes", Enum.with_index(opcodes), "input", input, "output", outputs})
+    IO.inspect({"oc", oc, position})
+
     cond do
       oc == 99 ->
         {opcodes, outputs}
@@ -29,7 +30,7 @@ defmodule Intcode do
 
       oc == @opcode_output_value ->
         out = get_value_in_position_mode(opcodes, position + 1)
-        compute(opcodes, position + 2, input, outputs ++ [out])
+        compute(opcodes, position + 2, input ++ [out], outputs ++ [out])
 
       oc == 1 ->
         opcodes =
@@ -56,7 +57,7 @@ defmodule Intcode do
       # Opcode 5 is jump-if-true: if the first parameter is non-zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
       oc == @opcode_jump_if_true ->
         arg1 = get_value_in_position_mode(opcodes, position + 1)
-        arg2 = get_value_in_position_mode(opcodes, position + 2)
+        arg2 = Enum.at(opcodes, position + 2)
 
         if arg1 != 0 do
           compute(opcodes, arg2, input, outputs)
