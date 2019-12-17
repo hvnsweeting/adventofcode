@@ -1,11 +1,6 @@
 defmodule Aoc2019Day09Test do
   use ExUnit.Case
 
-  test "solve 1" do
-    {:ok, text} = File.read("test/input2019_09_1.txt")
-    assert Aoc2019Day9.check_raw_output(text, [1]) == [3_497_884_671]
-  end
-
   test "  109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99 takes no input and produces a copy of itself as output." do
     state = "109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99"
 
@@ -21,5 +16,15 @@ defmodule Aoc2019Day09Test do
 
   test "104,1125899906842624,99 should output the large number in the middle. " do
     assert Aoc2019Day9.check_output("104,1125899906842624,99", []) == 1_125_899_906_842_624
+  end
+
+  test "solve 1" do
+    {:ok, text} = File.read("test/input2019_09_1.txt")
+    assert Aoc2019Day9.solve1(text) == [3_497_884_671]
+  end
+
+  test "solve 2" do
+    {:ok, text} = File.read("test/input2019_09_1.txt")
+    assert Aoc2019Day9.solve2(text) == [46470]
   end
 end

@@ -26,10 +26,10 @@ defmodule Intcode do
     # oc = Map.get(opcodes, position)
     oc = opcodes[position]
 
-    IO.inspect(
-      {"Opscodes", opcodes, "oc", oc, position, "input", input, "output", outputs,
-       "relative_base", relative_base}
-    )
+    # IO.inspect(
+    #  {"Opscodes", opcodes, "oc", oc, position, "input", input, "output", outputs,
+    #   "relative_base", relative_base}
+    # )
 
     cond do
       oc == 99 ->
@@ -133,7 +133,7 @@ defmodule Intcode do
 
         modes = Enum.map(param_modes, fn x -> x - ?0 end)
         [marg1, marg2, marg3] = modes |> Enum.reverse()
-        IO.inspect({"Margs", [marg1, marg2, marg3]})
+        # IO.inspect({"Margs", [marg1, marg2, marg3]})
         # map params mode with params, calculate
         arg1 = Map.get(opcodes, position + 1)
 
@@ -143,7 +143,7 @@ defmodule Intcode do
               Map.get(opcodes, arg1) || 0
 
             marg1 == @param_relative_mode ->
-              IO.inspect({"relative_base", relative_base})
+              # IO.inspect({"relative_base", relative_base})
               Map.get(opcodes, arg1 + relative_base) || 0
 
             true ->
@@ -168,11 +168,11 @@ defmodule Intcode do
             true -> arg3
           end
 
-        IO.inspect(
-          {"oc", oc, position, "raw",
-           {opcodes[position + 1], opcodes[position + 2], opcodes[position + 3]}, "arg1", arg1,
-           "arg2", arg2, "arg3", arg3, "relative_base", relative_base}
-        )
+        # IO.inspect(
+        #  {"oc", oc, position, "raw",
+        #   {opcodes[position + 1], opcodes[position + 2], opcodes[position + 3]}, "arg1", arg1,
+        #   "arg2", arg2, "arg3", arg3, "relative_base", relative_base}
+        # )
 
         cond do
           opcode == "01" ->
@@ -211,7 +211,7 @@ defmodule Intcode do
                 arg1
               end
 
-            IO.inspect({"Code 03 put input value", h, "to", address})
+            # IO.inspect({"Code 03 put input value", h, "to", address})
             opcodes = Map.put(opcodes, address, h)
             compute(opcodes, position + 2, t, outputs, relative_base)
 
@@ -226,7 +226,7 @@ defmodule Intcode do
             end
 
           opcode == "06" ->
-            IO.inspect({"Jump if false", arg1, arg2})
+            # IO.inspect({"Jump if false", arg1, arg2})
 
             if arg1 == 0 do
               compute(opcodes, arg2, input, outputs, relative_base)
@@ -267,7 +267,7 @@ defmodule Intcode do
             end
 
           opcode == "09" ->
-            IO.inspect({"relative add", relative_base, arg1})
+            # IO.inspect({"relative add", relative_base, arg1})
             compute(opcodes, position + 2, input, outputs, relative_base + arg1)
 
           true ->
