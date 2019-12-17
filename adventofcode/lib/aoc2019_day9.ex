@@ -1,6 +1,6 @@
 defmodule Aoc2019Day9 do
   def solve1(input) do
-    Intcode.check_output(input, [1])
+    Intcode.check_raw_output(input, [1])
   end
 
   def check_output(state, input) do
