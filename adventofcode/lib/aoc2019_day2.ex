@@ -70,7 +70,7 @@ defmodule Aoc2019Day2 do
       |> Enum.map(&Integer.to_string/1)
       |> Enum.join(",")
 
-    run(modified_opcodes, 0) |> List.first()
+    run(modified_opcodes, 0) |> map_to_list |> List.first()
   end
 
   def calculate(opcodes, noun, verb) do
@@ -80,7 +80,7 @@ defmodule Aoc2019Day2 do
       |> Enum.map(&Integer.to_string/1)
       |> Enum.join(",")
 
-    run(modified_opcodes, 0) |> List.first()
+    run(modified_opcodes, 0) |> map_to_list |> List.first()
   end
 
   def solve_part_2(state) do
