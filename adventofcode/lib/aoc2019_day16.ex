@@ -17,7 +17,7 @@ defmodule Aoc2019Day16 do
   end
 
   def apply_phase(input, drop \\ 1) do
-    #IO.inspect({"Input length", length(input), "drop", drop, drop..length(input)})
+    # IO.inspect({"Input length", length(input), "drop", drop, drop..length(input)})
 
     drop..length(input)
     |> Enum.map(fn nth ->

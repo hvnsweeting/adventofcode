@@ -13,6 +13,7 @@ defmodule Aoc2019Day7 do
     outc = check_output(program, [c, outb])
     outd = check_output(program, [d, outc])
     oute = check_output(program, [e, outd])
+    oute
   end
 
   def not_equal(a, b, c, d, e) do

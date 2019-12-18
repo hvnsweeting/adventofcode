@@ -12,7 +12,8 @@ defmodule Aoc2019Day05Test do
     assert Aoc2019Day5.solve_part_2(text) == 9_436_229
   end
 
-  test "jump tests that take an input, then output 0 if the input was zero or 1 if the input was non-zero:" do
+  @tag hihi: true
+  test "jump tests 3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9 that take an input, then output 0 if the input was zero or 1 if the input was non-zero:" do
     program = "3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9"
     assert check_output(program, [0]) == 0
     assert check_output(program, [1]) == 1

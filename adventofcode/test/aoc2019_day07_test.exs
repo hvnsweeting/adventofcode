@@ -10,7 +10,9 @@ defmodule Aoc2019Day07Test do
     program = "3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0"
 
     assert Aoc2019Day7.thruster_signal(program, 0, [4, 3, 2, 1, 0]) == 43210
-    assert Aoc2019Day7.thruster_signal(program, 0, [4, 3, 2, 1, 0]) == Aoc2019Day7.max_thruster_signal(program, 0, [0, 1, 2, 3, 4])
+
+    assert Aoc2019Day7.thruster_signal(program, 0, [4, 3, 2, 1, 0]) ==
+             Aoc2019Day7.max_thruster_signal(program, 0, [0, 1, 2, 3, 4])
   end
 
   test "Max thruster signal 54321 (from phase setting sequence 0,1,2,3,4)" do
