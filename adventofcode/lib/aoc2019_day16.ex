@@ -5,6 +5,7 @@ defmodule Aoc2019Day16 do
   end
 
   def apply_phases(text, c, drop \\ 1)
+
   def apply_phases(text, 0, drop) do
     text
     |> Enum.map(&Integer.to_string/1)
@@ -16,11 +17,12 @@ defmodule Aoc2019Day16 do
   end
 
   def apply_phase(input, drop \\ 1) do
-    IO.inspect({"Input length", length(input), "drop", drop, drop..length(input)})
+    #IO.inspect({"Input length", length(input), "drop", drop, drop..length(input)})
+
     drop..length(input)
     |> Enum.map(fn nth ->
       real_pattern = Stream.drop(raw_pattern([0, 1, 0, -1], nth), 1)
-      #IO.inspect(Enum.take(real_pattern, 20))
+      # IO.inspect(Enum.take(real_pattern, 20))
       make_element(input, real_pattern) |> ones_digit
     end)
   end
@@ -32,10 +34,11 @@ defmodule Aoc2019Day16 do
   def make_element(input_list, pattern) do
     Stream.zip(input_list, Stream.cycle(pattern))
     |> Stream.map(fn {e, p} -> e * p end)
-    |> Enum.sum
-    #|> Enum.drop(skip)
-    #IO.inspect({"Remain", length(v)})
-    #v |> Enum.sum()
+    |> Enum.sum()
+
+    # |> Enum.drop(skip)
+    # IO.inspect({"Remain", length(v)})
+    # v |> Enum.sum()
   end
 
   def raw_pattern(base_pattern, nth) do
@@ -48,10 +51,10 @@ defmodule Aoc2019Day16 do
     apply_phases(input, phases) |> String.slice(0, 8)
   end
 
-
   def solve2(text, phases \\ 100) do
     offset = String.to_integer(String.slice(text, 0, 7))
     IO.inspect({"OFFSET", offset})
+
     [text]
     |> Stream.cycle()
     |> Enum.take(10000)

@@ -11,6 +11,13 @@ defmodule Intcode do
     |> Map.new()
   end
 
+  def map_to_list(m) do
+    m
+    |> Map.to_list()
+    |> Enum.sort(fn {k1, _}, {k2, _} -> k1 <= k2 end)
+    |> Enum.map(fn {_, v} -> v end)
+  end
+
   @opcode_input_to 3
   @opcode_output_value 4
   @opcode_jump_if_true 5
@@ -26,10 +33,10 @@ defmodule Intcode do
     # oc = Map.get(opcodes, position)
     oc = opcodes[position]
 
-    # IO.inspect(
-    #  {"Opscodes", opcodes, "oc", oc, position, "input", input, "output", outputs,
-    #   "relative_base", relative_base}
-    # )
+    #IO.inspect(
+    # {"Opscodes", opcodes, "oc", oc, position, "input", input, "output", outputs,
+    #  "relative_base", relative_base}
+    #)
 
     cond do
       oc == 99 ->
@@ -71,7 +78,7 @@ defmodule Intcode do
       # Opcode 5 is jump-if-true: if the first parameter is non-zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
       oc == @opcode_jump_if_true ->
         arg1 = get_value_in_position_mode(opcodes, position + 1)
-        arg2 = Map.get(opcodes, position + 2)
+        arg2 = get_value_in_position_mode(opcodes, position + 2)
 
         if arg1 != 0 do
           compute(opcodes, arg2, input, outputs, relative_base)
@@ -168,11 +175,11 @@ defmodule Intcode do
             true -> arg3
           end
 
-        # IO.inspect(
-        #  {"oc", oc, position, "raw",
-        #   {opcodes[position + 1], opcodes[position + 2], opcodes[position + 3]}, "arg1", arg1,
-        #   "arg2", arg2, "arg3", arg3, "relative_base", relative_base}
-        # )
+        #IO.inspect(
+        # {"oc", oc, position, "raw",
+        #  {opcodes[position + 1], opcodes[position + 2], opcodes[position + 3]}, "arg1", arg1,
+        #  "arg2", arg2, "arg3", arg3, "relative_base", relative_base}
+        #)
 
         cond do
           opcode == "01" ->

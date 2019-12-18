@@ -38,9 +38,10 @@ defmodule Aoc2019Day16Test do
   test "Input signal 12345678 -> FFT After 1 phase: 48226158" do
     assert Aoc2019Day16.solve1("12345678", 1) == "48226158"
   end
-  #test "Input signal 12345678 x 2-> FFT After 1 phase: 48226158" do
+
+  # test "Input signal 12345678 x 2-> FFT After 1 phase: 48226158" do
   #  assert Aoc2019Day16.solve2("12345678", 1) == "48226158"
-  #end
+  # end
 
   test "Input signal 12345678 -> FFT After 2 phase: 34040438" do
     assert Aoc2019Day16.solve1("12345678", 2) == "34040438"
