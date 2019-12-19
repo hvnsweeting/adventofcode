@@ -1,5 +1,6 @@
 # Advent Of Code 2018, 2019 - in Elixir
 
+[![Build Status](https://travis-ci.org/hvnsweeting/adventofcode.svg?branch=master)](https://travis-ci.org/hvnsweeting/adventofcode)
 [![CircleCI](https://circleci.com/gh/hvnsweeting/adventofcode.svg?style=svg)](https://circleci.com/gh/hvnsweeting/adventofcode)
 
 ## Lessons learned
