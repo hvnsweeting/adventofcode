@@ -1,6 +1,6 @@
-# Advent Of Code 2018 - in Elixir
+# Advent Of Code 2018, 2019 - in Elixir
 
-[![CircleCI](https://circleci.com/gh/hvnsweeting/adventofcode2018.svg?style=svg)](https://circleci.com/gh/hvnsweeting/adventofcode2018)
+[![CircleCI](https://circleci.com/gh/hvnsweeting/adventofcode.svg?style=svg)](https://circleci.com/gh/hvnsweeting/adventofcode)
 
 ## Lessons learned
 - Unittest is troublesome at the beginning but super useful after a NOT SO LONG run, even 1 hour of code. Refactor then is just a breeze.
