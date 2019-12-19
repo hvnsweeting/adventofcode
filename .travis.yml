@@ -6,8 +6,6 @@ elixir:
 otp_release:
   - 21.0
 
-before_script: cd adventofcode
-
 script:
   - mix deps.get
   - mix dialyzer
