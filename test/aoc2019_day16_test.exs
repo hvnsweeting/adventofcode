@@ -59,6 +59,7 @@ defmodule Aoc2019Day16Test do
     assert Aoc2019Day16.solve1("80871224585914546619083218645595", 100) == "24176176"
   end
 
+  @tag slow: true
   test "solve 1" do
     {:ok, input} = File.read("test/input2019_16_1.txt")
     assert Aoc2019Day16.solve1(input) == "37153056"

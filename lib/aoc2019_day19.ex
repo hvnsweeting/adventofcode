@@ -1,5 +1,6 @@
 defmodule Aoc2019Day19 do
-  @spec find_square(String.t(), integer(), integer(), boolean(), integer(), integer()) :: {integer(), integer(), integer()}
+  @spec find_square(String.t(), integer(), integer(), boolean(), integer(), integer()) ::
+          {integer(), integer(), integer()}
   def find_square(input, x, y, under \\ true, minx \\ 0, size \\ 99) do
     good_xy = input |> Intcode.check_output([x, y]) == 1
     # if good_xy do
