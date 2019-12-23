@@ -4,7 +4,20 @@
 [![CircleCI](https://circleci.com/gh/hvnsweeting/adventofcode.svg?style=svg)](https://circleci.com/gh/hvnsweeting/adventofcode)
 
 ## Lessons learned
-- Unittest is troublesome at the beginning but super useful after a NOT SO LONG run, even 1 hour of code. Refactor then is just a breeze.
+- NEVER EVER EVER append a list by `a ++ [b]`, it is `O(n)`, while similar
+  to `[b|a] |> Enum.reverse` - `O(1 + n)` for one call, but put into a loop, it
+  is huge different. The latter version would be `O(m + m)` while the former
+  is `O(m^2)`.
+- Always call function with `()` notation. Surprise?:
+  ```elixir
+  > Base.encode16 :crypto.hash(:sha256, "PYMI.vn") |> String.downcase
+  "8C9161716A6B85E1CA72E0348569ACA3E27167FA15C37768B07D8BE490F9AAFC"
+  # WHY NO DOWN CASE??!!!
+  > Base.encode16(:crypto.hash(:sha256, "PYMI.vn")) |> String.downcase
+  "8c9141714a6b85e1ca72e0348549aca3e25147fa15c37768b07d8be490f9aafc"
+  ```
+- Unittest is troublesome at the beginning but super useful after a NOT SO LONG
+  run, even 1 hour of code. Refactor then is just a breeze.
 - `IO.inspect` does not work with multiple args, but can use a tuple to wrap
   them up and inspect.
 - `h cond` shows help info for `cond`, same for everything else, very helpful.
