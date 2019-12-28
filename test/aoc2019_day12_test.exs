@@ -44,4 +44,15 @@ defmodule Aoc2019Day12Test do
     {:ok, input} = File.read("test/input2019_12.txt")
     assert Aoc2019Day12.solve1(input, 1000) == 10189
   end
+
+  test "2772 steps for sample 1 to match origin" do
+    assert Aoc2019Day12.steps_to_exactly_match(Aoc2019Day12.parse_input(@sample_input)) == 2772
+  end
+
+  #@tag slow: true
+  #@tag wip: true
+  #test "solve2" do
+  #  {:ok, input} = File.read("test/input2019_12.txt")
+  #  assert Aoc2019Day12.solve2(input) == 1
+  #end
 end

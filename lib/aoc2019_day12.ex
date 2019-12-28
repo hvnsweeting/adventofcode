@@ -11,6 +11,8 @@ defmodule Aoc2019Day12 do
       |> String.split("\n", [:trim, true])
       |> Enum.map(&parse/1)
       |> Enum.map(fn x -> {x, {0, 0, 0}} end)
+
+    [a, b, c, d]
   end
 
   defp parse(s) do
@@ -59,7 +61,7 @@ defmodule Aoc2019Day12 do
     end)
   end
 
-  def apply(a, b, c, d, n) do
+  def apply(a, b, c, d, n \\ 1) do
     1..n
     |> Enum.reduce([a, b, c, d], fn _, acc ->
       [e, f, g, h] = acc
@@ -68,8 +70,6 @@ defmodule Aoc2019Day12 do
   end
 
   defp do_one_step(a, b, c, d) do
-    # TODO
-    # apply velocity
     apply_gravity(a, b, c, d)
     |> Enum.map(fn {pos, vel} ->
       {x, y, z} = pos
@@ -91,5 +91,29 @@ defmodule Aoc2019Day12 do
   """
   defp sum_of_absolute_xyz({x, y, z}) do
     abs(x) + abs(y) + abs(z)
+  end
+
+  def steps_to_exactly_match(moons) do
+    steps_to_exactly_match(moons, moons)
+  end
+
+  defp steps_to_exactly_match(moons, init, steps \\ 0) do
+    if rem(steps, 1_000_000) == 0 do
+      IO.puts(steps)
+    end
+
+    [a, b, c, d] = moons
+    [e, f, g, h] = apply(a, b, c, d)
+
+    if [e, f, g, h] == init do
+      steps + 1
+    else
+      steps_to_exactly_match([e, f, g, h], init, steps + 1)
+    end
+  end
+
+  def solve2(input) do
+    [a, b, c, d] = parse_input(input)
+    steps_to_exactly_match([a, b, c, d])
   end
 end
