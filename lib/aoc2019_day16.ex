@@ -56,7 +56,7 @@ defmodule Aoc2019Day16 do
         remainder = rem(idx, nth * 4)
 
         v =
-          case ceil(remainder / nth) do
+          case trunc(:math.ceil(remainder / nth)) do
             4 -> -n
             1 -> 0
             2 -> n
