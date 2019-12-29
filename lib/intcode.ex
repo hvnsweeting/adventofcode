@@ -29,16 +29,20 @@ defmodule Intcode do
     ns[ns[index]] || 0
   end
 
-  def compute(opcodes, position, input \\ [], outputs \\ [], relative_base \\ 0) do
+  def compute(opcodes, position, input \\ [], outputs \\ [], relative_base \\ 0, parent \\ nil) do
     # oc = Map.get(opcodes, position)
     oc = opcodes[position]
 
+    # IO.inspect({"oc", position})
     # IO.inspect(
-    #  {"Opscodes", opcodes, "oc", oc, position, "input", input, "output", outputs,
-    #   "relative_base", relative_base}
+    #  {"oc", oc, position, "input", input, "output", outputs, "relative_base", relative_base}
     # )
 
     if oc == 99 do
+      if parent do
+        send(parent, {:finish, outputs})
+      end
+
       {opcodes, outputs}
     else
       param_opcode = Integer.to_string(oc)
@@ -99,7 +103,7 @@ defmodule Intcode do
             end
 
           opcodes = Map.put(opcodes, address, f.(arg1, arg2))
-          compute(opcodes, position + 4, input, outputs, relative_base)
+          compute(opcodes, position + 4, input, outputs, relative_base, parent)
 
         opcode == "02" ->
           f = &(&1 * &2)
@@ -112,9 +116,24 @@ defmodule Intcode do
             end
 
           opcodes = Map.put(opcodes, address, f.(arg1, arg2))
-          compute(opcodes, position + 4, input, outputs, relative_base)
+          compute(opcodes, position + 4, input, outputs, relative_base, parent)
 
         opcode == "03" ->
+          input =
+            if input == [] do
+              receive do
+                {:color, color} ->
+                  # IO.inspect({"child received color", color})
+                  [color]
+
+                e ->
+                  IO.inspect({"ERROR", e})
+                  raise "Child receive bad msg"
+              end
+            else
+              input
+            end
+
           [h | t] = input
 
           address =
@@ -126,25 +145,37 @@ defmodule Intcode do
 
           # IO.inspect({"Code 03 put input value", h, "to", address})
           opcodes = Map.put(opcodes, address, h)
-          compute(opcodes, position + 2, t, outputs, relative_base)
+          compute(opcodes, position + 2, t, outputs, relative_base, parent)
 
         opcode == "04" ->
-          compute(opcodes, position + 2, input, outputs ++ [arg1], relative_base)
+          # note: reversed as we prepend list
+          out = [arg1 | outputs]
+
+          out =
+            if parent && length(out) == 2 do
+              [direction, color_to_paint] = out
+              send(parent, {:day11, color_to_paint, direction})
+              []
+            else
+              out
+            end
+
+          compute(opcodes, position + 2, input, out, relative_base, parent)
 
         opcode == "05" ->
           if arg1 != 0 do
-            compute(opcodes, arg2, input, outputs, relative_base)
+            compute(opcodes, arg2, input, outputs, relative_base, parent)
           else
-            compute(opcodes, position + 3, input, outputs, relative_base)
+            compute(opcodes, position + 3, input, outputs, relative_base, parent)
           end
 
         opcode == "06" ->
           # IO.inspect({"Jump if false", arg1, arg2})
 
           if arg1 == 0 do
-            compute(opcodes, arg2, input, outputs, relative_base)
+            compute(opcodes, arg2, input, outputs, relative_base, parent)
           else
-            compute(opcodes, position + 3, input, outputs, relative_base)
+            compute(opcodes, position + 3, input, outputs, relative_base, parent)
           end
 
         opcode == "07" ->
@@ -157,10 +188,10 @@ defmodule Intcode do
 
           if arg1 < arg2 do
             opcodes = Map.put(opcodes, address, 1)
-            compute(opcodes, position + 4, input, outputs, relative_base)
+            compute(opcodes, position + 4, input, outputs, relative_base, parent)
           else
             opcodes = Map.put(opcodes, address, 0)
-            compute(opcodes, position + 4, input, outputs, relative_base)
+            compute(opcodes, position + 4, input, outputs, relative_base, parent)
           end
 
         opcode == "08" ->
@@ -173,15 +204,15 @@ defmodule Intcode do
 
           if arg1 == arg2 do
             opcodes = Map.put(opcodes, address, 1)
-            compute(opcodes, position + 4, input, outputs, relative_base)
+            compute(opcodes, position + 4, input, outputs, relative_base, parent)
           else
             opcodes = Map.put(opcodes, address, 0)
-            compute(opcodes, position + 4, input, outputs, relative_base)
+            compute(opcodes, position + 4, input, outputs, relative_base, parent)
           end
 
         opcode == "09" ->
           # IO.inspect({"relative add", relative_base, arg1})
-          compute(opcodes, position + 2, input, outputs, relative_base + arg1)
+          compute(opcodes, position + 2, input, outputs, relative_base + arg1, parent)
 
         true ->
           IO.inspect({"BUG", param_opcode, arg1, arg2, opcode, position})
@@ -200,13 +231,15 @@ defmodule Intcode do
     # opcodes = state_to_int_list(state)
     opcodes = state_to_int_map(state)
     {_, outputs} = compute(opcodes, 0, input)
+    outputs = Enum.reverse(outputs)
     List.last(outputs)
   end
 
-  def check_raw_output(state, input) do
+  def check_raw_output(state, input, parent \\ nil) do
     # opcodes = state_to_int_list(state)
     opcodes = state_to_int_map(state)
-    {_, outputs} = compute(opcodes, 0, input)
+    {_, outputs} = compute(opcodes, 0, input, [], 0, parent)
+    outputs = Enum.reverse(outputs)
     outputs
   end
 end
