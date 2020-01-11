@@ -174,7 +174,7 @@ defmodule Aoc2019Day13Test do
     program = program |> String.trim()
     p = program |> String.replace("1", "2", global: false)
 
-    child = spawn(Intcode, :check_raw_output, [p, [], self()])
+    {:ok, child} = Task.start(Intcode, :check_raw_output, [p, [], self()])
     last_paddle = {-1, -1}
     last_ball = {-1, -1}
     loop(child, Map.new(), last_paddle, last_ball)
