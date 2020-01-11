@@ -1,5 +1,5 @@
 defmodule Aoc2019Day2Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest Aoc2019Day2
 
   test "Program 1,0,0,0,99 becomes 2,0,0,0,99 (1 + 1 = 2)." do

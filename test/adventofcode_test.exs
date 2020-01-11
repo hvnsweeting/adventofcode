@@ -1,5 +1,5 @@
 defmodule AdventofcodeTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest Adventofcode
 
   test "greets the world" do

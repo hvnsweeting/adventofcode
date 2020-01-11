@@ -1,5 +1,5 @@
 defmodule Aoc2019Day07Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   test "test solve_part_1" do
     {:ok, text} = File.read("test/input2019_07_1.txt")

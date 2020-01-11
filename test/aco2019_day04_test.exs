@@ -1,5 +1,5 @@
 defmodule Aco2019Day04Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest Aoc2019Day4
   @start 387_638
   @stop 919_123

@@ -1,5 +1,5 @@
 defmodule Day06Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest Day06
   @example "1, 1
 1, 6

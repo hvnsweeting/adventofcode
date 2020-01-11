@@ -1,5 +1,5 @@
 defmodule Aoc2019Day05Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   import Intcode
 
   test "Day 5 part 1" do

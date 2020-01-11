@@ -1,5 +1,5 @@
 defmodule Aoc2019Day19Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   @tag slow: true
   test "solve1" do

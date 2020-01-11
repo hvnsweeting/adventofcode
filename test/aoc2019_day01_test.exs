@@ -1,5 +1,5 @@
 defmodule Aoc2019Day1Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest Aoc2019Day1
 
   test "fuel for mass of 12 is 2" do

@@ -1,5 +1,5 @@
 defmodule Day07Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest Day07
   @example "Step C must be finished before step A can begin.
 Step C must be finished before step F can begin.

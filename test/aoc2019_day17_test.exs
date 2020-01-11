@@ -1,5 +1,5 @@
 defmodule Aoc2019Day17Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   @testview "..#..........
 ..#..........

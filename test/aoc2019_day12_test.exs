@@ -1,5 +1,5 @@
 defmodule Aoc2019Day12Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   @sample_input "<x=-1, y=0, z=2>
 <x=2, y=-10, z=-7>
 <x=4, y=-8, z=8>

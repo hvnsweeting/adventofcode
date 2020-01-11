@@ -1,5 +1,5 @@
 defmodule Aoc2019Day09Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   test "  109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99 takes no input and produces a copy of itself as output." do
     state = "109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99"
