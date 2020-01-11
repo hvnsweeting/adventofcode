@@ -122,15 +122,24 @@ defmodule Intcode do
           input =
             if input == [] do
               receive do
+                {:day13, control} ->
+                  # IO.inspect({"move", control})
+                  [control]
+
                 {:color, color} ->
                   # IO.inspect({"child received color", color})
                   [color]
+
+                {:movement_command, cmd} ->
+                  IO.inspect({"child received move cmd", cmd})
+                  [cmd]
 
                 e ->
                   IO.inspect({"ERROR", e})
                   raise "Child receive bad msg"
               end
             else
+              # IO.inspect({"input", input})
               input
             end
 
@@ -148,17 +157,43 @@ defmodule Intcode do
           compute(opcodes, position + 2, t, outputs, relative_base, parent)
 
         opcode == "04" ->
-          # note: reversed as we prepend list
+          # NOTE: reversed as we prepend list
+          # day15
+          # if parent do
+          #  send(parent, {:day15, arg1})
+          #  out = [arg1 | outputs]
+          # end
           out = [arg1 | outputs]
 
           out =
-            if parent && length(out) == 2 do
-              [direction, color_to_paint] = out
-              send(parent, {:day11, color_to_paint, direction})
-              []
+            if parent && length(out) == 3 do
+              rev = Enum.reverse(out)
+
+              case rev do
+                [-1, 0, score] ->
+                  IO.inspect({"score", score})
+                  send(parent, {:day13, score})
+                  []
+
+                [x, y, z] ->
+                  # IO.inspect({"out", rev})
+                  send(parent, {:day13, x, y, z})
+                  []
+              end
             else
               out
             end
+
+          # IO.inspect({"after", out})
+          ## this is for day 11
+          # out =
+          #  if parent && length(out) == 2 do
+          #    [direction, color_to_paint] = out
+          #    send(parent, {:day11, color_to_paint, direction})
+          #    []
+          #  else
+          #    out
+          #  end
 
           compute(opcodes, position + 2, input, out, relative_base, parent)
 
