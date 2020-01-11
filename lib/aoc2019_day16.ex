@@ -16,7 +16,6 @@ defmodule Aoc2019Day16 do
     |> Stream.cycle()
   end
 
-
   def doone(numbers) do
     numbers_with_index = Enum.with_index(numbers)
 
