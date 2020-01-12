@@ -33,6 +33,7 @@
   ```
 - Unittest is troublesome at the beginning but super useful after a NOT SO LONG
   run, even 1 hour of code. Refactor then is just a breeze.
+- `IO.inspect(label: "a label to pring")` would be more handy than without label.
 - `IO.inspect` does not work with multiple args, but can use a tuple to wrap
   them up and inspect.
 - `h cond` shows help info for `cond`, same for everything else, very helpful.
