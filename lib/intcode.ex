@@ -34,13 +34,14 @@ defmodule Intcode do
     oc = opcodes[position]
 
     # IO.inspect({"oc", position})
+
     # IO.inspect(
-    #  {"oc", oc, position, "input", input, "output", outputs, "relative_base", relative_base}
+    #   {"oc", oc, position, "input", input, "output", outputs, "relative_base", relative_base}
     # )
 
     if oc == 99 do
       if parent do
-        send(parent, {:finish, outputs})
+        send(parent, {:finish, self(), outputs})
       end
 
       {opcodes, outputs}
@@ -126,6 +127,9 @@ defmodule Intcode do
                   # IO.inspect({"child received color", color})
                   [color]
 
+                {src, signal} ->
+                  [signal]
+
                 e ->
                   IO.inspect({"ERROR", e})
                   raise "Child receive bad msg"
@@ -152,13 +156,20 @@ defmodule Intcode do
           out = [arg1 | outputs]
 
           out =
-            if parent && length(out) == 2 do
-              [direction, color_to_paint] = out
-              send(parent, {:day11, color_to_paint, direction})
+            if parent do
+              IO.inspect({"output from ", self(), out})
+              [h | t] = out
+              send(parent, {self(), h})
               []
-            else
-              out
             end
+
+          # if parent && length(out) == 2 do
+          #   [direction, color_to_paint] = out
+          #   send(parent, {:day11, color_to_paint, direction})
+          #   []
+          # else
+          #   out
+          # end
 
           compute(opcodes, position + 2, input, out, relative_base, parent)
 
