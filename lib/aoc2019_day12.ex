@@ -17,36 +17,17 @@ defmodule Aoc2019Day12 do
     {String.to_integer(d["x"]), String.to_integer(d["y"]), String.to_integer(d["z"])}
   end
 
+  defp calculate_new_velocity(v, x1, x2) when x1 > x2, do: v - 1
+  defp calculate_new_velocity(v, x1, x2) when x1 == x2, do: v
+  defp calculate_new_velocity(v, x1, x2) when x1 < x2, do: v + 1
+
   def apply_gravity(moons) do
     moons
     |> Enum.map(fn {{x, y, z}, {vx, vy, vz}} ->
       newvel =
-        Enum.reduce(moons, {vx, vy, vz}, fn {pos2, _}, acc ->
-          {vx, vy, vz} = acc
-          {x2, y2, z2} = pos2
-
-          vx =
-            cond do
-              x > x2 -> vx - 1
-              x == x2 -> vx
-              x < x2 -> vx + 1
-            end
-
-          vy =
-            cond do
-              y > y2 -> vy - 1
-              y == y2 -> vy
-              y < y2 -> vy + 1
-            end
-
-          vz =
-            cond do
-              z > z2 -> vz - 1
-              z == z2 -> vz
-              z < z2 -> vz + 1
-            end
-
-          {vx, vy, vz}
+        Enum.reduce(moons, {vx, vy, vz}, fn {{x2, y2, z2}, _}, {vx, vy, vz} ->
+          {calculate_new_velocity(vx, x, x2), calculate_new_velocity(vy, y, y2),
+           calculate_new_velocity(vz, z, z2)}
         end)
 
       {{x, y, z}, newvel}
