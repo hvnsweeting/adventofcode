@@ -13,7 +13,7 @@ defmodule Aoc2019Day12Test do
   test "apply gravity" do
     [a, b, c, d] = Aoc2019Day12.parse_input(@sample_input)
 
-    assert Aoc2019Day12.apply_gravity(a, b, c, d) == [
+    assert Aoc2019Day12.apply_gravity([a, b, c, d]) == [
              {{-1, 0, 2}, {3, -1, -1}},
              {{2, -10, -7}, {1, 3, 3}},
              {{4, -8, 8}, {-3, 1, -3}},
@@ -24,7 +24,7 @@ defmodule Aoc2019Day12Test do
   test "apply 10 times" do
     [a, b, c, d] = Aoc2019Day12.parse_input(@sample_input)
 
-    assert Aoc2019Day12.apply(a, b, c, d, 10) == [
+    assert Aoc2019Day12.do_n_steps(a, b, c, d, 10) == [
              {{2, 1, -3}, {-3, -2, 1}},
              {{1, -8, 0}, {-1, 1, 3}},
              {{3, -6, 1}, {3, 2, -3}},
@@ -36,9 +36,13 @@ defmodule Aoc2019Day12Test do
     assert Aoc2019Day12.solve1(@sample_input, 10) == 179
   end
 
-  test "Sample 2 total energy for all moons after 100 steps produces the total energy in the system is 1940 " do
-    assert Aoc2019Day12.solve1(@sample_input2, 100) == 1940
-  end
+  # test "100 step" do
+  #  assert Aoc2019Day12.solve1(@sample_input, 100) == 1790
+  # end
+
+  # test "Sample 2 total energy for all moons after 100 steps produces the total energy in the system is 1940 " do
+  #   assert Aoc2019Day12.solve1(@sample_input2, 100) == 1940
+  # end
 
   test "solve1" do
     {:ok, input} = File.read("test/input2019_12.txt")
@@ -49,10 +53,8 @@ defmodule Aoc2019Day12Test do
     assert Aoc2019Day12.steps_to_exactly_match(Aoc2019Day12.parse_input(@sample_input)) == 2772
   end
 
-  # @tag slow: true
-  # @tag wip: true
-  # test "solve2" do
-  #  {:ok, input} = File.read("test/input2019_12.txt")
-  #  assert Aoc2019Day12.solve2(input) == 1
-  # end
+  test "solve2" do
+    {:ok, input} = File.read("test/input2019_12.txt")
+    assert Aoc2019Day12.solve2(input) == 469_671_086_427_712
+  end
 end
