@@ -61,6 +61,9 @@
     |> IO.inspect   # here to view intermediate result
     |> Enum.map(fn s -> String.split(s, ", ") end)
   ```
+- Avoid usage of same function name for variadic arguments. It makes it hard
+to distinguish/find definition if your IDE/editor not support to find foo/2 vs
+foo/3 vs foo/4, hard to read, too. Just use other name.
 
 ## Installation
 
