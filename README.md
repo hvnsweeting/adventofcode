@@ -19,6 +19,9 @@
   a condition that not exist in part 1.
 
 ### On Elixir
+- Prefer `Enum.filter |> length` over Enum.count, the former is more general, and
+  allow to put inspect in the middle.
+- For AOC fast coding, `import Enum`, use `inspect` instead of `IO.inspect`
 - Avoid append a list by `a ++ [b]`, it is `O(n)`, while similar
   to `[b|a] |> Enum.reverse` - `O(1 + n)` for one call, but put into a loop, it
   is huge different. The latter version would be `O(m + m)` while the former
