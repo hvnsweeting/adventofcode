@@ -4,26 +4,26 @@ defmodule Aoc2020Day06 do
   def solve1(input) do
     input
     |> String.split("\n\n")
-    |> map(fn s -> String.replace(s, "\n", "") end)
-    |> map(fn x -> String.to_charlist(x) end)
-    |> map(fn x -> MapSet.new(x) end)
-    |> map(fn s -> MapSet.size(s) end)
+    |> map(&String.replace(&1, "\n", ""))
+    |> map(&String.to_charlist(&1))
+    |> map(&MapSet.new(&1))
+    |> map(&MapSet.size(&1))
     |> sum
   end
 
   def solve2(input) do
     input
     |> String.split("\n\n")
-    |> map(fn s -> String.split(s) end)
+    |> map(&String.split(&1))
     |> map(fn xs ->
-      map(xs, fn x -> MapSet.new(String.to_charlist(x)) end)
+      map(xs, fn x -> x |> String.to_charlist() |> MapSet.new() end)
     end)
     |> map(fn ms ->
       reduce(ms, fn x, acc ->
         MapSet.intersection(x, acc)
       end)
     end)
-    |> map(fn s -> MapSet.size(s) end)
+    |> map(&MapSet.size(&1))
     |> sum
   end
 end
