@@ -3,28 +3,24 @@ defmodule Aoc2020Day07 do
 
   def solve1(input) do
     rm = make_map(input)
-    ks = rm |> Map.keys()
 
-    ks
-    |> Enum.filter(fn k -> contain(rm, k, "shiny gold bag") end)
-    |> IO.inspect()
+    rm
+    |> Enum.filter(fn {k, _v} -> contain(rm, k, "shiny gold bag") end)
     |> length
   end
 
   def make_map(input) do
-    rules =
-      input
-      |> String.replace(" bag.", " bags.")
-      |> String.replace(" bag,", " bags,")
-      |> String.trim()
-      |> String.split("\n")
-      |> map(&String.trim(&1, "."))
-      |> map(fn x -> x |> String.split("contain") end)
-      |> map(fn [h | t] ->
-        IO.inspect(h)
-        {h |> String.trim(), parse_inside(t)}
-      end)
-      |> Map.new()
+    input
+    |> String.replace(" bag.", " bags.")
+    |> String.replace(" bag,", " bags,")
+    |> String.trim()
+    |> String.split("\n")
+    |> map(&String.trim(&1, "."))
+    |> map(&String.split(&1, "contain"))
+    |> map(fn [h | t] ->
+      {h |> String.trim(), parse_inside(t)}
+    end)
+    |> Map.new()
   end
 
   def solve2(input) do
@@ -38,18 +34,11 @@ defmodule Aoc2020Day07 do
     else
       v = Map.get(ms, key)
 
-      if v == nil do
-        IO.inspect({key, nil})
-      end
-
-      r =
-        v
-        |> map(fn {n, k} ->
+      sum(
+        map(v, fn {n, k} ->
           n * mcount(ms, k)
         end)
-        |> sum
-
-      r + 1
+      ) + 1
     end
   end
 
@@ -57,10 +46,10 @@ defmodule Aoc2020Day07 do
     h
     |> String.trim()
     |> String.split(",", trim: true)
-    |> map(fn x -> x |> String.trim() end)
+    |> map(&String.trim/1)
     |> filter(fn x -> x != "no other bags" end)
     |> map(fn x ->
-      [h, t | r] = String.split(x, " ", parts: 2)
+      [h, t | _r] = String.split(x, " ", parts: 2)
       {String.to_integer(h), t}
     end)
   end

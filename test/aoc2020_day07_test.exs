@@ -12,12 +12,13 @@ vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.
 faded blue bags contain no other bags.
 dotted black bags contain no other bags.
     "
+    assert Aoc2020Day07.solve1(input) == 4
     {:ok, input} = File.read("test/input2020_7")
     assert Aoc2020Day07.solve1(input) == 242
   end
 
   test "p2" do
-    {:ok, input} = File.read("test/input2020_6")
+    {:ok, input} = File.read("test/input2020_7")
     assert Aoc2020Day07.solve2(input) == 176_035
   end
 end
