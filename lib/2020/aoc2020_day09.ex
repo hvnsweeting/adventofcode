@@ -11,24 +11,26 @@ defmodule Aoc2020Day09 do
     p = take(ns, preamble)
     rem = drop(ns, preamble)
 
-    solve(rem, p)
+    find_invalid_number(rem, p)
   end
 
-  def solve([], _p) do
+  def find_invalid_number([], _p) do
     raise "failed"
   end
 
-  def solve([h | t], ps = [_ | tp]) do
+  def find_invalid_number([h | t], ps = [_ | tp]) do
     options = for i <- ps, j <- ps, (fn x, y -> x != y end).(i, j), do: i + j
 
     if h in options do
-      solve(t, tp ++ [h])
+      find_invalid_number(t, tp ++ [h])
     else
       h
     end
   end
 
   def solve2(input) do
+    target = solve1(input)
+
     ns =
       input
       |> String.trim()
@@ -37,21 +39,25 @@ defmodule Aoc2020Day09 do
 
     r =
       0..length(ns)
-      |> map(fn i -> drop(ns, i) end)
-      |> find_value(fn x -> s2(x, 0, []) end)
+      |> Stream.map(fn i -> drop(ns, i) end)
+      |> find_value(fn xs -> find_contiguous_range(xs, 0, [], target) end)
 
     min(r) + max(r)
   end
 
-  def s2([], _acc, vs) do
+  def find_contiguous_range([], acc, vs, target) when acc == target do
     vs
   end
 
-  def s2([h | t], acc, vs) do
+  def find_contiguous_range([], _acc, _vs, _target) do
+    false
+  end
+
+  def find_contiguous_range([h | t], acc, vs, target) do
     cond do
-      h + acc == 15_690_279 -> [h | vs]
-      h + acc > 15_690_279 -> false
-      h + acc < 15_690_279 -> s2(t, acc + h, [h | vs])
+      h + acc == target -> [h | vs]
+      h + acc > target -> false
+      h + acc < target -> find_contiguous_range(t, acc + h, [h | vs], target)
     end
   end
 end
