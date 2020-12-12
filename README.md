@@ -17,6 +17,7 @@
   impracticle to run. Solution for part 2 may not work on part 1, part 2 can be
   a big, but special case. E.g Day 16 2019 part 2 can only be solved base on
   a condition that not exist in part 1.
+- When in doubt, print out/ draw.
 
 ### On Elixir
 - Prefer `Enum.filter |> length` over Enum.count, the former is more general, and
