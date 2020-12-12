@@ -53,7 +53,6 @@ defmodule Aoc2020Day12 do
   end
 
   def move({"N", v}, {{sx, sy}, {x, y}, direction}) do
-    IO.inspect("blabha")
     {{sx, sy}, {x, y - v}, direction}
   end
 
