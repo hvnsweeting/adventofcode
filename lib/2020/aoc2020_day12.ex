@@ -9,18 +9,19 @@ defmodule Aoc2020Day12 do
     |> IO.inspect
 
 
-    [h|t] = actions
-    move(t, {{0,0}, "E"})
+    #[h|t] = actions
+    #move(t, {{0,0}, "E"})
 
     r = actions
-    |> reduce({{0, 0}, "E"}, fn x, acc ->
+    |> reduce({{0, 0}, {10, -1}, "E"}, fn x, acc ->
+      IO.inspect({x, acc})
       move([x], acc)
     end)
 
     IO.inspect(r)
 
-    {{x, y}, _} = r
-    abs(x)+abs(y)
+    {{sx, sy}, {x, y}, _} = r
+    abs(sx)+abs(sy)
   end
 
   @doc """
@@ -43,53 +44,73 @@ Action R means to turn right the given number of degrees.
   def move([], state) do
     state
   end
-  def move([{"N", v} |t], {{x, y}, direction}) do
+  def move([{"N", v} |t], {{sx, sy}, {x, y}, direction}) do
     IO.inspect("blabha")
-    {{x, y-v}, direction}
+    {{sx, sy}, {x, y-v}, direction}
   end
 
-  def move([{"S", v} |t], {{x, y}, direction}) do
-    {{x, y+v}, direction}
+  def move([{"S", v} |t], {{sx, sy}, {x, y}, direction}) do
+    {{sx, sy}, {x, y+v}, direction}
   end
-  def move([{"W", v} |t], {{x, y}, direction}) do
-    {{x-v, y}, direction}
+  def move([{"W", v} |t], {{sx, sy}, {x, y}, direction}) do
+    {{sx, sy}, {x-v, y}, direction}
   end
-  def move([{"E", v} |t], {{x, y}, direction}) do
-    {{x+v, y}, direction}
+  def move([{"E", v} |t], {{sx, sy}, {x, y}, direction}) do
+    {{sx, sy}, {x+v, y}, direction}
   end
-  def move([{"L", v} |t], {{x, y}, direction}) do
-    {{x, y}, rotate(direction, "L", v)}
+  def move([{"L", v} |t], {{sx, sy}, {x, y}, direction}) do
+    {{nx, ny}, _} = rotate({x, y}, "L", v)
+    {{sx, sy}, {nx, ny}, direction}
   end
-  def move([{"R", v} |t], {{x, y}, direction}) do
-    {{x, y}, rotate(direction, "R", v)}
-  end
-
-  def move([{"F", v} |t], {{x, y}, "N"}) do
-    {{x, y-v}, "N"}
-  end
-  def move([{"F", v} |t], {{x, y}, "S"}) do
-    {{x, y+v}, "S"}
-  end
-  def move([{"F", v} |t], {{x, y}, "W"}) do
-    {{x-v, y}, "W"}
-  end
-  def move([{"F", v} |t], {{x, y}, "E"}) do
-    {{x+v, y}, "E"}
+  def move([{"R", v} |t], {{sx, sy}, {x, y}, direction}) do
+    {{nx, ny}, _} = rotate({x, y}, "R", v)
+    {{sx, sy}, {nx, ny}, direction}
   end
 
+  def move([{"F", v} |t], {{sx, sy}, {x, y}, d}) do
+    {{sx+x*v, sy+y*v}, {x, y}, d}
+  end
+  #def move([{"F", v} |t], {{x, y}, "N"}) do
+  #  {{x, y-v}, "N"}
+  #end
+  #def move([{"F", v} |t], {{x, y}, "S"}) do
+  #  {{x, y+v}, "S"}
+  #end
+  #def move([{"F", v} |t], {{x, y}, "W"}) do
+  #  {{x-v, y}, "W"}
+  #end
+  #def move([{"F", v} |t], {{x, y}, "E"}) do
+  #  {{x+v, y}, "E"}
+  #end
 
-  def rotate(c, d, degree) do
-    xs = ["N", "W", "S", "E"]
-    idx = find_index(xs, &(&1 == c))
-    degree = trunc(degree / 90)
-    case d do
-      "L" ->
-        r = at(xs, rem(idx + degree + 4, 4))
-        IO.inspect({"rotating",c, d, degree, r})
-        r
-      "R" -> at(xs, rem(idx - degree + 4, 4))
+  def rotate({x, y}, "R", degree) do
+    case degree do
+      90 -> {{-y, x}, "nah"}
+      180 -> {{-x, -y}, "nah"}
+      270 -> {{y, -x}, "nah"}
+    end
+
+  end
+  def rotate({x, y}, "L", degree) do
+    case degree do
+      90 ->  {{y, -x}, "nah"}
+      180 -> {{-x, -y}, "nah"}
+      270 -> {{-y, x}, "nah"}
     end
   end
+
+  #def rotate(c, d, degree) do
+  #  xs = ["N", "W", "S", "E"]
+  #  idx = find_index(xs, &(&1 == c))
+  #  degree = trunc(degree / 90)
+  #  case d do
+  #    "L" ->
+  #      r = at(xs, rem(idx + degree + 4, 4))
+  #      IO.inspect({"rotating",c, d, degree, r})
+  #      r
+  #    "R" -> at(xs, rem(idx - degree + 4, 4))
+  #  end
+  #end
 
   def solve2(input) do
     input
