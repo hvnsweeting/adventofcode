@@ -2,35 +2,42 @@ defmodule Aoc2020Day12 do
   import Enum
 
   def solve1(input) do
-    actions =input
-    |> String.trim
-    |> String.split("\n", trim: true)
-    |> map(&(parse_line(&1)))
-    |> IO.inspect
+    input
+    # TODO
+  end
 
+  def solve2(input) do
+    actions =
+      input
+      |> String.trim()
+      |> String.split("\n", trim: true)
+      |> map(&parse_line(&1))
 
-    #[h|t] = actions
-    #move(t, {{0,0}, "E"})
+    # |> IO.inspect
 
-    r = actions
-    |> reduce({{0, 0}, {10, -1}, "E"}, fn x, acc ->
-      IO.inspect({x, acc})
-      move([x], acc)
-    end)
+    # [h|t] = actions
+    # move(t, {{0,0}, "E"})
 
-    IO.inspect(r)
+    r =
+      actions
+      |> reduce({{0, 0}, {10, -1}, "E"}, fn x, acc ->
+        # IO.inspect({x, acc})
+        move(x, acc)
+      end)
 
-    {{sx, sy}, {x, y}, _} = r
-    abs(sx)+abs(sy)
+    # IO.inspect(r)
+
+    {{sx, sy}, {_x, _y}, _} = r
+    abs(sx) + abs(sy)
   end
 
   @doc """
   Action N means to move north by the given value.
-Action S means to move south by the given value.
-Action E means to move east by the given value.
-Action W means to move west by the given value.
-Action L means to turn left the given number of degrees.
-Action R means to turn right the given number of degrees.
+  Action S means to move south by the given value.
+  Action E means to move east by the given value.
+  Action W means to move west by the given value.
+  Action L means to turn left the given number of degrees.
+  Action R means to turn right the given number of degrees.
   Action F means to move forward by the given value in the direction the
   """
   def parse_line("N" <> value), do: {"N", String.to_integer(value)}
@@ -44,44 +51,50 @@ Action R means to turn right the given number of degrees.
   def move([], state) do
     state
   end
-  def move([{"N", v} |t], {{sx, sy}, {x, y}, direction}) do
+
+  def move({"N", v}, {{sx, sy}, {x, y}, direction}) do
     IO.inspect("blabha")
-    {{sx, sy}, {x, y-v}, direction}
+    {{sx, sy}, {x, y - v}, direction}
   end
 
-  def move([{"S", v} |t], {{sx, sy}, {x, y}, direction}) do
-    {{sx, sy}, {x, y+v}, direction}
+  def move({"S", v}, {{sx, sy}, {x, y}, direction}) do
+    {{sx, sy}, {x, y + v}, direction}
   end
-  def move([{"W", v} |t], {{sx, sy}, {x, y}, direction}) do
-    {{sx, sy}, {x-v, y}, direction}
+
+  def move({"W", v}, {{sx, sy}, {x, y}, direction}) do
+    {{sx, sy}, {x - v, y}, direction}
   end
-  def move([{"E", v} |t], {{sx, sy}, {x, y}, direction}) do
-    {{sx, sy}, {x+v, y}, direction}
+
+  def move({"E", v}, {{sx, sy}, {x, y}, direction}) do
+    {{sx, sy}, {x + v, y}, direction}
   end
-  def move([{"L", v} |t], {{sx, sy}, {x, y}, direction}) do
+
+  def move({"L", v}, {{sx, sy}, {x, y}, direction}) do
     {{nx, ny}, _} = rotate({x, y}, "L", v)
     {{sx, sy}, {nx, ny}, direction}
   end
-  def move([{"R", v} |t], {{sx, sy}, {x, y}, direction}) do
+
+  def move({"R", v}, {{sx, sy}, {x, y}, direction}) do
     {{nx, ny}, _} = rotate({x, y}, "R", v)
     {{sx, sy}, {nx, ny}, direction}
   end
 
-  def move([{"F", v} |t], {{sx, sy}, {x, y}, d}) do
-    {{sx+x*v, sy+y*v}, {x, y}, d}
+  def move({"F", v}, {{sx, sy}, {x, y}, d}) do
+    {{sx + x * v, sy + y * v}, {x, y}, d}
   end
-  #def move([{"F", v} |t], {{x, y}, "N"}) do
+
+  # def move({"F", v} , {{x, y}, "N"}) do
   #  {{x, y-v}, "N"}
-  #end
-  #def move([{"F", v} |t], {{x, y}, "S"}) do
+  # end
+  # def move({"F", v} , {{x, y}, "S"}) do
   #  {{x, y+v}, "S"}
-  #end
-  #def move([{"F", v} |t], {{x, y}, "W"}) do
+  # end
+  # def move({"F", v} , {{x, y}, "W"}) do
   #  {{x-v, y}, "W"}
-  #end
-  #def move([{"F", v} |t], {{x, y}, "E"}) do
+  # end
+  # def move({"F", v} , {{x, y}, "E"}) do
   #  {{x+v, y}, "E"}
-  #end
+  # end
 
   def rotate({x, y}, "R", degree) do
     case degree do
@@ -89,17 +102,17 @@ Action R means to turn right the given number of degrees.
       180 -> {{-x, -y}, "nah"}
       270 -> {{y, -x}, "nah"}
     end
-
   end
+
   def rotate({x, y}, "L", degree) do
     case degree do
-      90 ->  {{y, -x}, "nah"}
+      90 -> {{y, -x}, "nah"}
       180 -> {{-x, -y}, "nah"}
       270 -> {{-y, x}, "nah"}
     end
   end
 
-  #def rotate(c, d, degree) do
+  # def rotate(c, d, degree) do
   #  xs = ["N", "W", "S", "E"]
   #  idx = find_index(xs, &(&1 == c))
   #  degree = trunc(degree / 90)
@@ -110,9 +123,5 @@ Action R means to turn right the given number of degrees.
   #      r
   #    "R" -> at(xs, rem(idx - degree + 4, 4))
   #  end
-  #end
-
-  def solve2(input) do
-    input
-  end
+  # end
 end
