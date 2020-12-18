@@ -11,7 +11,6 @@ defmodule Aoc2020Day17Test do
     assert Aoc2020Day17.solve1(input) == 382
   end
 
-
   test "2" do
     input = "
 .#.
