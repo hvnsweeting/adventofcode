@@ -70,6 +70,8 @@
 - Avoid usage of same function name for variadic arguments. It makes it hard
 to distinguish/find definition if your IDE/editor not support to find foo/2 vs
 foo/3 vs foo/4, hard to read, too. Just use other name.
+- Empty map matches all maps. Use guard `map_size(m)` instead.
+- Get familiar with writing reduce function separatedly as they could be recursive also.
 
 ## Installation
 
