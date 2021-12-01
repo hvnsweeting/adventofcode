@@ -1,37 +1,18 @@
 pub fn part1(xs: Vec<i32>) -> i32 {
-    let mut c = 0;
-    let mut prev = -1;
-    for n in &xs {
-        if prev == -1 {
-            prev = *n;
-            continue;
-        }
-
-        if *n > prev {
-            c = c + 1;
-        }
-        prev = *n;
-    }
-    return c;
+    return xs
+        .iter()
+        .zip(&xs[1..])
+        .map(|(x1, x2)| if x2 > x1 { 1 } else { 0 })
+        .sum();
 }
 
 pub fn part2(xs: Vec<i32>) -> i32 {
-    let mut c = 0;
-    let mut oldsum = -1;
-    for (idx, x) in xs.iter().enumerate() {
-        if idx == xs.len() - 2 {
-            break;
-        }
+    let sum3: Vec<i32> = xs
+        .iter()
+        .zip(&xs[1..])
+        .zip(&xs[2..])
+        .map(|((x1, x2), x3)| x1 + x2 + x3)
+        .collect();
 
-        let sum3 = x + xs[idx + 1] + xs[idx + 2];
-        if oldsum == -1 {
-            oldsum = sum3;
-            continue;
-        }
-        if sum3 > oldsum {
-            c = c + 1
-        }
-        oldsum = sum3;
-    }
-    c
+    part1(sum3)
 }
