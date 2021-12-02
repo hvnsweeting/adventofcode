@@ -16,3 +16,25 @@ pub fn part2(xs: Vec<i32>) -> i32 {
 
     part1(sum3)
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::utils::read_input;
+    use std::fs;
+
+    #[test]
+    fn test_p1() {
+        let s = fs::read_to_string("src/input01").expect("Cannot read file");
+        let xs = read_input(s);
+        let r = super::part1(xs);
+        assert_eq!(r, 1266);
+    }
+
+    #[test]
+    fn test_p2() {
+        let s = fs::read_to_string("src/input01").expect("Cannot read file");
+        let xs = read_input(s);
+        let r = super::part2(xs);
+        assert_eq!(r, 1217);
+    }
+}
