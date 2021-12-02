@@ -7,7 +7,7 @@ fn part1(xs: Vec<&str>) -> i32 {
             ["up", n] => (0, -(n.parse::<i32>().unwrap())),
             _ => (0, 0),
         })
-        .fold((0, 0), |(x, y), (accx, accy)| (x + accx, y + accy));
+        .fold((0, 0), |(accx, accy), (x, y)| (x + accx, y + accy));
     x * y
 }
 
