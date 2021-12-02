@@ -5,7 +5,7 @@ fn part1(xs: Vec<&str>) -> i32 {
             ["forward", n] => (n.parse().unwrap(), 0),
             ["down", n] => (0, n.parse().unwrap()),
             ["up", n] => (0, -(n.parse::<i32>().unwrap())),
-            _ => (0, 0),
+            _ => panic!("bad pattern"),
         })
         .fold((0, 0), |(accx, accy), (x, y)| (x + accx, y + accy));
     x * y
@@ -23,7 +23,7 @@ fn part2(xs: Vec<&str>) -> i32 {
                 ["down", n] => (accx, accy, acca + n.parse::<i32>().unwrap()),
                 ["up", n] => (accx, accy, acca - n.parse::<i32>().unwrap()),
 
-                _ => (0, 0, 0),
+                _ => panic!("bad pattern"),
             }
         });
     x * y
