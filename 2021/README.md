@@ -11,7 +11,8 @@
 - To do map/filter/enumerate... need to convert to type "Iterator" via `.iter()`
 - To have a Vector, need `.collect<Vec<type>>`
 - D2. `.fold` takes arguments in `|acc, x|` not `x acc` like Elixir
-- D3. use `u32` instead of `i32`, most of problem would return an unsigned interger.
+- D3. `u32` instead of `i32`, most of problem would return an unsigned interger.
   vec.len() returns `usize`, which can convert to `u32` easier with `as u32`.
 - D3. `let arr = vec![0; length];` to create a vector of length with default values 0. Note the `;`, weird syntax when `;` also used for line ending..
 - `iter().collect()` would return a `Vec<&type>`, uses `.clone()` to create `Vec<type>`
+- D3. `dbg!(x)` for faster debug print than `println!("{:?}", x)`.
