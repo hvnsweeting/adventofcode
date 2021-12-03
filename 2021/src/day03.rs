@@ -11,13 +11,14 @@ fn part1(xs: Vec<&str>) -> u32 {
                 .collect::<Vec<u32>>()
         });
 
+    let total_lines = xs.len() as u32;
     let binary_gamma: Vec<u32> = ones
         .iter()
-        .map(|i| if i >= &((xs.len() as u32) - i) { 1 } else { 0 })
+        .map(|&i| if i >= (total_lines - i) { 1 } else { 0 })
         .collect();
     let binary_epsilon: Vec<u32> = ones
         .iter()
-        .map(|i| if i < &((xs.len() as u32) - i) { 1 } else { 0 })
+        .map(|&i| if i < (total_lines - i) { 1 } else { 0 })
         .collect();
 
     bin_to_int(binary_gamma) * bin_to_int(binary_epsilon)
