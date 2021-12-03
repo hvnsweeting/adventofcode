@@ -1,10 +1,17 @@
 use crate::utils::bin_to_int;
 
-fn part1(xs: Vec<&str>) -> u32 {
-    let ones = &xs[..]
+fn to_digits(row: &str) -> Vec<u32> {
+    row.chars().map(|c| c.to_digit(10).unwrap()).collect()
+}
+
+// TODO: refactor out the code that parse a line
+// TODO: refactor out the code that process matrix by columns
+pub fn part1(xs: Vec<&str>) -> u32 {
+    let ones = xs
         .iter()
-        .map(|row| row.chars().map(|c| c.to_digit(10).unwrap()))
+        .map(|&row| to_digits(row))
         .fold(vec![0; xs[0].len()], |acc, cells| {
+            // process (+) each line with the accumulator
             acc.iter()
                 .zip(cells)
                 .map(|(a, b)| a + b)
@@ -24,62 +31,58 @@ fn part1(xs: Vec<&str>) -> u32 {
     bin_to_int(binary_gamma) * bin_to_int(binary_epsilon)
 }
 
-fn part2(xs: Vec<&str>) -> i32 {
+pub fn part2(xs: Vec<&str>) -> u32 {
     let first = xs[0];
-    println!("{:?}", first.len());
-    let mut gamma = vec![0; first.len()];
-    let mut ys = xs.clone();
-    for i in 0..first.len() {
-        let ichars = &ys
-            .iter()
-            .map(|line| line.chars().collect::<Vec<char>>()[i])
-            .collect::<Vec<char>>();
-        let onec = ichars.iter().filter(|&x| x == &'1').count();
-        let zeroc = ichars.iter().filter(|&x| x == &'0').count();
-        let max = onec.max(zeroc);
-        println!("{} {} {}", onec, zeroc, max);
-        let maxc = if max == onec { '1' } else { '0' };
+    let mut ys: Vec<Vec<u32>> = xs
+        .clone()
+        .iter()
+        .map(|&row| to_digits(row))
+        //.map(|&line| line.chars().collect::<Vec<char>>()[i])
+        .collect();
 
-        ys = ys
-            .iter()
-            .filter(|line| line.chars().collect::<Vec<char>>()[i] == maxc)
-            .cloned()
-            .collect::<Vec<&str>>();
+    let mut oxy: Vec<u32> = vec![];
+    for i in 0..first.len() {
+        let ichars = &ys.iter().map(|row| row[i]).collect::<Vec<u32>>();
+        let onec = ichars.iter().filter(|&x| *x == 1).count();
+        let zeroc = ichars.iter().filter(|&x| *x == 0).count();
+        let max = onec.max(zeroc);
+        let maxc = if max == onec { 1 } else { 0 };
+
+        ys = ys.iter().filter(|line| line[i] == maxc).cloned().collect();
         println!("Filter with {} {:?}", maxc, ys);
         if ys.len() == 1 {
+            oxy = ys.get(0).unwrap().clone();
             break;
         }
     }
 
-    ys = xs.clone();
+    let mut ys: Vec<Vec<u32>> = xs
+        .clone()
+        .iter()
+        .map(|&row| to_digits(row))
+        //.map(|&line| line.chars().collect::<Vec<char>>()[i])
+        .collect();
+
+    let mut co2: Vec<u32> = vec![];
     for i in 0..first.len() {
-        let ichars = &ys
-            .iter()
-            .map(|line| line.chars().collect::<Vec<char>>()[i])
-            .collect::<Vec<char>>();
-        let onec = ichars.iter().filter(|&x| x == &'1').count();
-        let zeroc = ichars.iter().filter(|&x| x == &'0').count();
+        let ichars = &ys.iter().map(|row| row[i]).collect::<Vec<u32>>();
+        let onec = ichars.iter().filter(|&x| *x == 1).count();
+        let zeroc = ichars.iter().filter(|&x| *x == 0).count();
         let max = onec.max(zeroc);
-        println!("{} {} {}", onec, zeroc, max);
-        let minc = if max == onec { '0' } else { '1' };
+        let minc = if max == onec { 0 } else { 1 };
 
-        ys = ys
-            .iter()
-            .filter(|line| line.chars().collect::<Vec<char>>()[i] == minc)
-            .cloned()
-            .collect::<Vec<&str>>();
-        println!("Filter with {} {:?}", minc, ys);
+        ys = ys.iter().filter(|line| line[i] == minc).cloned().collect();
         if ys.len() == 1 {
+            co2 = ys.get(0).unwrap().clone();
             break;
         }
     }
-    1
+    bin_to_int(oxy) * bin_to_int(co2)
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::utils::read_input;
     use std::fs;
 
     #[test]
@@ -118,9 +121,8 @@ mod tests {
 00010
 01010";
         let xs = s.trim().split("\n").collect::<Vec<&str>>();
-        //let r = part2(xs);
-        let r = 0;
-        assert_eq!(r, 0);
+        let r = part2(xs);
+        assert_eq!(r, 1662846);
     }
 
     #[test]
