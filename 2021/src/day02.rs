@@ -1,12 +1,22 @@
+use regex::Regex;
+
+// TODO: how to write function return only ("forward", n)
+fn parse_line(r: &Regex, s: &str) -> (i32, i32) {
+    let caps = r.captures(s).unwrap();
+
+    match (caps["n"].parse::<i32>().unwrap(), &caps["action"]) {
+        (n, "forward") => (n, 0),
+        (n, "down") => (0, n),
+        (n, "up") => (0, -n),
+        _ => panic!("bad pattern"),
+    }
+}
+
 fn part1(xs: Vec<&str>) -> i32 {
+    let r = Regex::new(r"(?P<action>\w+) (?P<n>\d+)").unwrap();
     let (x, y): (i32, i32) = xs
         .iter()
-        .map(|s| match s.split(" ").collect::<Vec<&str>>()[..] {
-            ["forward", n] => (n.parse().unwrap(), 0),
-            ["down", n] => (0, n.parse().unwrap()),
-            ["up", n] => (0, -(n.parse::<i32>().unwrap())),
-            _ => panic!("bad pattern"),
-        })
+        .map(|line| parse_line(&r, line))
         .fold((0, 0), |(accx, accy), (x, y)| (x + accx, y + accy));
     x * y
 }
@@ -61,5 +71,15 @@ mod tests {
         let xs = s.trim().split("\n").collect::<Vec<&str>>();
         let r = part2(xs);
         assert_eq!(r, 2105273490);
+    }
+
+    #[test]
+    fn test_regex() {
+        use regex::Regex;
+        let r = Regex::new(r"(?P<action>\w+) (?P<n>\d+)").unwrap();
+        let caps = r.captures("down 5").unwrap();
+        println!("{:?}", caps);
+        assert_eq!(&caps["action"], "down");
+        assert_eq!(&caps["n"], "5");
     }
 }
