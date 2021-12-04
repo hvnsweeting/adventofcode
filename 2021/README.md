@@ -24,16 +24,16 @@
 - D4. passing references are better than using `.clone()` if possible.
 - D4. `.replace()` creates a String, `split()` borrows it, after line 9, the String is dropped because no variable holds it till out of scope, thus errored. The fix is to assign `s.replace()` to a var to hold it longer.
   ```rust
-  error[E0716]: temporary value dropped while borrowed
-  --> src/lib.rs:9:13
-   |
-9  |     let v = s.replace("\n", " ").split(" ");
-   |             ^^^^^^^^^^^^^^^^^^^^           - temporary value is freed at the end of this statement
-   |             |
-   |             creates a temporary which is freed while still in use
-10 |     dbg!(v);
-   |          - borrow later used here
-   |
-   = note: consider using a `let` binding to create a longer lived value
+    error[E0716]: temporary value dropped while borrowed
+    --> src/lib.rs:9:13
+     |
+  9  |     let v = s.replace("\n", " ").split(" ");
+     |             ^^^^^^^^^^^^^^^^^^^^           - temporary value is freed at the end of this statement
+     |             |
+     |             creates a temporary which is freed while still in use
+  10 |     dbg!(v);
+     |          - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
   ```
 - D4. `let set: HashSet<u32> = HashSet::<u32>::new()`, notice the turbofish ::<> when call, but type declaration on left hand side does not have.
