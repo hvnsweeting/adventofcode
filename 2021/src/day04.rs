@@ -86,10 +86,8 @@ pub fn part2(xs: Vec<&str>) -> u32 {
     for n in ns {
         drawed.push(n);
 
-        let mut c = 0;
-        for board in boards {
+        for (c, board) in boards.iter().enumerate() {
             if won.contains(&c) {
-                c = c + 1;
                 continue;
             }
             let bs: Vec<Vec<u32>> = board
@@ -112,7 +110,6 @@ pub fn part2(xs: Vec<&str>) -> u32 {
                     return score(drawed.clone(), bs.clone());
                 }
             }
-            c = c + 1;
         }
     }
     0
