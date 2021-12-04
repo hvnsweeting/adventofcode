@@ -17,3 +17,22 @@
 - `iter().collect()` would return a `Vec<&type>`, uses `.clone()` to create `Vec<type>`
 - D3. `dbg!(x)` for faster debug print than `println!("{:?}", x)`.
 - D3. lambda using in map() often should use `|&x|` instead of `|x|`, because the `iter().map()` would return a slice of references, like `Vec<&i32>`, use `&x` is pattern matching, make `x` captures the `i32` part only for types implement Copy trait (not Vec).
+- D4. most of functions do not want to own its arguments, thus declare to use a reference, e.g `fn foo(v &Vec<u32>)` and when call function, pass the reference, `foo(&v)`.
+- D4. use `.clone()` to workaround with owner-borrow, when need `Vec<i32>` but got `Vec<&i32>`, but learn owner-borrow after the rush hour.
+- D4. A solution for error `.collect();  value of type HashSet<u32> cannot be built from std::iter::Iterator<Item=&u32>` is put `.map(|&i| i)` before collect.
+- D4. passing references are better than using `.clone()` if possible.
+- D4. `.replace()` creates a String, `split()` borrows it, after line 9, the String is dropped because no variable holds it till out of scope, thus errored. The fix is to assign `s.replace()` to a var to hold it longer.
+  ```rust
+  error[E0716]: temporary value dropped while borrowed
+  --> src/lib.rs:9:13
+   |
+9  |     let v = s.replace("\n", " ").split(" ");
+   |             ^^^^^^^^^^^^^^^^^^^^           - temporary value is freed at the end of this statement
+   |             |
+   |             creates a temporary which is freed while still in use
+10 |     dbg!(v);
+   |          - borrow later used here
+   |
+   = note: consider using a `let` binding to create a longer lived value
+  ```
+

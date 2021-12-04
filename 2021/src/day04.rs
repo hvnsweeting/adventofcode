@@ -1,15 +1,11 @@
 use crate::utils::bin_to_int;
 use std::collections::HashSet;
 
-fn to_digits(row: &str) -> Vec<u32> {
-    row.chars().map(|c| c.to_digit(10).unwrap()).collect()
-}
-
-fn win(v: Vec<u32>, board: Vec<Vec<u32>>) -> bool {
-    let s: HashSet<u32> = v.clone().into_iter().collect();
+fn win(v: &Vec<u32>, board: &Vec<Vec<u32>>) -> bool {
+    let s: HashSet<u32> = v.into_iter().map(|&i| i).collect();
     // check row
-    for row in board.clone() {
-        let r_set: HashSet<u32> = row.into_iter().collect();
+    for row in board {
+        let r_set: HashSet<u32> = row.into_iter().map(|&i| i).collect();
         if r_set.is_subset(&s) {
             return true;
         }
@@ -26,15 +22,15 @@ fn win(v: Vec<u32>, board: Vec<Vec<u32>>) -> bool {
     false
 }
 
-fn score(v: Vec<u32>, board: Vec<Vec<u32>>) -> u32 {
-    let s: HashSet<u32> = v.clone().into_iter().collect();
-    let mut r_set = HashSet::<u32>::new();
+fn score(v: &Vec<u32>, board: &Vec<Vec<u32>>) -> u32 {
+    let drawed: HashSet<u32> = v.into_iter().map(|&i| i).collect();
+    let mut unmark = HashSet::<u32>::new();
     for row in board {
-        let ss: HashSet<u32> = row.into_iter().collect();
-        r_set = r_set.union(&ss).map(|&x| x).collect();
+        let ss: HashSet<u32> = row.into_iter().map(|&i| i).collect();
+        unmark = unmark.union(&ss).map(|&x| x).collect();
     }
-    let sum: u32 = r_set.difference(&s).into_iter().sum();
-    v[&v.len() - 1] * sum
+    let sum: u32 = unmark.difference(&drawed).into_iter().sum();
+    v.last().unwrap() * sum
 }
 
 pub fn part1(xs: Vec<&str>) -> u32 {
@@ -61,10 +57,8 @@ pub fn part1(xs: Vec<&str>) -> u32 {
                     },
                 )
                 .collect();
-            // todo how to replace string
-            //dbg!(bs);
-            if win(drawed.clone(), bs.clone()) {
-                return score(drawed.clone(), bs.clone());
+            if win(&drawed, &bs) {
+                return score(&drawed, &bs);
             }
         }
     }
@@ -100,12 +94,10 @@ pub fn part2(xs: Vec<&str>) -> u32 {
                     },
                 )
                 .collect();
-            // todo how to replace string
-            //dbg!(bs);
-            if win(drawed.clone(), bs.clone()) {
+            if win(&drawed, &bs) {
                 won.push(c);
                 if won.len() == boards.len() {
-                    return score(drawed.clone(), bs.clone());
+                    return score(&drawed, &bs);
                 }
             }
         }
