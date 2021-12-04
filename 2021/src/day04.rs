@@ -55,8 +55,7 @@ pub fn part1(xs: Vec<&str>) -> u32 {
                 .map(
                     // each line
                     |line| {
-                        line.split(" ")
-                            .filter(|x| x != &"")
+                        line.split_whitespace()
                             .map(|x| x.parse::<u32>().unwrap())
                             .collect::<Vec<u32>>()
                     },
@@ -95,8 +94,7 @@ pub fn part2(xs: Vec<&str>) -> u32 {
                 .map(
                     // each line
                     |line| {
-                        line.split(" ")
-                            .filter(|x| x != &"")
+                        line.split_whitespace()
                             .map(|x| x.parse::<u32>().unwrap())
                             .collect::<Vec<u32>>()
                     },
