@@ -1,8 +1,8 @@
 use crate::utils::bin_to_int;
 use std::collections::HashSet;
 
-fn win(v: &Vec<u32>, board: &Vec<Vec<u32>>) -> bool {
-    let s: HashSet<u32> = v.into_iter().map(|&i| i).collect();
+fn is_win(v: &Vec<u32>, board: &Vec<Vec<u32>>) -> bool {
+    let s: HashSet<u32> = v.into_iter().cloned().collect();
     // check row
     for row in board {
         let r_set: HashSet<u32> = row.into_iter().map(|&i| i).collect();
@@ -23,7 +23,7 @@ fn win(v: &Vec<u32>, board: &Vec<Vec<u32>>) -> bool {
 }
 
 fn score(v: &Vec<u32>, board: &Vec<Vec<u32>>) -> u32 {
-    let drawed: HashSet<u32> = v.into_iter().map(|&i| i).collect();
+    let drawed: HashSet<u32> = v.into_iter().cloned().collect();
     let mut unmark = HashSet::<u32>::new();
     for row in board {
         let ss: HashSet<u32> = row.into_iter().map(|&i| i).collect();
@@ -57,7 +57,7 @@ pub fn part1(xs: Vec<&str>) -> u32 {
                     },
                 )
                 .collect();
-            if win(&drawed, &bs) {
+            if is_win(&drawed, &bs) {
                 return score(&drawed, &bs);
             }
         }
@@ -94,7 +94,7 @@ pub fn part2(xs: Vec<&str>) -> u32 {
                     },
                 )
                 .collect();
-            if win(&drawed, &bs) {
+            if is_win(&drawed, &bs) {
                 won.push(c);
                 if won.len() == boards.len() {
                     return score(&drawed, &bs);
