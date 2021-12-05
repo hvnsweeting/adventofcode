@@ -24,7 +24,7 @@ fn is_win(v: &Vec<u32>, board: &Vec<Vec<u32>>) -> bool {
 
 fn score(v: &Vec<u32>, board: &Vec<Vec<u32>>) -> u32 {
     let drawed: HashSet<u32> = v.iter().cloned().collect();
-    let mut unmark = HashSet::<u32>::new();
+    let mut unmark: HashSet<u32> = HashSet::new();
     for row in board {
         let ss: HashSet<u32> = row.iter().map(|&i| i).collect();
         unmark = unmark.union(&ss).map(|&x| x).collect();
