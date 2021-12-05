@@ -14,22 +14,20 @@ fn line_to_points(((x1, y1), (x2, y2)): ((u32, u32), (u32, u32))) -> HashSet<(u3
         let maxi = y1.max(y2);
         let mini = y1.min(y2);
         return (mini..(maxi + 1u32)).map(|y| (x1, y)).collect();
+    } else if y1 == y2 {
+        let maxi = x1.max(x2);
+        let mini = x1.min(x2);
+        return (mini..(maxi + 1u32)).map(|x| (x, y1)).collect();
     } else {
-        if y1 == y2 {
-            let maxi = x1.max(x2);
-            let mini = x1.min(x2);
-            return (mini..(maxi + 1u32)).map(|x| (x, y1)).collect();
-        } else {
-            let diff = if y1 > y2 { y1 - y2 } else { y2 - y1 };
-            return (0..=diff)
-                .map(|i| {
-                    (
-                        if x1 < x2 { x1 + i } else { x1 - i },
-                        if y1 < y2 { y1 + i } else { y1 - i },
-                    )
-                })
-                .collect();
-        }
+        let diff = if y1 > y2 { y1 - y2 } else { y2 - y1 };
+        return (0..=diff)
+            .map(|i| {
+                (
+                    if x1 < x2 { x1 + i } else { x1 - i },
+                    if y1 < y2 { y1 + i } else { y1 - i },
+                )
+            })
+            .collect();
     }
 }
 
