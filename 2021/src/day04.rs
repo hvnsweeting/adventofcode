@@ -2,7 +2,7 @@ use crate::utils::bin_to_int;
 use std::collections::HashSet;
 
 fn is_win(v: &Vec<u32>, board: &Vec<Vec<u32>>) -> bool {
-    let s: HashSet<u32> = v.into_iter().cloned().collect();
+    let s: HashSet<u32> = v.iter().cloned().collect();
     // check row
     for row in board {
         let r_set: HashSet<u32> = row.into_iter().map(|&i| i).collect();
@@ -13,7 +13,7 @@ fn is_win(v: &Vec<u32>, board: &Vec<Vec<u32>>) -> bool {
     // check col
     for i in 0..board[0].len() {
         let col: Vec<u32> = board.iter().map(|row| row[i]).collect();
-        let r_set: HashSet<u32> = col.into_iter().collect();
+        let r_set: HashSet<u32> = col.iter().cloned().collect();
 
         if r_set.is_subset(&s) {
             return true;
@@ -23,10 +23,10 @@ fn is_win(v: &Vec<u32>, board: &Vec<Vec<u32>>) -> bool {
 }
 
 fn score(v: &Vec<u32>, board: &Vec<Vec<u32>>) -> u32 {
-    let drawed: HashSet<u32> = v.into_iter().cloned().collect();
+    let drawed: HashSet<u32> = v.iter().cloned().collect();
     let mut unmark = HashSet::<u32>::new();
     for row in board {
-        let ss: HashSet<u32> = row.into_iter().map(|&i| i).collect();
+        let ss: HashSet<u32> = row.iter().map(|&i| i).collect();
         unmark = unmark.union(&ss).map(|&x| x).collect();
     }
     let sum: u32 = unmark.difference(&drawed).into_iter().sum();
