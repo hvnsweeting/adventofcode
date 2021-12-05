@@ -1,3 +1,6 @@
+use std::collections::HashMap;
+use std::collections::HashSet;
+
 pub fn part1(xs: Vec<&str>) -> u32 {
     1
 }
