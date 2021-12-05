@@ -37,3 +37,8 @@
      = note: consider using a `let` binding to create a longer lived value
   ```
 - D4. `let set: HashSet<u32> = HashSet::<u32>::new()`, notice the turbofish ::<> when call, but type declaration on left hand side does not have.
+- D5. Range does not have 10..1, has only 1..10. Use 1..=10 if need inclusive. Can use `(1..10).rev()`
+  to get 10,9,8 ...
+- D5. To add elements to HashSet, write a for loop then `set.add(i)`.
+- D5. When error hard to read (in Vim), run the code, the console message often more
+  details, easy to understand, including fixes.
