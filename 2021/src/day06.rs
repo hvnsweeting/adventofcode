@@ -28,15 +28,15 @@ pub fn part1(xs: Vec<&str>) -> u64 {
 pub fn part2(xs: Vec<&str>) -> u64 {
     let mut mapped: Vec<u64> = xs.iter().map(|&line| line_mapper(line)).collect();
     println!("mapped[0..3]: {:?}", &mapped[0..3]);
-    let mut counter = vec![0; 9];
+    let mut counter: [u64; 9] = [0; 9];
     for i in mapped {
         counter[i as usize] += 1;
     }
     dbg!(&counter);
 
-    for i in 1..=256 {
+    for _ in 1..=256 {
         let old = counter.clone();
-        for n in (0..=8) {
+        for n in 0..=8 {
             if n == 8 {
                 counter[8] = old[0];
             } else {
