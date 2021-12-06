@@ -1,7 +1,3 @@
-use regex::Regex;
-use std::collections::HashMap;
-use std::collections::HashSet;
-
 fn line_mapper(line: &str) -> u64 {
     line.parse().unwrap()
 }
@@ -9,7 +5,7 @@ fn line_mapper(line: &str) -> u64 {
 pub fn part1(xs: Vec<&str>) -> u64 {
     println!("xs[0..3] {:?}", &xs[0..3]);
 
-    let mut mapped: Vec<u64> = xs.iter().map(|&line| line_mapper(line)).collect();
+    let mapped: Vec<u64> = xs.iter().map(|&line| line_mapper(line)).collect();
     println!("mapped[0..3]: {:?}", &mapped[0..3]);
 
     let r: Vec<u64> = (1..=80).fold(mapped, |mut acc: Vec<u64>, _| {
@@ -26,7 +22,7 @@ pub fn part1(xs: Vec<&str>) -> u64 {
     r.iter().cloned().count() as u64
 }
 pub fn part2(xs: Vec<&str>) -> u64 {
-    let mut mapped: Vec<u64> = xs.iter().map(|&line| line_mapper(line)).collect();
+    let mapped: Vec<u64> = xs.iter().map(|&line| line_mapper(line)).collect();
     println!("mapped[0..3]: {:?}", &mapped[0..3]);
     let mut counter: [u64; 9] = [0; 9];
     for i in mapped {
