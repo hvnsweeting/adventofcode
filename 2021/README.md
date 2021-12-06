@@ -42,3 +42,13 @@
 - D5. To add elements to HashSet, write a for loop then `set.add(i)`.
 - D5. When error hard to read (in Vim), run the code, the console message often more
   details, easy to understand, including fixes.
+- D5. HashMap may more "generic" than HashSet solution. For instance, to find intersection of
+  multiple lines, HashSet works. But if question ask find point that 3 lines intersect,
+  only HashMap can answer. So HashMap is better in this case.
+- D6. `u32` was not enough for day 6 result part 2. Let's default to `u64`.
+- D6. if keys are static numbers, vector can be used instead of map.
+- D6. it's [not simple to iterate & modify value of a `HashMap`](https://stackoverflow.com/questions/45724517/how-to-iterate-through-a-hashmap-print-the-key-value-and-remove-the-value-in-ru) but easier to iterate numeric index of vector.
+- D6. it's not simple to iterate & modify a vec. Use `index in 0..vec.len()` instead.
+- D6. put `()` around range `1..=10` works but `1..=10.map()` does not.
+- D6. if there is a "simutation" problem, avoid simulate it and use other way
+  to calculate the result. Simulation not scale in part2.
