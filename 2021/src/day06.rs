@@ -12,9 +12,7 @@ pub fn part1(xs: Vec<&str>) -> u64 {
     let mut mapped: Vec<u64> = xs.iter().map(|&line| line_mapper(line)).collect();
     println!("mapped[0..3]: {:?}", &mapped[0..3]);
 
-    //TODO how to solve this with function other than fold,
-    // map but also change to add elem when value == 6?
-    let r: Vec<u64> = (1..=80u64).fold(mapped, |mut acc: Vec<u64>, x: u64| {
+    let r: Vec<u64> = (1..=80).fold(mapped, |mut acc: Vec<u64>, _| {
         for idx in 0..acc.len() {
             if acc[idx] == 0 {
                 acc[idx] = 6;
