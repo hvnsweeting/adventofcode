@@ -2,15 +2,15 @@ use regex::Regex;
 use std::collections::HashMap;
 use std::collections::HashSet;
 
-fn line_mapper(line: &str) -> u64 {
+fn line_mapper(line: &str) -> i64 {
     line.parse().unwrap()
 }
 
-pub fn part1(xs: Vec<&str>) -> u64 {
+pub fn part1(xs: Vec<&str>) -> i64 {
     println!("xs[0..3] {:?}", &xs[0..3]);
     1
 }
-pub fn part2(xs: Vec<&str>) -> u64 {
+pub fn part2(xs: Vec<&str>) -> i64 {
     println!("xs[0..3] {:?}", &xs[0..3]);
     1
 }
