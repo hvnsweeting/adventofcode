@@ -52,3 +52,6 @@
 - D6. put `()` around range `1..=10` works but `1..=10.map()` does not.
 - D6. if there is a "simutation" problem, avoid simulate it and use other way
   to calculate the result. Simulation not scale in part2.
+- D7. `u64` makes it hard to calculate abs (because there is no negative number), use `i64` as default.
+- D7. `min` and `max` need `.unwrap().cloned()`, because `min` of empty iterator returns `None`.
+- D7. `let &min` to auto deference, avoid to write `.cloned()`.

@@ -17,8 +17,8 @@ pub fn part2(xs: Vec<&str>) -> i64 {
     println!("xs[0..3] {:?}", &xs[0..3]);
     let mapped: Vec<_> = xs.iter().map(|&line| line_mapper(line)).collect();
     println!("mapped[0..3]: {:?}", &mapped);
-    let min = mapped.iter().min().unwrap().clone();
-    let max = mapped.iter().max().unwrap().clone();
+    let &min = mapped.iter().min().unwrap();
+    let &max = mapped.iter().max().unwrap();
     (min..=max)
         .map(|i| {
             mapped
@@ -43,7 +43,6 @@ mod tests {
     }
     #[test]
     fn test_72() {
-        let s = "";
         let s = fs::read_to_string("src/input07").expect("cannot read file");
         let xs = s.trim().split(",").collect::<Vec<&str>>();
         let r = part2(xs);
