@@ -115,16 +115,12 @@ fn sum_a_line(signal: (Vec<&str>, Vec<&str>)) -> i64 {
     d.insert(vec![0, 1, 2, 3, 5, 6], 9);
 
     fn char_to_num(charmap: &str, s: &str, map: &HashMap<Vec<i64>, i64>) -> i64 {
-        let p: HashSet<i64> = s.chars().map(|c| charmap.find(c).unwrap() as i64).collect();
-        for (k, v) in map {
-            let khs: HashSet<i64> = k.iter().cloned().collect();
-            if khs == p {
-                return *v;
-            }
-        }
-        dbg!(&charmap, s);
-
-        panic!("NOT REACH HERR");
+        let mut p: Vec<i64> = s
+            .chars()
+            .map(|c| charmap.find(c).unwrap() as i64)
+            .collect::<Vec<i64>>();
+        p.sort();
+        return map[&p];
     }
 
     output
