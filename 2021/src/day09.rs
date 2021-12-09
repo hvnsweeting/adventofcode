@@ -6,57 +6,19 @@ fn line_mapper(line: &str) -> Vec<i64> {
         .map(|c| c.to_digit(10).unwrap() as i64)
         .collect()
 }
-
-pub fn part1(xs: Vec<&str>) -> i64 {
-    println!("xs[0..3] {:?}", &xs[0..3]);
-    let mapped: Vec<_> = xs.iter().map(|&line| line_mapper(line)).collect();
-    println!("mapped[0..3]: {:?}", &mapped[0..3]);
+fn make_map(rows: Vec<Vec<i64>>) -> HashMap<(i64, i64), i64> {
     let mut d: HashMap<(i64, i64), i64> = HashMap::new();
-    for i in 0..mapped.len() {
-        for j in 0..mapped[i].len() {
-            d.insert((i as i64, j as i64), mapped[i][j]);
+    for y in 0..rows.len() {
+        for x in 0..rows[y].len() {
+            d.insert((x as i64, y as i64), rows[y][x]);
         }
     }
-
-    // find low points
-    let mut sum = 0;
-    for (k, v) in &d {
-        let (x, y) = k.clone();
-        let arounds = vec![
-            (x - 1, y - 1),
-            (x, y - 1),
-            (x + 1, y - 1),
-            (x - 1, y),
-            (x + 1, y),
-            (x - 1, y + 1),
-            (x, y + 1),
-            (x + 1, y + 1),
-        ];
-        let is_low = arounds
-            .iter()
-            .map(|&p| d.get(&p).or(Some(&10000)).unwrap())
-            .all(|x| x > &v);
-
-        if is_low {
-            sum += 1 + v;
-        }
-    }
-    sum
+    return d;
 }
-pub fn part2(xs: Vec<&str>) -> i64 {
-    println!("xs[0..3] {:?}", &xs[0..3]);
-    let mapped: Vec<_> = xs.iter().map(|&line| line_mapper(line)).collect();
-    println!("mapped[0..3]: {:?}", &mapped[0..3]);
-    let mut d: HashMap<(i64, i64), i64> = HashMap::new();
-    for y in 0..mapped.len() {
-        for x in 0..mapped[y].len() {
-            d.insert((x as i64, y as i64), mapped[y][x]);
-        }
-    }
 
-    // find low points
-    let mut low: Vec<(i64, i64)> = vec![];
-    for (k, v) in &d {
+fn find_low_points(d: &HashMap<(i64, i64), i64>) -> HashMap<(i64, i64), i64> {
+    let mut low: HashMap<(i64, i64), i64> = HashMap::new();
+    for (k, v) in d {
         let (x, y) = k.clone();
         let arounds = vec![
             (x - 1, y - 1),
@@ -74,11 +36,30 @@ pub fn part2(xs: Vec<&str>) -> i64 {
             .all(|t| t > &v);
 
         if is_low {
-            low.push(*k);
+            low.insert(*k, *v);
         }
     }
+    low
+}
+pub fn part1(xs: Vec<&str>) -> i64 {
+    println!("xs[0..3] {:?}", &xs[0..3]);
+    let mapped: Vec<_> = xs.iter().map(|&line| line_mapper(line)).collect();
+    println!("mapped[0..3]: {:?}", &mapped[0..3]);
+    let d = make_map(mapped);
+
+    find_low_points(&d).values().map(|&x| x + 1).sum()
+}
+pub fn part2(xs: Vec<&str>) -> i64 {
+    println!("xs[0..3] {:?}", &xs[0..3]);
+    let mapped: Vec<_> = xs.iter().map(|&line| line_mapper(line)).collect();
+    println!("mapped[0..3]: {:?}", &mapped[0..3]);
+
+    let d = make_map(mapped);
+
     let mut basins: Vec<i64> = vec![];
-    for point in low {
+    let low = find_low_points(&d);
+
+    for (point, _) in low {
         // for each point, we find 4 around points , if ok, add to "next" queue
         // continue until queue empty
         let mut basin: HashSet<(i64, i64)> = HashSet::new();
