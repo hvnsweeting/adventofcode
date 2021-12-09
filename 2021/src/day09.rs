@@ -90,14 +90,15 @@ mod tests {
     use super::*;
     use std::fs;
 
-    #[test]
-    fn test_91() {
-        let _s = "2199943210
+    static EXAMPLE: &str = "2199943210
 3987894921
 9856789892
 8767896789
 9899965678
 ";
+
+    #[test]
+    fn test_91() {
         let s = fs::read_to_string("src/input09").expect("cannot read file");
         let xs = s.trim().split("\n").collect::<Vec<&str>>();
         let r = part1(xs);
@@ -105,12 +106,6 @@ mod tests {
     }
     #[test]
     fn test_92() {
-        let _s = "2199943210
-3987894921
-9856789892
-8767896789
-9899965678
-";
         let s = fs::read_to_string("src/input09").expect("Cannot read file");
         let xs = s.trim().split("\n").collect::<Vec<&str>>();
         let r = part2(xs);
