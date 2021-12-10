@@ -38,7 +38,6 @@ pub fn part1(xs: Vec<&str>) -> i64 {
                 let top = stack.pop().unwrap();
                 if c != &pairs[&top] {
                     println!("expected {} got {}", pairs[&top], c);
-                    //panic!("Invalid");
                     errors.push(*c);
                     break;
                 }
@@ -49,12 +48,8 @@ pub fn part1(xs: Vec<&str>) -> i64 {
     errors.iter().map(|&c| scores[&c]).sum()
 }
 pub fn part2(xs: Vec<&str>) -> i64 {
-    println!("xs[0..3] {:?}", &xs[0..3]);
     let mapped: Vec<_> = xs.iter().map(|&line| line_mapper(line)).collect();
-    println!("mapped[0..3]: {:?}", &mapped[0..3]);
-
     let full: Vec<_> = mapped.iter().filter(|&x| x.len() % 2 == 0).collect();
-    dbg!(&full.len());
     for line in &full {
         println!("{:?}", line);
     }
@@ -64,8 +59,6 @@ pub fn part2(xs: Vec<&str>) -> i64 {
     pairs.insert('(', ')');
     pairs.insert('[', ']');
     pairs.insert('<', '>');
-
-    let mut errors: Vec<char> = vec![];
 
     let mut incomplete: Vec<Vec<char>> = vec![];
 
@@ -77,9 +70,6 @@ pub fn part2(xs: Vec<&str>) -> i64 {
             } else {
                 let top = stack.pop().unwrap();
                 if c != &pairs[&top] {
-                    //println!("expected {} got {}", pairs[&top], c);
-                    //panic!("Invalid");
-                    errors.push(*c);
                     corrupt = true;
                     break;
                 }
@@ -113,14 +103,10 @@ pub fn part2(xs: Vec<&str>) -> i64 {
         for c in mapped {
             sum = sum * 5 + scores[&c];
         }
-        dbg!(&sum);
-
         remain.push(sum);
     }
     remain.sort();
     let idx = remain.len() / 2;
-    dbg!(&idx);
-    dbg!(&remain);
     *remain.get(idx).unwrap()
 }
 #[cfg(test)]
