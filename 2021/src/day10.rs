@@ -5,32 +5,24 @@ fn line_mapper(line: &str) -> Vec<char> {
 }
 
 pub fn part1(xs: Vec<&str>) -> i64 {
-    println!("xs[0..3] {:?}", &xs[0..3]);
     let mapped: Vec<_> = xs.iter().map(|&line| line_mapper(line)).collect();
-    println!("mapped[0..3]: {:?}", &mapped[0..3]);
 
-    let full: Vec<_> = mapped.iter().filter(|&x| x.len() % 2 == 0).collect();
-    dbg!(&full.len());
-    for line in &full {
-        println!("{:?}", line);
-    }
-    let mut stack: Vec<char> = vec![];
-    let mut pairs: HashMap<char, char> = HashMap::new();
+    let mut pairs = HashMap::new();
     pairs.insert('{', '}');
     pairs.insert('(', ')');
     pairs.insert('[', ']');
     pairs.insert('<', '>');
 
-    let mut scores: HashMap<char, i64> = HashMap::new();
+    let mut scores = HashMap::new();
     scores.insert(')', 3);
     scores.insert(']', 57);
     scores.insert('}', 1197);
     scores.insert('>', 25137);
 
     let mut errors: Vec<char> = vec![];
-
     for line in &mapped {
         //for c in "{([(<{}[<>[]}>{[]{[(<()>".chars() {
+        let mut stack: Vec<char> = vec![];
         for c in line {
             if ['{', '(', '[', '<'].contains(&c) {
                 stack.push(*c);
@@ -49,12 +41,8 @@ pub fn part1(xs: Vec<&str>) -> i64 {
 }
 pub fn part2(xs: Vec<&str>) -> i64 {
     let mapped: Vec<_> = xs.iter().map(|&line| line_mapper(line)).collect();
-    let full: Vec<_> = mapped.iter().filter(|&x| x.len() % 2 == 0).collect();
-    for line in &full {
-        println!("{:?}", line);
-    }
     let mut stack: Vec<char> = vec![];
-    let mut pairs: HashMap<char, char> = HashMap::new();
+    let mut pairs = HashMap::new();
     pairs.insert('{', '}');
     pairs.insert('(', ')');
     pairs.insert('[', ']');
@@ -80,6 +68,13 @@ pub fn part2(xs: Vec<&str>) -> i64 {
         }
     }
     dbg!(&incomplete.len());
+
+    let mut scores = HashMap::new();
+    scores.insert(')', 1);
+    scores.insert(']', 2);
+    scores.insert('}', 3);
+    scores.insert('>', 4);
+
     let mut remain: Vec<i64> = vec![];
     //for c in "[({(<(())[]>[[{[]{<()<>>".chars() {
     for line in incomplete {
@@ -95,20 +90,15 @@ pub fn part2(xs: Vec<&str>) -> i64 {
         }
         let t: Vec<char> = stack.iter().rev().cloned().collect();
         let mapped: Vec<_> = t.iter().map(|&c| pairs[&c]).collect();
-        let mut scores: HashMap<char, i64> = HashMap::new();
-        scores.insert(')', 1);
-        scores.insert(']', 2);
-        scores.insert('}', 3);
-        scores.insert('>', 4);
         for c in mapped {
             sum = sum * 5 + scores[&c];
         }
         remain.push(sum);
     }
     remain.sort();
-    let idx = remain.len() / 2;
-    *remain.get(idx).unwrap()
+    *remain.get(remain.len() / 2).unwrap()
 }
+
 #[cfg(test)]
 mod tests {
     use super::*;
