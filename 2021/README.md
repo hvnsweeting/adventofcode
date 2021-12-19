@@ -57,4 +57,6 @@
 - D7. `let &min` to auto deference, avoid to write `.cloned()`.
 - D8. A built-in method can accept `x` or `&x`, it's up to it to own or borrow, and most want borrow only, thus use `&x`.
   `vec![1,2,3].contains(&2);`
+- D19: Use `.skip(1)` to skip an element from iterator.
+- D19: Vec `.remove(idx)` removes AND returns element at `idx`, like Python list `pop`.
 
