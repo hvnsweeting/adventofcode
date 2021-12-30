@@ -1,10 +1,15 @@
+/// Questions before solve, to review after solved
+/// On p2
+/// while can play a game, how to count all game?
+/// what data structure used for that? passing something along recursive?
+///
 use std::collections::HashMap;
 
 fn line_mapper(line: &str) -> i64 {
     line.parse().unwrap()
 }
 
-fn play(dice_counter: i64, dice: i64, position: i64, score: i64) -> (i64, i64, i64, i64) {
+fn play_turn(dice_counter: i64, dice: i64, position: i64, score: i64) -> (i64, i64, i64, i64) {
     let mut dice_counter = dice_counter;
     let mut dice = dice;
     let mut position = position;
@@ -41,7 +46,7 @@ pub fn part1(xs: Vec<&str>) -> i64 {
     loop {
         for p in [0, 1] {
             let (position, score) = game[&p];
-            let (dc, d, position, score) = play(dice_counter, dice, position, score);
+            let (dc, d, position, score) = play_turn(dice_counter, dice, position, score);
             dice_counter = dc;
             dice = d;
             *game.entry(p).or_insert((position, score)) = (position, score);
@@ -54,59 +59,45 @@ pub fn part1(xs: Vec<&str>) -> i64 {
     }
 }
 
-fn universe_win(
-    player: bool,
-    scores: &mut [i64; 2],
-    positions: &mut [i64; 2],
-    dice: i64,
-    level: i32,
-) -> i64 {
-    println!(
-        "{}.{:?} {:?} {:?} {:?}",
-        level, player, dice, positions, scores
-    );
-    let n = if player == true { 0 } else { 1 };
-    let mut score = scores[n];
-    let mut pos = positions[n];
-
-    if score >= 21 {
-        return 1;
-    }
-    pos = (pos + dice);
-    pos = if pos > 10 {
-        let r = pos % 10;
-        if r == 0 {
-            10
-        } else {
-            r
-        }
-    } else {
-        pos
-    };
-    score += pos;
-    scores[n] = score;
-    positions[n] = pos;
-
-    return universe_win(!player, scores, positions, 1, level + 1)
-        + universe_win(!player, scores, positions, 2, level + 1)
-        + universe_win(!player, scores, positions, 3, level + 1)
-        + universe_win(!player, scores, positions, 1, level + 1)
-        + universe_win(!player, scores, positions, 2, level + 1)
-        + universe_win(!player, scores, positions, 3, level + 1)
-        + universe_win(!player, scores, positions, 1, level + 1)
-        + universe_win(!player, scores, positions, 2, level + 1)
-        + universe_win(!player, scores, positions, 3, level + 1);
-}
 pub fn part2(xs: Vec<&str>) -> i64 {
-    universe_win(false, &mut [0i64, 0i64], &mut [4i64, 8i64], 1, 0)
-        + universe_win(false, &mut [0i64, 0i64], &mut [4i64, 8i64], 2, 0)
-        + universe_win(false, &mut [0i64, 0i64], &mut [4i64, 8i64], 3, 0)
-        + universe_win(false, &mut [0i64, 0i64], &mut [4i64, 8i64], 1, 0)
-        + universe_win(false, &mut [0i64, 0i64], &mut [4i64, 8i64], 2, 0)
-        + universe_win(false, &mut [0i64, 0i64], &mut [4i64, 8i64], 3, 0)
-        + universe_win(false, &mut [0i64, 0i64], &mut [4i64, 8i64], 1, 0)
-        + universe_win(false, &mut [0i64, 0i64], &mut [4i64, 8i64], 2, 0)
-        + universe_win(false, &mut [0i64, 0i64], &mut [4i64, 8i64], 3, 0)
+    fn count_win(
+        memoiz: &mut HashMap<(i64, i64, i64, i64), (i64, i64)>,
+        p1: i64,
+        p2: i64,
+        score1: i64,
+        score2: i64,
+    ) -> (i64, i64) {
+        if score1 >= 21 {
+            return (1, 0);
+        }
+        if score2 >= 21 {
+            return (0, 1);
+        }
+
+        if memoiz.contains_key(&(p1, p2, score1, score2)) {
+            return memoiz[&(p1, p2, score1, score2)];
+        }
+
+        let mut answer = (0, 0);
+        for d1 in 1..=3 {
+            for d2 in 1..=3 {
+                for d3 in 1..=3 {
+                    let new_p1 = (p1 + d1 + d2 + d3) % 10;
+                    let new_score1 = score1 + new_p1 + 1;
+
+                    let (c2, c1) = count_win(memoiz, p2, new_p1, score2, new_score1);
+                    answer = (answer.0 + c1, answer.1 + c2);
+                }
+            }
+        }
+        *memoiz.entry((p1, p2, score1, score2)).or_insert((0, 0)) = answer;
+        return answer;
+    }
+    let start1 = 10 - 1;
+    let start2 = 8 - 1;
+    let mut memoiz: HashMap<(i64, i64, i64, i64), (i64, i64)> = HashMap::new();
+    let (w1, w2) = count_win(&mut memoiz, start1, start2, 0, 0);
+    w1.max(w2)
 }
 #[cfg(test)]
 mod tests {
@@ -118,9 +109,9 @@ mod tests {
         let r = part1(vec![]);
         assert_eq!(r, 752247);
     }
-    //#[test]
+    #[test]
     fn test_212() {
         let r = part2(vec![]);
-        assert_eq!(r, 0);
+        assert_eq!(r, 221109915584112);
     }
 }
