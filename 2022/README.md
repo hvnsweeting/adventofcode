@@ -1,22 +1,30 @@
 # clj2022
 
-A Clojure library designed to ... well, that part is up to you.
+A Clojure library designed to solve Advent of Code 2022.
 
-## Usage
+## Setup
+- install emacs & lein (clojure popular build tool): sudo apt install -y leiningen emacs
+- lein new projectname; cd projectname; lein test
+### Config emacs
+- To install package cider, type Alt-x then bottom left emacs shows "M-x", enter: package-refresh-contents
+- Wait a bit, then type Alt-x enter: package-install , hit enter, then type cider 
+- After installation done, Alt-x then type: cider-jack-in, emacs will open 2nd panel on the right and you have a Clojure REPL.
 
-FIXME
+- Emacs terminology: M - meta - normally the Alt button, C - control - normally the Ctrl on keyboard.
 
-## License
+## Lessons
+### Emacs
+- Use mouse choose on menubar > CIDER interaction / CIDER eval menus if not familiar with shortcut yet.
+- Use C-c C-k (Ctrl c Ctrl k) to evaluated current file (emacs called buffer).
+- Use M-x cider-format-buffer to format current file
+- Run test: open the test file, eval by C-c C-k then run test under cursor: C-c C-t t
+- Run all tests in file: C-c C-t n
+- Put the function want to run to the latest line, result will be shown after evaluated, this is like click "Run" buttons on IDE.
 
-Copyright © 2022 FIXME
-
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
-
-This Source Code may also be made available under the following Secondary
-Licenses when the conditions for such availability set forth in the Eclipse
-Public License, v. 2.0 are satisfied: GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or (at your
-option) any later version, with the GNU Classpath Exception which is available
-at https://www.gnu.org/software/classpath/license.html.
+### Clojure
+- Anonymous function (lambda) cannot be nested.
+- If processing a list, and each element is another list (so, nested list), write separated function to map: (map process_each list)
+- Java function must be wrapped (map #(Integer/parse %) list)
+- Order is not persistent as in Elixir, (map fun collections) but (clojure.string/split string #"regex"), thus it is hard to use thread macro (->> s f1 f2) to pass result as last argument. Thus have to use (as-> s x (f1 x) (f2 x)) to specify order of x. BUT this explain why https://stackoverflow.com/questions/50275513/rules-of-thumb-for-function-arguments-ordering-in-clojure
+- Map can be used as function to get value from key (mymap mykey)
+- To unpack, use (let [[a b] '(1 2 3) (println a b)]), a = 1 and b = 2, note the [a b] must be [].

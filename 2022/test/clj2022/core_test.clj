@@ -8,3 +8,22 @@
 
 (deftest test-my-double
   (is (= 6 (my-double 3))))
+
+(deftest test-day02-1
+  (is
+   (= 15 (day02-1 "A Y
+B X
+C Z
+"))))
+
+(deftest test-day02-1r
+  (is (= 11475 (day02-1 (slurp "src/clj2022/input02")))))
+
+(deftest test-day02-2
+  (is (= 12 (day02-2 "A Y
+B X
+C Z
+"))))
+
+(deftest test-day02-2r
+  (is (= 16862 (day02-2 (slurp "src/clj2022/input02")))))
