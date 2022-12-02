@@ -22,45 +22,24 @@
        (reduce +)))
 
 (defn day01-1 [s]
-  (as-> s x
-    (string/split x #"\n\n")
-    (map sumeach x)
-    (apply max x)))
+  (->>
+   (string/split s #"\n\n")
+   (map sumeach)
+   (apply max)))
 
 (defn day01-2 [s]
-  (as-> s x
-    (string/split x #"\n\n")
-    (map sumeach x)
-    (sort x)
-    (take-last 3 x)
-    (reduce + x)
-    ;(apply max x)
-    ))
-(assert (= 24000 (day01-1 "1000
-2000
-3000
-
-4000
-
-5000
-6000
-
-7000
-8000
-9000
-
-10000
-")))
-
-(day01-1 (slurp "src/clj2022/input01"))
-(day01-2 (slurp "src/clj2022/input01"))
-
-(def handmap1 {"A X" 4, "A Y" 8, "A Z" 3,
-               "B X" 1, "B Y" 5, "B Z" 9,
-               "C X" 7, "C Y" 2, "C Z" 6})
+  (->>
+   (string/split s #"\n\n")
+   (map sumeach)
+   sort
+   (take-last 3)
+   (reduce +)))
 
 (defn day02-1
   [input]
+  (def handmap1 {"A X" 4, "A Y" 8, "A Z" 3,
+                 "B X" 1, "B Y" 5, "B Z" 9,
+                 "C X" 7, "C Y" 2, "C Z" 6})
 
   (->> input
        (string/split-lines)

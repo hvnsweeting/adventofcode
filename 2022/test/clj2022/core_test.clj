@@ -9,6 +9,30 @@
 (deftest test-my-double
   (is (= 6 (my-double 3))))
 
+(deftest test-day01-1
+  (is
+   (= 24000 (day01-1 "1000
+2000
+3000
+
+4000
+
+5000
+6000
+
+7000
+8000
+9000
+
+10000
+"))))
+
+(deftest test-day01-1r
+  (is (= 72511 (day01-1 (slurp "src/clj2022/input01")))))
+(deftest test-day01-2r
+  (is (= 212117
+         (day01-2 (slurp "src/clj2022/input01")))))
+
 (deftest test-day02-1
   (is
    (= 15 (day02-1 "A Y
