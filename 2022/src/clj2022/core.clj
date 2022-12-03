@@ -1,5 +1,6 @@
 (ns clj2022.core
-  (:require [clojure.string :as string]))
+  (:require [clojure.string :as string])
+  (:require [clojure.set :as cset]))
 
 (defn foo
   "I don't do a whole lot."
@@ -69,7 +70,7 @@
 
   (defn doeach [x]
     (let [[left right] (map set (partition (/ (count x) 2) x))]
-      (def n (first (clojure.set/intersection left right)))
+      (def n (first (cset/intersection left right)))
       (day03score n)))
 
   (->> input
@@ -81,7 +82,7 @@
   [input]
 
   (defn doeach [x]
-    (-> (apply clojure.set/intersection (map set x))
+    (-> (apply cset/intersection (map set x))
         first
         day03score))
 
