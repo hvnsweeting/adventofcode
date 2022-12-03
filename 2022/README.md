@@ -6,11 +6,11 @@ A Clojure library designed to solve Advent of Code 2022.
 - install emacs & lein (clojure popular build tool): sudo apt install -y leiningen emacs
 - lein new projectname; cd projectname; lein test # this will install clojure
 ### Config emacs
+- Emacs terminology: M: meta - normally the Alt button, C: control - normally the Ctrl on keyboard.
 - To install package cider, type Alt-x then bottom left emacs shows "M-x", enter: package-refresh-contents
 - Wait a bit, then type Alt-x enter: package-install , hit enter, then type cider 
 - After installation done, Alt-x then type: cider-jack-in, emacs will open 2nd panel on the right and you have a Clojure REPL. Ref: <https://www.braveclojure.com/basic-emacs/>
 
-- Emacs terminology: M - meta - normally the Alt button, C - control - normally the Ctrl on keyboard.
 
 ## Lessons
 ### Emacs
