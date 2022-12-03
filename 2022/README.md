@@ -8,9 +8,15 @@ A Clojure library designed to solve Advent of Code 2022.
 ### Config emacs
 - Emacs terminology: M: meta - normally the Alt button, C: control - normally the Ctrl on keyboard.
 - To install package cider, type Alt-x then bottom left emacs shows "M-x", enter: package-refresh-contents
-- Wait a bit, then type Alt-x enter: package-install , hit enter, then type cider 
+- Wait a bit, then type Alt-x enter: package-install , hit enter, then type cider
 - After installation done, Alt-x then type: cider-jack-in, emacs will open 2nd panel on the right and you have a Clojure REPL. Ref: <https://www.braveclojure.com/basic-emacs/>
 
+## Doc
+Quick docs
+
+- https://clojure.org/guides/learn/
+- https://learnxinyminutes.com/docs/clojure/
+- https://clojure.org/api/cheatsheet
 
 ## Lessons
 ### Emacs
