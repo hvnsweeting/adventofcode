@@ -28,7 +28,7 @@ Quick docs
 - Java function must be wrapped (map #(Integer/parse %) list)
 - Order is not persistent as in Elixir, (map fun collections) but (clojure.string/split string #"regex"), thus it is hard to use thread macro (->> s f1 f2) to pass result as last argument. Thus have to use (as-> s x (f1 x) (f2 x)) to specify order of x. BUT [this](https://stackoverflow.com/questions/50275513/rules-of-thumb-for-function-arguments-ordering-in-clojure) explain why. TLDR: "Sequence functions take their sources last and collection functions take their primary operand (collection) first.". Thus, if only first one split string take diff order, use it as first function in thread, the rest all follow the rule of processing sequences. (->> (string.split s #" ") (map f) (filter f))
 - Map can be used as function to get value from key (mymap mykey)
-- To unpack, use (let [[a b] '(1 2 3) (println a b)]), a = 1 and b = 2, note the [a b] must be [].
+- To destructure (unpack), use (let [[a b] '(1 2 3) (println a b)]), a = 1 and b = 2, note the [a b] must be []. Ref <https://gist.github.com/john2x/e1dca953548bfdfb9844>
 
 #### Clojure errors
 The most common errors and how to fix:
