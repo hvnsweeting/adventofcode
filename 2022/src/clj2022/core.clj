@@ -58,47 +58,35 @@
        (reduce +)))
 (day02-2 (slurp "src/clj2022/input02"))
 
+(defn day03score [x]
+  (def n (int x))
+  (+ 1 (if (and (>= n (int \A)) (<= n (int \Z)))
+    (+ 26 (- n (int \A)))
+    (- n (int \a)))))
+
 (defn day03-1
   [input]
 
   (defn doeach [x]
     (let [[left right] (map set (partition (/ (count x) 2) x))]
-      (def n (int (first (clojure.set/intersection left right))))
-      (if (and (>= n (int \A)) (<= n (int \Z)))
-        (+ 27 (- n (int \A)))
-        (- (+ 1 n) (int \a)))))
+      (def n (first (clojure.set/intersection left right)))
+      (day03score n)))
 
   (->> input
        (string/split-lines)
        (map doeach)
        (reduce +)))
-(day03-1 "vJrwpWtwJgWrhcsFMMfFFhFp
-jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
-PmmdzqPrVvPwwTWBwg
-wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
-ttgJtRGJQctTZtZT
-CrZsJsPPZsGzwwsLwLmpwMDw")
-(day03-1 (slurp "src/clj2022/input03"))
 
 (defn day03-2
   [input]
 
   (defn doeach [x]
-    (let [[left mid right] (map set x)]
-      (def n (int (first (clojure.set/intersection mid (clojure.set/intersection left right)))))
-      (if (and (>= n (int \A)) (<= n (int \Z)))
-        (+ 27 (- n (int \A)))
-        (- (+ 1 n) (int \a)))))
+    (-> (apply clojure.set/intersection (map set x))
+        first
+        day03score))
 
   (->> input
        (string/split-lines)
        (partition 3)
        (map doeach)
        (reduce +)))
-(day03-2 "vJrwpWtwJgWrhcsFMMfFFhFp
-jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
-PmmdzqPrVvPwwTWBwg
-wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
-ttgJtRGJQctTZtZT
-CrZsJsPPZsGzwwsLwLmpwMDw")
-(day03-2 (slurp "src/clj2022/input03"))

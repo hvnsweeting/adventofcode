@@ -51,3 +51,26 @@ C Z
 
 (deftest test-day02-2r
   (is (= 16862 (day02-2 (slurp "src/clj2022/input02")))))
+
+(deftest test-day03-1
+  (is (= 157
+         (day03-1 "vJrwpWtwJgWrhcsFMMfFFhFp
+jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
+PmmdzqPrVvPwwTWBwg
+wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
+ttgJtRGJQctTZtZT
+CrZsJsPPZsGzwwsLwLmpwMDw"))))
+(deftest test-day03-1r
+  (is (= 8298
+         (day03-1 (slurp "src/clj2022/input03")))))
+
+(deftest test-day03-2
+  (is (= 70 (day03-2 "vJrwpWtwJgWrhcsFMMfFFhFp
+jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
+PmmdzqPrVvPwwTWBwg
+wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
+ttgJtRGJQctTZtZT
+CrZsJsPPZsGzwwsLwLmpwMDw"))))
+
+(deftest test-day03-2r
+  (is (= 2708 (day03-2 (slurp "src/clj2022/input03")))))
