@@ -116,8 +116,8 @@
   [input]
   (defn each [x]
     (let [[left, right] (string/split x #",")]
-      (let [[sl, el] (map #(Integer/parseInt %) (string/split left #"-"))
-            [sr, er] (map #(Integer/parseInt %) (string/split right #"-"))]
+      (let [[sl, el] (map parse-long (string/split left #"-"))
+            [sr, er] (map parse-long (string/split right #"-"))]
         (or (and (<= sl sr) (>= el er))
             (and (<= sr sl) (>= er el))
             (and (<= sl sr) (>= el sr))
