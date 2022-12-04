@@ -5,6 +5,8 @@ A Clojure library designed to solve Advent of Code 2022.
 ## Setup
 - install emacs & lein (clojure popular build tool): sudo apt install -y leiningen emacs
 - lein new projectname; cd projectname; lein test # this will install clojure
+- Edit project.clj, change clojure version to latest 1.11.0
+  `:dependencies [[org.clojure/clojure "1.11.0"]]`
 - Using other editors than Emacs is feasible Intellij, Vim, VScode <https://clojure.org/guides/editors>
 
 ## Doc
@@ -15,8 +17,8 @@ Quick docs
 - https://clojure.org/api/cheatsheet
 
 ### Config emacs
-- Emacs terminology: M: meta - normally the Alt button, C: control - normally the Ctrl on keyboard.
-- To install package cider, type M-x then bottom left emacs shows "M-x", enter: `package-refresh-contents`
+- Emacs terminology: M: meta - normally the Alt, C: control - normally the Ctrl on keyboard.
+- To install package cider, type M-x then bottom left Emacs shows "M-x", enter: `package-refresh-contents`
 - Wait a bit, then type M-x enter: `package-install` , hit enter, then type `cider`
 - type M-x enter: `package-install` , hit enter, then type `clojure-mode`
 - After installation done, Alt-x then type: `cider-jack-in`, emacs will open 2nd panel on the right and you have a Clojure REPL. Ref: <https://www.braveclojure.com/basic-emacs/>
