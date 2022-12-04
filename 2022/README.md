@@ -39,15 +39,25 @@ The most common errors and how to fix:
   Execution error (ClassCastException) at clj2022.core/eval13230 (form-init12478536996561014764.clj:671).
   class java.lang.String cannot be cast to class java.util.regex.Pattern (java.lang.String and java.util.regex.Pattern are in module java.base of loader 'bootstrap')
   ```
+- `class XXX cannot be cast to class clojure.lang.IFn`: call XXX as function, often redundant () , or used C-like function call.
+
+```clj
+> ((+ 1 2))
+Execution error (ClassCastException) ..
+class java.lang.Long cannot be cast to class clojure.lang.IFn
+
+> (clojure.string/split("abc", #"b"))
+Execution error ...
+class java.lang.String cannot be cast to class clojure.lang.IFn
+```
 
 ### Emacs
 - Use mouse choose on menubar > CIDER interaction / CIDER eval menus if not familiar with shortcut yet.
-- Use C-c C-k (Ctrl c Ctrl k) to evaluated current file (emacs called buffer).
+- Use C-c C-k to evaluated current file (emacs called buffer).
 - Use M-x cider-format-buffer to format current file
 - Run test: open the test file, eval by C-c C-k then run test under cursor: C-c C-t t
 - Run all tests in file: C-c C-t n
-- Put the function want to run to the latest line, result will be shown after evaluated, this is like click "Run" buttons on IDE.
-
+- Put the function want to run to the last line, result will be shown after evaluated, this is like click "Run" buttons on IDE.
 
 #### Paredit.el
 Paredit is a "minor mode" in Emacs, for the most simple usage, it helps auto-close parenthesis. If you type `(`, it will auto add `)`.

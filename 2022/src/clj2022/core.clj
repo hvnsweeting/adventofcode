@@ -91,3 +91,69 @@
        (partition 3)
        (map doeach)
        (reduce +)))
+
+
+(defn day04-2
+  [input]
+  (->> (string/split input #" ")
+       ))
+
+(day04-2 "
+")
+
+(defn day04-1
+  [input]
+  (defn each [x]
+    (let [[left, right] (string/split x #",")]
+      (let [[sl, el] (map #(Integer/parseInt %) (string/split left #"-"))
+            [sr, er] (map #(Integer/parseInt %) (string/split right #"-"))]
+        (if (or (and (<= sl sr ) (>= el er))
+                (and (<= sr sl ) (>= er el)))
+          1
+          0)
+        
+
+          )))
+  (->> (string/split-lines input)
+       (map each)
+       (reduce +)
+
+       ))
+
+(day04-1 "2-4,6-8
+2-3,4-5
+5-7,7-9
+2-8,3-7
+6-6,4-6
+2-6,4-8")
+(day04-1 (slurp "src/clj2022/input04"))
+
+(defn day04-2
+  [input]
+  (defn each [x]
+    (let [[left, right] (string/split x #",")]
+      (let [[sl, el] (map #(Integer/parseInt %) (string/split left #"-"))
+            [sr, er] (map #(Integer/parseInt %) (string/split right #"-"))]
+        (if (or (and (<= sl sr ) (>= el er))
+                (and (<= sr sl ) (>= er el))
+                (and (<= sl sr ) (>= el sr))
+                (and (<= sr sl ) (>= er sl)))
+          1
+          0)
+        
+
+          )))
+
+  (->> (string/split-lines input)
+       (map each)
+       (reduce +)
+
+       ))
+
+(day04-2 "2-4,6-8
+2-3,4-5
+5-7,7-9
+2-8,3-7
+6-6,4-6
+2-6,4-8")
+(day04-2 (slurp "src/clj2022/input04"))
