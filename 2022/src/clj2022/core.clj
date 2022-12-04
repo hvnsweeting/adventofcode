@@ -19,7 +19,7 @@
 (defn sumeach [x]
   (->> x
        (string/split-lines)
-       (map #(Integer/parseInt %))
+       (map parse-long)
        (reduce +)))
 
 (defn day01-1 [s]
@@ -62,8 +62,8 @@
 (defn day03score [x]
   (def n (int x))
   (+ 1 (if (and (>= n (int \A)) (<= n (int \Z)))
-    (+ 26 (- n (int \A)))
-    (- n (int \a)))))
+         (+ 26 (- n (int \A)))
+         (- n (int \a)))))
 
 (defn day03-1
   [input]
@@ -92,11 +92,9 @@
        (map doeach)
        (reduce +)))
 
-
 (defn day04-2
   [input]
-  (->> (string/split input #" ")
-       ))
+  (->> (string/split input #" ")))
 
 (day04-2 "
 ")
@@ -105,28 +103,14 @@
   [input]
   (defn each [x]
     (let [[left, right] (string/split x #",")]
-      (let [[sl, el] (map #(Integer/parseInt %) (string/split left #"-"))
-            [sr, er] (map #(Integer/parseInt %) (string/split right #"-"))]
-        (if (or (and (<= sl sr ) (>= el er))
-                (and (<= sr sl ) (>= er el)))
-          1
-          0)
-        
+      (let [[sl, el] (map parse-long (string/split left #"-"))
+            [sr, er] (map parse-long (string/split right #"-"))]
+        (or (and (<= sl sr) (>= el er))
+            (and (<= sr sl) (>= er el))))))
 
-          )))
   (->> (string/split-lines input)
-       (map each)
-       (reduce +)
-
-       ))
-
-(day04-1 "2-4,6-8
-2-3,4-5
-5-7,7-9
-2-8,3-7
-6-6,4-6
-2-6,4-8")
-(day04-1 (slurp "src/clj2022/input04"))
+       (filter each)
+       count))
 
 (defn day04-2
   [input]
@@ -134,26 +118,11 @@
     (let [[left, right] (string/split x #",")]
       (let [[sl, el] (map #(Integer/parseInt %) (string/split left #"-"))
             [sr, er] (map #(Integer/parseInt %) (string/split right #"-"))]
-        (if (or (and (<= sl sr ) (>= el er))
-                (and (<= sr sl ) (>= er el))
-                (and (<= sl sr ) (>= el sr))
-                (and (<= sr sl ) (>= er sl)))
-          1
-          0)
-        
-
-          )))
+        (or (and (<= sl sr) (>= el er))
+            (and (<= sr sl) (>= er el))
+            (and (<= sl sr) (>= el sr))
+            (and (<= sr sl) (>= er sl))))))
 
   (->> (string/split-lines input)
-       (map each)
-       (reduce +)
-
-       ))
-
-(day04-2 "2-4,6-8
-2-3,4-5
-5-7,7-9
-2-8,3-7
-6-6,4-6
-2-6,4-8")
-(day04-2 (slurp "src/clj2022/input04"))
+       (filter each)
+       count))

@@ -74,3 +74,27 @@ CrZsJsPPZsGzwwsLwLmpwMDw"))))
 
 (deftest test-day03-2r
   (is (= 2708 (day03-2 (slurp "src/clj2022/input03")))))
+
+
+(deftest test-day04-1
+  (is (= 2 (day04-1 "2-4,6-8
+2-3,4-5
+5-7,7-9
+2-8,3-7
+6-6,4-6
+2-6,4-8"))))
+
+(deftest test-day04-1r
+  (is (= 560 (day04-1 (slurp "src/clj2022/input04")))))
+
+(deftest test-day04-2
+  (is (= 4 (day04-2 "2-4,6-8
+2-3,4-5
+5-7,7-9
+2-8,3-7
+6-6,4-6
+2-6,4-8"))))
+
+
+(deftest test-day04-2r
+  (is (= 839 (day04-2 (slurp "src/clj2022/input04")))))
