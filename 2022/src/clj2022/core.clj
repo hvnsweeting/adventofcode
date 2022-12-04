@@ -102,11 +102,10 @@
 (defn day04-1
   [input]
   (defn each [x]
-    (let [[left, right] (str/split x #",")]
-      (let [[sl, el] (map parse-long (str/split left #"-"))
-            [sr, er] (map parse-long (str/split right #"-"))]
-        (or (and (<= sl sr) (>= el er))
-            (and (<= sr sl) (>= er el))))))
+    (let [[start_left end_left start_right end_right] (map parse-long (str/split x #"[^0-9]"))]
+
+      (or (and (<= start_left start_right) (<= end_right end_left))
+          (and (<= start_right start_left) (<= end_left end_right)))))
 
   (->> (str/split-lines input)
        (filter each)
@@ -115,13 +114,11 @@
 (defn day04-2
   [input]
   (defn each [x]
-    (let [[left, right] (str/split x #",")]
-      (let [[sl, el] (map parse-long (str/split left #"-"))
-            [sr, er] (map parse-long (str/split right #"-"))]
-        (or (and (<= sl sr) (>= el er))
-            (and (<= sr sl) (>= er el))
-            (and (<= sl sr) (>= el sr))
-            (and (<= sr sl) (>= er sl))))))
+    (let [[start_left end_left start_right end_right] (map parse-long (str/split x #"[^0-9]"))]
+      (or (and (<= start_left start_right) (>= end_left end_right))
+          (and (<= start_right start_left) (>= end_right end_left))
+          (and (<= start_left start_right) (>= end_left start_right))
+          (and (<= start_right start_left) (>= end_right start_left)))))
 
   (->> (str/split-lines input)
        (filter each)
