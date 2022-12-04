@@ -1,6 +1,6 @@
 (ns clj2022.core
-  (:require [clojure.string :as string])
-  (:require [clojure.set :as cset]))
+  (:require [clojure.string :as str])
+  (:require [clojure.set :as set]))
 
 (defn foo
   "I don't do a whole lot."
@@ -18,19 +18,19 @@
 
 (defn sumeach [x]
   (->> x
-       (string/split-lines)
+       (str/split-lines)
        (map parse-long)
        (reduce +)))
 
 (defn day01-1 [s]
   (->>
-   (string/split s #"\n\n")
+   (str/split s #"\n\n")
    (map sumeach)
    (apply max)))
 
 (defn day01-2 [s]
   (->>
-   (string/split s #"\n\n")
+   (str/split s #"\n\n")
    (map sumeach)
    sort
    (take-last 3)
@@ -43,7 +43,7 @@
                  "C X" 7, "C Y" 2, "C Z" 6})
 
   (->> input
-       (string/split-lines)
+       (str/split-lines)
        (map handmap1)
        (reduce +)))
 
@@ -54,7 +54,7 @@
                 "C X" (+ 0 2), "C Y" (+ 3 3), "C Z" (+ 6 1)})
 
   (->> input
-       (string/split-lines)
+       (str/split-lines)
        (map handmap)
        (reduce +)))
 (day02-2 (slurp "src/clj2022/input02"))
@@ -74,7 +74,7 @@
       (day03score n)))
 
   (->> input
-       (string/split-lines)
+       (str/split-lines)
        (map doeach)
        (reduce +)))
 
@@ -87,14 +87,14 @@
         day03score))
 
   (->> input
-       (string/split-lines)
+       (str/split-lines)
        (partition 3)
        (map doeach)
        (reduce +)))
 
 (defn day04-2
   [input]
-  (->> (string/split input #" ")))
+  (->> (str/split input #" ")))
 
 (day04-2 "
 ")
@@ -102,27 +102,27 @@
 (defn day04-1
   [input]
   (defn each [x]
-    (let [[left, right] (string/split x #",")]
-      (let [[sl, el] (map parse-long (string/split left #"-"))
-            [sr, er] (map parse-long (string/split right #"-"))]
+    (let [[left, right] (str/split x #",")]
+      (let [[sl, el] (map parse-long (str/split left #"-"))
+            [sr, er] (map parse-long (str/split right #"-"))]
         (or (and (<= sl sr) (>= el er))
             (and (<= sr sl) (>= er el))))))
 
-  (->> (string/split-lines input)
+  (->> (str/split-lines input)
        (filter each)
        count))
 
 (defn day04-2
   [input]
   (defn each [x]
-    (let [[left, right] (string/split x #",")]
-      (let [[sl, el] (map parse-long (string/split left #"-"))
-            [sr, er] (map parse-long (string/split right #"-"))]
+    (let [[left, right] (str/split x #",")]
+      (let [[sl, el] (map parse-long (str/split left #"-"))
+            [sr, er] (map parse-long (str/split right #"-"))]
         (or (and (<= sl sr) (>= el er))
             (and (<= sr sl) (>= er el))
             (and (<= sl sr) (>= el sr))
             (and (<= sr sl) (>= er sl))))))
 
-  (->> (string/split-lines input)
+  (->> (str/split-lines input)
        (filter each)
        count))
