@@ -11,7 +11,7 @@
   [x]
   (* x 2))
 
-; todo TEST aoc2021 1
+; todo TEST aoc2021 
 (defn -main
   [& args]
   (foo 1))
@@ -70,7 +70,7 @@
 
   (defn doeach [x]
     (let [[left right] (map set (partition (/ (count x) 2) x))]
-      (def n (first (cset/intersection left right)))
+      (def n (first (set/intersection left right)))
       (day03score n)))
 
   (->> input
@@ -82,7 +82,7 @@
   [input]
 
   (defn doeach [x]
-    (-> (apply cset/intersection (map set x))
+    (-> (apply set/intersection (map set x))
         first
         day03score))
 
@@ -91,13 +91,6 @@
        (partition 3)
        (map doeach)
        (reduce +)))
-
-(defn day04-2
-  [input]
-  (->> (str/split input #" ")))
-
-(day04-2 "
-")
 
 (defn day04-1
   [input]
@@ -123,3 +116,134 @@
   (->> (str/split-lines input)
        (filter each)
        count))
+
+;; DAY 05 ===========================
+(defn day05-2
+  [input]
+
+  (defn to_map [xs]
+    (let [[head & rest] xs]
+      {(Character/digit head 10) (into [] (filter #(not= \space %) rest))}))
+
+  (defn parse_stacks [start]
+
+    (def lines (str/split-lines start))
+    (->> lines
+         (map #(take-nth 4 (drop 1 %)))
+         (reverse)
+         (apply interleave)
+         (partition (count lines))
+         (map to_map)
+         (apply merge)))
+
+  (defn get_number [xs]
+    (->>
+     xs
+     (map parse-long)
+     (filter some?)))
+
+  (defn parse_command [xs]
+    (->>
+     (str/split-lines xs)
+     (map #(str/split % #"[^0-9]"))
+     (map get_number)))
+
+  (defn move-one [stacks volume start target]
+    (if (= 0 volume) stacks
+        (let [new_row (drop-last volume (stacks start))
+              value (take-last volume (stacks start))]
+          (def newstacks (assoc stacks start new_row))
+          (assoc newstacks target (concat (newstacks target) value)))))
+
+  (defn move-one-p1 [stacks volume start target]
+    (if (= 0 volume) stacks
+
+        (let [new_row (pop (stacks start))
+              value (last (stacks start))]
+          (def newstacks (assoc stacks start new_row))
+          (def r (assoc newstacks target (conj (newstacks target) value)))
+          (move-one-p1 r (- volume 1) start target))))
+
+  (defn run-cmd [stacks move]
+    (let [[volume start target] move]
+      (move-one stacks volume start target)))
+
+  (defn do-move [stacks moves]
+    (->> moves
+         (reduce run-cmd stacks)))
+  (defn get-top-chars [stacks]
+    (->> stacks
+         vec
+         sort
+         (map #(last (nth % 1)))
+         (apply str)))
+
+  (let [[ss, moves] (str/split input #"\n\n")]
+    (let [stacks (parse_stacks ss)
+          commands (parse_command moves)]
+      (->>
+       (do-move stacks commands)
+       (get-top-chars)))))
+
+
+;; day5 p1
+
+(defn day05-1
+  [input]
+
+  (defn to_map [xs]
+    (let [[head & rest] xs]
+      {(Character/digit head 10) (into [] (filter #(not= \space %) rest))}))
+
+  (defn parse_stacks [start]
+
+    (def lines (str/split-lines start))
+    (->> lines
+         (map #(take-nth 4 (drop 1 %)))
+         (reverse)
+         (apply interleave)
+         (partition (count lines))
+         (map to_map)
+         (apply merge)))
+
+  (defn get_number [xs]
+    (->>
+     xs
+     (map parse-long)
+     (filter some?)))
+
+  (defn parse_command [xs]
+    (->>
+     (str/split-lines xs)
+     (map #(str/split % #"[^0-9]"))
+     (map get_number)))
+
+  (defn move-one-p1 [stacks volume start target]
+    (if (= 0 volume) stacks
+
+        (let [new_row (pop (stacks start))
+              value (last (stacks start))]
+          (def newstacks (assoc stacks start new_row))
+          (def r (assoc newstacks target (conj (newstacks target) value)))
+          (move-one-p1 r (- volume 1) start target))))
+
+  (defn run-cmd [stacks move]
+    (let [[volume start target] move]
+      (move-one-p1 stacks volume start target)))
+
+  (defn do-move [stacks moves]
+    (->> moves
+         (reduce run-cmd stacks)))
+  (defn get-top-chars [stacks]
+    (->> stacks
+         vec
+         sort
+         (map #(last (nth % 1)))
+         (apply str)))
+
+  (let [[ss, moves] (str/split input #"\n\n")]
+    (let [stacks (parse_stacks ss)
+          commands (parse_command moves)]
+      (->>
+       (do-move stacks commands)
+       (get-top-chars)))))

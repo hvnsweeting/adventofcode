@@ -75,7 +75,6 @@ CrZsJsPPZsGzwwsLwLmpwMDw"))))
 (deftest test-day03-2r
   (is (= 2708 (day03-2 (slurp "src/clj2022/input03")))))
 
-
 (deftest test-day04-1
   (is (= 2 (day04-1 "2-4,6-8
 2-3,4-5
@@ -95,6 +94,36 @@ CrZsJsPPZsGzwwsLwLmpwMDw"))))
 6-6,4-6
 2-6,4-8"))))
 
-
 (deftest test-day04-2r
   (is (= 839 (day04-2 (slurp "src/clj2022/input04")))))
+
+(deftest test-day05-1
+  (is (= "CMZ"
+         (day05-1 "    [D]    
+[N] [C]    
+[Z] [M] [P]
+ 1   2   3 
+
+move 1 from 2 to 1
+move 3 from 1 to 3
+move 2 from 2 to 1
+move 1 from 1 to 2
+"))))
+(deftest day05-1r
+  (is (= "ZSQVCCJLL" (day05-1 (slurp "src/clj2022/input05")))))
+
+(deftest test-day05-2
+  (is (= "MCD"
+         (day05-2 "    [D]    
+[N] [C]    
+[Z] [M] [P]
+ 1   2   3 
+
+move 1 from 2 to 1
+move 3 from 1 to 3
+move 2 from 2 to 1
+move 1 from 1 to 2
+"))))
+
+(deftest day05-2r
+  (is (= "QZFJRWHGS" (day05-2 (slurp "src/clj2022/input05")))))
