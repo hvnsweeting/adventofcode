@@ -32,6 +32,14 @@ Quick docs
 - Order is not persistent as in Elixir, (map fun collections) but (clojure.string/split string #"regex"), thus it is hard to use thread macro (->> s f1 f2) to pass result as last argument. Thus have to use (as-> s x (f1 x) (f2 x)) to specify order of x. BUT [this](https://stackoverflow.com/questions/50275513/rules-of-thumb-for-function-arguments-ordering-in-clojure) explain why. TLDR: "Sequence functions take their sources last and collection functions take their primary operand (collection) first.". Thus, if only first one split string take diff order, use it as first function in thread, the rest all follow the rule of processing sequences. (->> (string.split s #" ") (map f) (filter f))
 - Map can be used as function to get value from key (mymap mykey)
 - To destructure (unpack), use (let [[a b] '(1 2 3) (println a b)]), a = 1 and b = 2, note the [a b] must be []. Ref <https://gist.github.com/john2x/e1dca953548bfdfb9844>
+- D06: Clojure does not support Tail Recursive Optimization, must use [`recur`](https://clojure.org/reference/special_forms#recur) instead, which is quite different from normal recursive functions.
+- D06: destructure [[a b c & rest :as all] xs] here `all` seems redundant as its value is the same as `xs`, which would be different in `recur`, `xs` will be the orignal value which never change, while `all` will change as `recur`.
+  ```clj
+  (def some_recursive [[a b c & rest :as all] xs
+       		       acc 0]
+    (recur (drop 1 all) (+ a b c)))
+  ```
+- D06: Destructure could be done on let or function args and many other places.
 
 #### Clojure errors
 The most common errors and how to fix:
