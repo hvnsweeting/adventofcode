@@ -19,11 +19,9 @@
 
                                         ; else
       (let [[_ & out] (str/split-lines cmd)]
-        ;(println "OUT", out)
         (recur curdir (merge state {curdir out}) rest)))))
 
 (defn file-sizes [files]
-  ;(println "files" files)
   (->>
    files
 
@@ -33,29 +31,17 @@
    (reduce +)))
 
 (defn size [key tree]
-                                        ; path
   (println "Calculating size of", key)
   (let [v (tree key)]
-                                        ;(+ (map #(size % threshold tree) (tree key)))
-    (let [{dirs true files false} (group-by #(str/starts-with? % "dir ") (sort v)
-                                        ; filter dirs
-                                        ; turn to loop get size of them
-                                        ; plus 
-                                            )]
+    (let [{dirs true files false} (group-by #(str/starts-with? % "dir ") (sort v))]
       (println "files" files)
-      ;(println (file-sizes files))
-      ;
       (+ (file-sizes files) (->> (map #(str/split % #" ") dirs)
-                                   (map second)
-                                   (map #(str (.getCanonicalFile (io/file key %))))
-                                   (map #(size % tree))
-                                   ;(println)
-                                   (reduce +)
-                                   ))
-      )))
-; way 2: 
+                                 (map second)
+                                 (map #(str (.getCanonicalFile (io/file key %))))
+                                 (map #(size % tree))
+                                 (reduce +))))))
+
 (defn day07-1 [input]
-                                        ;(println input)`
   (println "START")
   (def tree (->>
 
@@ -64,11 +50,14 @@
              (filter #(not= "" %))
              (build-tree "/" {})))
 
-  (->> (keys tree)
-       (map #(size % tree))
-       (filter #(< % 100000))
-       (reduce +)
-       ))
+  (def ss (->> (keys tree)
+               (map #(size % tree))
+               sort))
+  (println "ALLSIZES" ss)
+  (let [total (size "/" tree)]
+    (println "ALLSIZES" ss)
+    (println "TOTAL" total)
+    (some #(when (> (+ (- 70000000 total) %) 30000000) %) ss)))
 
 (day07-1 "$ cd /
 $ ls
