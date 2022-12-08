@@ -45,9 +45,8 @@ Quick docs
     (recur (drop 1 all) (+ a b c)))
   ```
 - D06: Destructure could be done on let or function args and many other places.
-
-- D08: #TODO how to debug
-- D08: use (prn) instead of (println) to print for debugging (still return nil)
+- D08: Create debug func which print then return arg. `(def debug [x] (prn x) x)` <https://stackoverflow.com/questions/52580430/debugging-thread-macro-or-in-clojure>
+- D08: use (prn) instead of (println) to print for debugging.
 - D08: use (comment) wrap anything will ignore it (turn to comment).
 
 #### Clojure errors
