@@ -46,6 +46,10 @@ Quick docs
   ```
 - D06: Destructure could be done on let or function args and many other places.
 
+- D08: #TODO how to debug
+- D08: use (prn) instead of (println) to print for debugging (still return nil)
+- D08: use (comment) wrap anything will ignore it (turn to comment).
+
 #### Clojure errors
 The most common errors and how to fix:
 
@@ -87,4 +91,4 @@ To enable/disable: type M-x paredit
 
 Ref: <https://www.braveclojure.com/basic-emacs/#Paredit>
 
-
+- D08: To comment an S-expression, e.g a function, first go to open (, C-M-space to choose the block, then M-; to comment. <https://stackoverflow.com/a/4288515>
