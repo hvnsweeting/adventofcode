@@ -1,19 +1,20 @@
-(ns clj2022.day07
+(ns clj2022.day08
   (:require [clojure.string :as str])
   (:require [clojure.java.io :as io])
   (:require [clojure.set :as set]))
 
 (defn to_map [y acc [r & rest]]
   ;(println r rest)
-  (if (nil? r) (merge acc)
+   (if (nil? r) (merge acc)
 
-      (do
-        (def newacc (->>
-                     (partition 2 (interleave (range (count r)) r))
-                     (map #(hash-map (list (first %) y) (Character/digit (second %) 10)))
-                     (reduce merge)))
+       (do
+         (def newacc (->>
+                      (partition 2 (interleave (range (count r)) r))
+                      (map #(hash-map (list (first %) y) (Character/digit (second %) 10)))
+                      (reduce merge)))
 
-        (recur (+ y 1) (merge acc newacc) rest))))
+         (recur (+ y 1) (merge acc newacc) rest)))
+  )
 
 (defn max-to [x y])
 (defn visible? [table [x y]]
