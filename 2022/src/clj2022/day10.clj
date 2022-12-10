@@ -175,24 +175,23 @@ noop
 ")
 (day10-1 sample)
 (assert (= 13860 (day10-1 (slurp "src/clj2022/input10"))))
+(defn draw-one [[pos [cycle x]]]
+  (if (nil? (#{(- x 1) x (+ x 1)} pos)) "." "#"))
 
-(defn draw [pos row [[cycle x :as i] & rest]]
-  (if (nil? i) (reverse row)
-
-      (if (nil? (#{(- x 1) x (+ x 1)} pos))
-        (recur (inc pos) (cons "." row) rest)
-        (recur (inc pos) (cons "#" row) rest))))
+(defn draw [xs]
+  (->>
+   (map-indexed vector xs)
+   (map draw-one)))
 
 (defn day10-2 [input]
   (let [instructions (str/split-lines input)]
     (def ins (calculate instructions 0 1 '()))
 
-    (def r (->>
-            (partition 40 ins)
-            (map #(draw 0 '() %))))
-
     (->>
-     (map #(str/join "" %) r)
+     (partition 40 ins)
+     (map draw)
+
+     (map #(str/join "" %))
      (map println))))
 
 (day10-2 sample)
