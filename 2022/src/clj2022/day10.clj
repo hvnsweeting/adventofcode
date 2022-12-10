@@ -11,30 +11,20 @@
   (cond
     (nil? i) (reverse result)
     (= i "noop") (recur rest (inc cntr) x (cons (list (inc cntr) x) result))
-    :else 
-           (let [[ins v] (str/split i #" ")]
-             (def newx (+ x (parse-long v)))
-             (recur rest (+ 2 cntr) newx (concat (list (list (+ 2 cntr) x) (list (inc cntr) x)) result))
-             )
-           
-    )
+    :else
+    (let [[ins v] (str/split i #" ")]
+      (def newx (+ x (parse-long v)))
+      (recur rest (+ 2 cntr) newx (concat (list (list (+ 2 cntr) x) (list (inc cntr) x)) result)))))
 
-
-  )
 (defn day10-1 [input]
   (let [instructions (str/split-lines input)]
     (def ins (calculate instructions 0 1 '()))
     ;(dbg ins)
     ;(nth ins (- 1 %))
     (->>
-    (map #(nth ins (- % 1)) [20 60 100 140 180 220])
-    (map #(apply * %))
-    (apply +)
-     )
-    )
-
-
-  )
+     (map #(nth ins (- % 1)) [20 60 100 140 180 220])
+     (map #(apply * %))
+     (apply +))))
 
 (def sample "addx 15
 addx -11
@@ -186,31 +176,24 @@ noop
 (day10-1 sample)
 (assert (= 13860 (day10-1 (slurp "src/clj2022/input10"))))
 
-
 (defn draw [pos row [[cycle x :as i] & rest]]
   (if (nil? i) (reverse row)
-      
+
       (if (nil? (#{(- x 1) x (+ x 1)} pos))
         (recur (inc pos) (cons "." row) rest)
-        (recur (inc pos) (cons "#" row) rest)
-        ))
-
-  )
+        (recur (inc pos) (cons "#" row) rest))))
 
 (defn day10-2 [input]
   (let [instructions (str/split-lines input)]
     (def ins (calculate instructions 0 1 '()))
-    
+
     (def r (->>
             (partition 40 ins)
-            (map #(draw 0 '() %))
-            
-            ))
+            (map #(draw 0 '() %))))
+
     (->>
      (map #(str/join "" %) r)
      (map println))))
-    
-
 
 (day10-2 sample)
 (day10-2 (slurp "src/clj2022/input10"))
