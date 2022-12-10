@@ -3,10 +3,6 @@
   (:require [clojure.java.io :as io])
   (:require [clojure.set :as set]))
 
-;; since I wrote for part 1 which not directly usable for part2
-;; I use a simple python script to convert input to each move by 1 only
-;; python3 newinp9.py input09  
-
 (defn dbg [x]
   (prn "debug" x)
   x)
@@ -69,22 +65,30 @@
                        (= direction "D") (list xhead (- yhead (parse-long n)))))
         (recur rest newhead (next-tail newhead tail) (merge states {tail 1})))))
 
+(defn dup [line]
+  (defn dodup [[motion n] acc]
+
+   (if (= 0 n) acc
+       (recur (list motion (dec n)) (cons (format "%s 1" motion) acc))
+       )
+    )
+
+  (let [[m n] (str/split line #" ")]
+    (dodup (list m (parse-long n)) '())))
+
+
 (defn day09-1 [input]
 
   (def tail_states {})
   (->>
-   (move (str/split-lines input) '(0 0) '(0 0) {})
-  ;(dbg)
+   (move (mapcat dup (str/split-lines input)) '(0 0) '(0 0) {})
    (keys)
    (count)
-   (println)))
-
-(day09-1 (slurp "src/clj2022/newinput09"))
+   ))
 
 ;;;; p2
 
 (defn updateall [[one & rest] head result]
-  ;(prn "updateall" one rest)
   (if (nil? one) (reverse result)
       (let [[tail state] one]
         (let [newtail (next-tail head tail)]
@@ -92,12 +96,11 @@
 
 (defn move9 [[motion & rest] [xhead yhead] states]
 
-  (if (nil? motion) states             ;TODO update states
+  (if (nil? motion) states
       (do
         (def r (str/split motion #" "))
         (def direction (first r))
         (def n (second r))
-        ;(prn rest xhead yhead tail states)
 
         (def newhead (cond
                        (= direction "R") (list (+ xhead (parse-long n)) yhead)
@@ -105,15 +108,13 @@
                        (= direction "U") (list xhead (+ yhead (parse-long n)))
                        (= direction "D") (list xhead (- yhead (parse-long n)))))
 
-        ;(prn "HEAD AT" newhead)
         (def newstates (updateall states newhead []))
         (recur rest newhead newstates))))
 
 (defn day09-2 [input]
-
   (def tail_states {})
   (->>
-   (move9 (str/split-lines input) '(0 0) [(list '(0 0) {})
+   (move9 (mapcat dup (str/split-lines input)) '(0 0) [(list '(0 0) {})
                                           (list '(0 0) {})
                                           (list '(0 0) {})
                                           (list '(0 0) {})
@@ -128,4 +129,3 @@
    (keys)
    (count)))
 
-(day09-2 (slurp "src/clj2022/newinput09"))
