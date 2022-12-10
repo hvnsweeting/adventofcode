@@ -57,6 +57,8 @@ Quick docs
 - D10: `(map-indexed f coll)` returns `([idx v1] [idx v2])` - like Python enumerate function.
 - D10: in REPL, `*1 *2 *3` refers to result of last, 2 or 3 expressions ago. Python has `_` similar to `*1`.
 - D10: (doc x) prints doc, (source f) prints source code.
+- D10: `slurp` not only read file, it try to read it as an URL first. (slurp "https://pymi.vn")
+- D10: `(comp f g)` returns a composition function, similar to `#(f (g %))`
 
 #### Clojure errors
 The most common errors and how to fix:
@@ -100,3 +102,4 @@ To enable/disable: type M-x paredit
 Ref: <https://www.braveclojure.com/basic-emacs/#Paredit>
 
 - D08: To comment an S-expression, e.g a function, first go to open (, C-M-space to choose the block, then M-; to comment. <https://stackoverflow.com/a/4288515>
+- D10: with paredit, there is no problem of un-matching parens, but now you may have parent in wrong places. E.g `(defn f [x] (if (< x 5) 5 (+ x) 3))`

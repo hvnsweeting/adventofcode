@@ -8,15 +8,15 @@
   x)
 
 (defn calculate
-  ([arg cntr x] (calculate arg cntr x '()))
+  ([arg cntr x] (calculate arg cntr x []))
   ([[i & rest] cntr x result]
    (cond
-     (nil? i) (reverse result)
-     (= i "noop") (recur rest (inc cntr) x (cons (list (inc cntr) x) result))
+     (nil? i) result
+     (= i "noop") (recur rest (inc cntr) x (conj result [(inc cntr) x]))
      :else
      (let [[ins v] (str/split i #" ")]
        (def newx (+ x (parse-long v)))
-       (recur rest (+ 2 cntr) newx (concat (list (list (+ 2 cntr) x) (list (inc cntr) x)) result))))))
+       (recur rest (+ 2 cntr) newx (conj result [(inc cntr) x] [(+ 2 cntr) x]))))))
 
 (defn day10-1 [input]
   (let [instructions (str/split-lines input)]
