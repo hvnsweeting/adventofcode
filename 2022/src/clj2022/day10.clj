@@ -7,18 +7,20 @@
   (prn "debug" x)
   x)
 
-(defn calculate [[i & rest] cntr x result]
-  (cond
-    (nil? i) (reverse result)
-    (= i "noop") (recur rest (inc cntr) x (cons (list (inc cntr) x) result))
-    :else
-    (let [[ins v] (str/split i #" ")]
-      (def newx (+ x (parse-long v)))
-      (recur rest (+ 2 cntr) newx (concat (list (list (+ 2 cntr) x) (list (inc cntr) x)) result)))))
+(defn calculate
+  ([arg cntr x] (calculate arg cntr x '()))
+  ([[i & rest] cntr x result]
+   (cond
+     (nil? i) (reverse result)
+     (= i "noop") (recur rest (inc cntr) x (cons (list (inc cntr) x) result))
+     :else
+     (let [[ins v] (str/split i #" ")]
+       (def newx (+ x (parse-long v)))
+       (recur rest (+ 2 cntr) newx (concat (list (list (+ 2 cntr) x) (list (inc cntr) x)) result))))))
 
 (defn day10-1 [input]
   (let [instructions (str/split-lines input)]
-    (def ins (calculate instructions 0 1 '()))
+    (def ins (calculate instructions 0 1))
     ;(dbg ins)
     ;(nth ins (- 1 %))
     (->>
@@ -187,7 +189,7 @@ noop
 (defn day10-2 [input]
   (let [instructions (str/split-lines input)]
     (->>
-     (calculate instructions 0 1 '())
+     (calculate instructions 0 1)
      (partition 40)
      (map to-pixels)
      (map #(str/join "" %))

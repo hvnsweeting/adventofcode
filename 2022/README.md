@@ -55,6 +55,9 @@ Quick docs
   ```
   would not print (5 3 5) but (x 3 5). Change to `(list x 3 5)` to get the expected result. This becomes hard to see quickly with nested: `(list (list 1 2) (list 3 4))`. Use vector `(println [x 3 5])` works.
 - D10: `(map-indexed f coll)` returns `([idx v1] [idx v2])` - like Python enumerate function.
+- D10: in REPL, `*1 *2 *3` refers to result of last, 2 or 3 expressions ago. Python has `_` similar to `*1`.
+- D10: (doc x) prints doc, (source f) prints source code.
+
 #### Clojure errors
 The most common errors and how to fix:
 
