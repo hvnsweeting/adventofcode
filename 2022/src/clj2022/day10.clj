@@ -179,7 +179,7 @@ noop
 (assert (= 13860 (day10-1 (slurp "src/clj2022/input10"))))
 
 (defn draw-one [[pos [cycle x]]]
-  (if (nil? (#{(- x 1) x (+ x 1)} pos)) "." "#"))
+  (if (contains? #{(- x 1) x (+ x 1)} pos) "#" "."))
 
 (defn to-pixels [xs]
   (->>
