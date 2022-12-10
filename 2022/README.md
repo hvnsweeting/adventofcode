@@ -59,6 +59,7 @@ Quick docs
 - D10: (doc x) prints doc, (source f) prints source code.
 - D10: `slurp` not only read file, it try to read it as an URL first. (slurp "https://pymi.vn")
 - D10: `(comp f g)` returns a composition function, similar to `#(f (g %))`
+- D10: create a map from a list, each item of list must be vector of 2, not list. `(into {} '([:k1 1] [:k2 2])` works but not `(into {} '((:k1 1) (:k2 2)))`
 
 #### Clojure errors
 The most common errors and how to fix:
