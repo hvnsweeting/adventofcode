@@ -12,7 +12,7 @@ A Clojure library designed to solve Advent of Code 2022.
 ## Doc
 Quick docs
 
-- https://clojure.org/guides/learn/
+- https://clojure.org/guides/learn/ - read all of it, short, with multiple beginner gotchas explained.
 - https://learnxinyminutes.com/docs/clojure/
 - https://clojure.org/api/cheatsheet
 
@@ -48,7 +48,13 @@ Quick docs
 - D08: Create debug func which print then return arg. `(def debug [x] (prn x) x)` <https://stackoverflow.com/questions/52580430/debugging-thread-macro-or-in-clojure>
 - D08: use (prn) instead of (println) to print for debugging.
 - D08: use (comment) wrap anything will ignore it (turn to comment).
-
+- D10: list literal syntax is cumbersome to use, use vector instead. E.g
+  ```clj
+  (def x 5)
+  (println '(x 3 5))
+  ```
+  would not print (5 3 5) but (x 3 5). Change to `(list x 3 5)` to get the expected result. This becomes hard to see quickly with nested: `(list (list 1 2) (list 3 4))`. Use vector `(println [x 3 5])` works.
+- D10: `(map-indexed f coll)` returns `([idx v1] [idx v2])` - like Python enumerate function.
 #### Clojure errors
 The most common errors and how to fix:
 
