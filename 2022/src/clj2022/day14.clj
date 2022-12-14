@@ -81,19 +81,15 @@
          ret #{}]
     ;(prn floor "check" [x y] "len" (count m) (count ret))
 
-    (if (contains? board [500 0])
-      ret
-      ;else
-      (let [newy (inc y)]
-        (if (= (inc y) floor) (recur [500 0] (conj m [x y]) (conj ret [x y]))
-            (if (contains? m [x (inc y)])
-              (if (contains? m [(dec x) (inc y)])
-                (if (contains? m [(inc x) (inc y)])
-                  (if (contains? m [501 1]) (conj ret [500 0])
-                      (recur [500 0] (conj m [x y]) (conj ret [x y])))
-                  (recur [(inc x) (inc y)] m ret))
-                (recur [(dec x) (inc y)] m ret))
-              (recur [x (inc y)] m ret)))))))
+    (if (= (inc y) floor) (recur [500 0] (conj m [x y]) (conj ret [x y]))
+        (if (contains? m [x (inc y)])
+          (if (contains? m [(dec x) (inc y)])
+            (if (contains? m [(inc x) (inc y)])
+              (if (contains? m [501 1]) (conj ret [500 0])
+                  (recur [500 0] (conj m [x y]) (conj ret [x y])))
+              (recur [(inc x) (inc y)] m ret))
+            (recur [(dec x) (inc y)] m ret))
+          (recur [x (inc y)] m ret)))))
 
 (defn day14-2 [input]
   (def ps (apply concat (apply concat
