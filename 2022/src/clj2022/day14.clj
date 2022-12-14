@@ -40,24 +40,29 @@
      ))
   )
 
-(defn falling [ymax pmap restsand]
+(defn falling [ymax board]
   (loop [
          [x y] [500 0]
+         m board
          ret #{}
          ]
+    ;(prn "check" [x y] "len" (count m) m)
 
     (if (> y ymax)
-      restsand
-      (let [newpoint [x (inc y)]]
-        
+      ret
+      ;else
+        (if (contains? m [x (inc y)])
+          (if (contains? m [(dec x) (inc y)])
+            (if (contains? m [(inc x) (inc y)])
+              (recur [500 0] (conj m [x y]) (conj ret [x y]))
+              (recur [(inc x) (inc y)] m ret)
+              )
+            (recur [(dec x) (inc y)] m ret))
+          (recur [x (inc y)] m ret))
+        )))
 
-        )
-      (recur [x (inc y)])
-      )
-    )
-
-  )
 (defn day14-1 [input]
+  (prn "START==============")
   (def ps (apply concat (apply concat
                                (->> (str/split-lines input)
 
@@ -74,7 +79,9 @@
   (def pmap (into #{} (map #(into [] %) ps)))
   (let [[_ ymax] (last (sort-by (fn [[_ y]] y) pmap))]
     (println ymax pmap)
-    (falling ymax pmap #{})
+    (->>
+    (falling ymax pmap)
+    (count))
     ))
 
 
@@ -83,3 +90,4 @@
 ")
 
 (day14-1 sample)
+(day14-1 (slurp "src/clj2022/input14"))
