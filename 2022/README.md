@@ -60,6 +60,8 @@ Quick docs
 - D10: `slurp` not only read file, it try to read it as an URL first. (slurp "https://pymi.vn")
 - D10: `(comp f g)` returns a composition function, similar to `#(f (g %))`
 - D10: create a map from a list, each item of list must be vector of 2, not list. `(into {} '([:k1 1] [:k2 2])` works but not `(into {} '((:k1 1) (:k2 2)))`
+- D21: STOP USING `def`, def is easy, feel like other languages, but def is **GLOBAL** var, even inside a function, use same name then it modify the outside def, since it is global. Read [(doc def)](https://clojure.org/reference/special_forms#def).
+- D21: use (let [x 1 y x] (prn y)) instead, it's nested in new () but no global var evil headache.
 
 #### Clojure errors
 The most common errors and how to fix:

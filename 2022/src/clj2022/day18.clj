@@ -41,10 +41,10 @@
   (def sides (* 6 (count cubes)))
   (def connected (->>
                   (map #(one-vs-all % cubes) cubes)
-                  (map vals)
-                  (reduce concat)
-                  (reduce concat)
-                  (dbg)
+                  ;(map vals)
+                  ;(reduce concat)
+                  ;(reduce concat)
+                  (map dbg)
                   ;(map dbg)
                   (count)
 
