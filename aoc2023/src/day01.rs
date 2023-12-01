@@ -1,13 +1,12 @@
 fn first_last_to_number(ds: Vec<char>) -> i32 {
-    let ds2 = ds.clone();
-    let first = ds.iter().next().unwrap();
-    let last = ds2.iter().rev().next().unwrap();
+    let first = ds.first().unwrap();
+    let last = ds.last().unwrap();
     let n = format!("{}{}", first, last);
-    return i32::from_str_radix(n.as_str(), 10).unwrap();
+    n.as_str().parse::<i32>().unwrap()
 }
 pub fn part1(s: &str) -> i32 {
     let mut sum = 0;
-    for line in s.trim().split("\n") {
+    for line in s.trim().split('\n') {
         let ds = line.chars().filter(|x| x.is_ascii_digit()).collect();
         sum += first_last_to_number(ds);
     }
@@ -16,7 +15,7 @@ pub fn part1(s: &str) -> i32 {
 
 pub fn part2(s: &str) -> i32 {
     let mut sum = 0;
-    for line in s.trim().split("\n") {
+    for line in s.trim().split('\n') {
         let s = line.chars();
         let mut checked: String = "".to_owned();
         let mut ns: Vec<char> = vec![];
