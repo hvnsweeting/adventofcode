@@ -107,6 +107,49 @@
       (if (= v \#) [row col]
           p))))
 
+
+
+(defn wrap-cube [board [row col] direction]
+  (prn "wrap-cube from " [row col] direction)
+  (cond
+    (= direction ">")
+
+    (let [[p v] (->> board
+                     (filter (fn [[[r c] _]]  (= r row)))
+                     (sort-by (fn [[[r c] _]] c))
+                     (first))]
+
+      (if (= v \#) [row col]
+          p))
+
+    (= direction "<")
+    (let [[p v] (->> board
+                     (filter (fn [[[r c] _]]  (= r row)))
+                     (sort-by (fn [[[r c] _]] c))
+                     (last))]
+
+      (if (= v \#) [row col]
+          p))
+    (= direction "^")
+    (let [[p v] (->> board
+                     (filter (fn [[[r c] _]]  (= c col)))
+                     (sort-by (fn [[[r c] _]] r))
+                     (last))]
+
+      (if (= v \#) [row col]
+          p))
+    (= direction "v")
+    (let [[p v] (->> board
+                     (filter (fn [[[r c] _]]  (= c col)))
+                     (sort-by (fn [[[r c] _]] r))
+                     ;(dbg)
+                     (first))]
+
+      (if (= v \#) [row col]
+          p))))
+
+
+
 (defn move-ahead [n direction from board]
   ;(prn "move-ahead" [n direction from ])
   (loop [n n
@@ -174,4 +217,5 @@
     ))
 
 (day22-1 sample)
-(day22-1 (slurp "src/clj2022/input22"))
+                                        ;(day22-1 (slurp "src/clj2022
+input22"))
