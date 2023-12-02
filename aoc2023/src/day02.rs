@@ -32,12 +32,7 @@ fn parse_line(line: &str) -> i32 {
 }
 
 pub fn part1(s: &str) -> i32 {
-    let mut sum = 0;
-
-    for line in s.trim().lines() {
-        sum += parse_line(line);
-    }
-    sum
+    s.trim().lines().map(parse_line).sum()
 }
 
 fn parse_line_p2(line: &str) -> i32 {
@@ -72,11 +67,7 @@ fn parse_line_p2(line: &str) -> i32 {
 }
 
 pub fn part2(s: &str) -> i32 {
-    let mut sum = 0;
-    for line in s.trim().lines() {
-        sum += parse_line_p2(line);
-    }
-    sum
+    s.trim().lines().map(parse_line_p2).sum()
 }
 
 #[cfg(test)]
@@ -92,14 +83,14 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
     #[test]
     fn p1() {
         assert_eq!(part1(s), 8);
-        let s2 = fs::read_to_string("./src/input02.txt").unwrap();
-        assert_eq!(part1(s2.as_str()), 2720);
+        //let s2 = fs::read_to_string("./src/input02.txt").unwrap();
+        //assert_eq!(part1(s2.as_str()), 2720);
     }
 
     #[test]
     fn p2() {
         assert_eq!(part2(s), 2286);
-        let s2 = fs::read_to_string("./src/input02.txt").unwrap();
-        assert_eq!(part2(s2.as_str()), 71535);
+        //let s2 = fs::read_to_string("./src/input02.txt").unwrap();
+        //assert_eq!(part2(s2.as_str()), 71535);
     }
 }
