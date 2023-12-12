@@ -1,6 +1,10 @@
 mod day01;
 mod day02;
 mod day04;
+mod day05;
+mod day06;
+mod day07;
+mod day11;
 fn main() {}
 
 #[cfg(test)]

@@ -5,9 +5,9 @@ fn parse_line(line: &str) -> u32 {
     let vs = win.split_whitespace().map(|x| x.parse::<i32>().unwrap());
 
     let w_set: HashSet<i32> = HashSet::from_iter(vs);
-    let h_set: HashSet<i32> = HashSet::from_iter(hand.split_whitespace().map(|x| x.parse::<i32>().unwrap()));
+    let h_set: HashSet<i32> =
+        HashSet::from_iter(hand.split_whitespace().map(|x| x.parse::<i32>().unwrap()));
     w_set.intersection(&h_set).count() as u32
-
 }
 
 pub fn part1(s: &str) -> i32 {
@@ -16,25 +16,22 @@ pub fn part1(s: &str) -> i32 {
     for line in s.trim().lines() {
         let matchn = parse_line(line);
         if matchn != 0 {
-            sum += 2i32.pow(matchn-1);
-
+            sum += 2i32.pow(matchn - 1);
         }
-
     }
     sum
 }
 
 fn parse_line_p2(line: &str) -> i32 {
-
     0
 }
 
 pub fn part2(s: &str) -> u32 {
     let vs: Vec<u32> = s.trim().lines().map(parse_line).collect();
-    let mut cards: Vec<u32> = vec![1;vs.len()];
+    let mut cards: Vec<u32> = vec![1; vs.len()];
     for idx in 0..vs.len() {
         let copies = cards[idx];
-        for j in (idx as u32 +1)..=(idx as u32)+vs[idx] {
+        for j in (idx as u32 + 1)..=(idx as u32) + vs[idx] {
             cards[j as usize] += copies;
         }
     }
@@ -60,10 +57,10 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11
         assert_eq!(part1(s2.as_str()), 20107);
     }
 
-   #[test]
-   fn p2() {
-       assert_eq!(part2(S), 30);
-       let s2 = fs::read_to_string("./src/input04.txt").unwrap();
-       assert_eq!(part2(s2.as_str()), 8172507);
-   }
+    #[test]
+    fn p2() {
+        assert_eq!(part2(S), 30);
+        let s2 = fs::read_to_string("./src/input04.txt").unwrap();
+        assert_eq!(part2(s2.as_str()), 8172507);
+    }
 }
