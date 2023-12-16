@@ -1,6 +1,11 @@
 use std::collections::HashMap;
 use std::collections::HashSet;
 
+const UP: (i64, i64) = (0, -1);
+const DOWN: (i64, i64) = (0, 1);
+const RIGHT: (i64, i64) = (1, 0);
+const LEFT: (i64, i64) = (-1, 0);
+
 fn build_map(s: &str) -> (HashMap<(i64, i64), char>, (i64, i64)) {
     let mut vs = s.trim().lines();
     let mut height: i64 = 0;
@@ -60,35 +65,35 @@ fn count_energized_tiles(
                 '.' => {}
                 '/' => {
                     dir = match dir {
-                        (1, 0) => (0, -1),
-                        (-1, 0) => (0, 1),
-                        (0, 1) => (-1, 0),
-                        (0, -1) => (1, 0),
+                        RIGHT => UP,
+                        LEFT => DOWN,
+                        DOWN => LEFT,
+                        UP => RIGHT,
                         _ => panic!("bad dir /"),
                     }
                 }
                 '\\' => {
                     dir = match dir {
                         // -->
-                        (1, 0) => (0, 1),
-                        (-1, 0) => (0, -1),
-                        (0, 1) => (1, 0),
-                        (0, -1) => (-1, 0),
+                        RIGHT => DOWN,
+                        LEFT => UP,
+                        DOWN => RIGHT,
+                        UP => LEFT,
                         _ => panic!("bad dir \\"),
                     }
                 }
                 '-' => {
                     dir = match dir {
                         // -->
-                        (1, 0) => (1, 0),
-                        (-1, 0) => (-1, 0),
-                        (0, 1) => {
-                            ms.push((next, (1, 0), contraption));
-                            (-1, 0)
+                        RIGHT => RIGHT,
+                        LEFT => LEFT,
+                        DOWN => {
+                            ms.push((next, RIGHT, contraption));
+                            LEFT
                         }
-                        (0, -1) => {
-                            ms.push((next, (1, 0), contraption));
-                            (-1, 0)
+                        UP => {
+                            ms.push((next, RIGHT, contraption));
+                            LEFT
                         }
                         _ => panic!("bad dir -"),
                     }
@@ -96,16 +101,16 @@ fn count_energized_tiles(
                 '|' => {
                     dir = match dir {
                         // -->
-                        (1, 0) => {
-                            ms.push((next, (0, 1), contraption));
-                            (0, -1)
+                        RIGHT => {
+                            ms.push((next, DOWN, contraption));
+                            UP
                         }
-                        (-1, 0) => {
-                            ms.push((next, (0, 1), contraption));
-                            (0, -1)
+                        LEFT => {
+                            ms.push((next, DOWN, contraption));
+                            UP
                         }
-                        (0, 1) => (0, 1),
-                        (0, -1) => (0, -1),
+                        DOWN => DOWN,
+                        UP => UP,
                         _ => panic!("bad dir |"),
                     }
                 }
@@ -121,21 +126,22 @@ pub fn part1(s: &str) -> i64 {
     let (m, (w, h)) = build_map(s);
     dbg!(&(w, h));
     print_map(m.clone(), &w, &h);
-    count_energized_tiles((-1, 0), (1, 0), &m)
+    count_energized_tiles(LEFT, RIGHT, &m)
 }
 
 pub fn part2(s: &str) -> i64 {
     let (m, (w, h)) = build_map(s);
     print_map(m.clone(), &w, &h);
 
-    let top: Vec<_> = (0..w).map(|x| ((x, -1), (0, 1))).collect();
-    let bot: Vec<_> = (0..w).map(|x| ((x, h), (0, -1))).collect();
-    let left: Vec<_> = (0..h).map(|y| ((-1, y), (1, 0))).collect();
-    let right: Vec<_> = (0..h).map(|y| ((w, y), (-1, 0))).collect();
-    top.iter()
-        .chain(bot.iter())
-        .chain(left.iter())
-        .chain(right.iter())
+    let top_edge: Vec<_> = (0..w).map(|x| ((x, -1), DOWN)).collect();
+    let bottom_edge: Vec<_> = (0..w).map(|x| ((x, h), UP)).collect();
+    let left_edge: Vec<_> = (0..h).map(|y| ((-1, y), RIGHT)).collect();
+    let right_edge: Vec<_> = (0..h).map(|y| ((w, y), LEFT)).collect();
+    top_edge
+        .iter()
+        .chain(bottom_edge.iter())
+        .chain(left_edge.iter())
+        .chain(right_edge.iter())
         .map(|&(start, dir)| count_energized_tiles(start, dir, &m))
         .max()
         .unwrap()
