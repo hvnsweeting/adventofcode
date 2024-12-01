@@ -10,3 +10,7 @@ erl_crash.dump
 /config/*.secret.exs
 *.txt
 */target/
+*~
+.cpcache/
+.nrepl-port
+input*
