@@ -8,22 +8,26 @@
 (prn s)
 (require '[clojure.string :as str])
 (def input (slurp "src/input01"))
-(let [c1 (map #(Integer/parseInt (first %)) (for [line (str/split-lines input)] (str/split line #"\s+")))
-      c2 (map #(Integer/parseInt (second %)) (for [line (str/split-lines input)] (str/split line #"\s+")))]
-  (->>
-   (map - (sort c1) (sort c2))
-   (map abs)
-   (reduce +)
-   )
-  )
+
+(def data
+  (map (fn [line] (mapv #(parse-long %) (str/split line #"\s+")))
+       (str/split-lines input)))
+
+(def c1 (map first data))
+(def c2 (map second data))
+
+(defn calculate-diff [c1 c2]
+  (->> (map - (sort c1) (sort c2))
+       (map abs)
+       (reduce +)))
+(prn (calculate-diff c1 c2))
 ;; => 1579939
+
 (defn count-in [x xs]
   (count (filter #(= x %) xs)))
-(let [c1 (map #(Integer/parseInt (first %)) (for [line (str/split-lines input)] (str/split line #"\s+")))
-      c2 (map #(Integer/parseInt (second %)) (for [line (str/split-lines input)] (str/split line #"\s+")))]
+(defn calculate-weighted-sum [c1 c2]
   (->>
    (map #(* % (count-in % c2)) c1)
-   (reduce +)
-   )
-  )
+   (reduce +)))
+(prn (calculate-weighted-sum c1 c2))
 ;; => 20351745
