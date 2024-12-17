@@ -139,18 +139,38 @@ MMMISSJEEE"
   ;; go top to bottom count
   ;; get region top and bottom
   ;; go left to right count 
-  (let [sorted (->> region keys (sort))
+  (let [sorted (->> region keys (sort-by (fn [[x y]] [y x])))
         miny (apply min (map second sorted))
         maxy (apply max (map second sorted))
         ]
-    (map (fn [y]
-           (filter (fn [[xi, yi]] (= yi y))
-           )
-    (range miny (inc maxy)))
+    (partition-by second sorted)
 
-    
-                                        ;(sort-by (fn [[x y]] [x y]))
-  ))
-
+    )
+  )
+;; => #'day12/count-side
 grid
+
+(partitions grid)
+;; => [{[3 3] \C, [3 2] \C, [2 1] \C, [2 2] \C}
+;;     {[3 0] \A, [2 0] \A, [1 0] \A, [0 0] \A}
+;;     {[0 3] \E, [1 3] \E, [2 3] \E}
+;;     {[0 1] \B, [0 2] \B, [1 2] \B, [1 1] \B}
+;;     {[3 1] \D}]
+
+
 (count-side (first (partitions grid)))
+;; => (([2 1]) ([2 2] [3 2]) ([3 3]))
+
+(defn count-side [line region]
+  (if (= 1 (count line))
+    (let [[x y] (first line)]
+      (
+       ->>
+       (map (fn [[dx dy]] (map + [dx dy] [x y])) [[0 1] [0 -1] [-1 0] [1 0]])
+       (filter #(nil? (region %)))
+       (count)
+       )
+      )
+    100
+    ))
+(count-side [[2 1]] (first (partitions grid)))
