@@ -10,6 +10,9 @@
   10..1//1
   iex(6)> x..y//1 |> Enum.to_list
   []
+  iex(7)> x..y//-1 |> Enum.to_list
+  [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+  # RANGE IS INCLUSIVE
   ```
 
 ## Installation
