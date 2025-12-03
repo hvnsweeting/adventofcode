@@ -1,17 +1,18 @@
 defmodule Aoc2025.Day03 do
+  @doc "
+  Bruteforce pick all 2 possible digits
+  "
   def find_largest_joltage(line) do
     digits =
       line
-      |> String.graphemes()
+      |> Integer.digits()
       |> Enum.with_index()
 
     choices =
       for {i, idx} <- digits do
         Enum.max(
           for {j, jdx} <- digits, jdx > idx do
-            {ni, ""} = Integer.parse(i)
-            {nj, ""} = Integer.parse(j)
-            ni * 10 + nj
+            i * 10 + j
           end,
           &>=/2,
           fn -> 0 end
@@ -22,22 +23,34 @@ defmodule Aoc2025.Day03 do
     |> Enum.max()
   end
 
-  def solve(input) do
+  def solve(input, find_largest \\ &find_largest_joltage/1) do
     input
     |> String.trim()
     |> String.split("\n")
-    |> Enum.map(&find_largest_joltage/1)
+    |> Enum.map(fn x -> x |> Integer.parse() |> elem(0) end)
+    # |> Enum.map(fn x -> find_largest_joltage_v2(x, 2) end)
     # |> IO.inspect(":X")
+    |> Enum.map(find_largest)
     |> Enum.sum()
   end
 
-  def find_largest_joltage_v2(battery_bank, n \\ 12) do
-    digits =
-      battery_bank
-      |> String.graphemes()
-      |> Enum.with_index()
+  def solve1(input) do
+    solve(input)
+  end
 
-    rev = Enum.reverse(digits)
+  @doc "
+  Find the largest digit from left to right, pick first one
+  continue with next largest digit after it
+  ...
+  The first digit will only pick from all digits except the last n-1 digits, e.g the number has 3 digits and we need to pick 3,
+   the first one can only pick from 1st digit, it must leave 2 remains digits for 2 remain digits.
+  "
+  def find_largest_joltage_v2(battery_bank, n \\ 12) do
+    rev =
+      battery_bank
+      |> Integer.digits()
+      |> Enum.with_index()
+      |> Enum.reverse()
 
     {a, ia} =
       rev
@@ -45,10 +58,8 @@ defmodule Aoc2025.Day03 do
       |> Enum.reverse()
       |> Enum.max_by(fn {x, _idx1} -> x end)
 
-    # |> IO.inspect(label: "first")
-
     {ds, _} =
-      Enum.reduce(2..12, {[a], ia}, fn i, {ns, idx} ->
+      Enum.reduce(2..n, {[a], ia}, fn i, {ns, idx} ->
         {v, iv} =
           rev
           |> Enum.drop(n - i)
@@ -61,14 +72,10 @@ defmodule Aoc2025.Day03 do
         {[v | ns], iv}
       end)
 
-    ds |> Enum.reverse() |> Enum.join() |> Integer.parse() |> elem(0)
+    ds |> Enum.reverse() |> Integer.undigits()
   end
 
   def solve2(input) do
-    input
-    |> String.trim()
-    |> String.split("\n")
-    |> Enum.map(&find_largest_joltage_v2/1)
-    |> Enum.sum()
+    solve(input, &find_largest_joltage_v2/1)
   end
 end
