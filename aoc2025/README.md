@@ -27,3 +27,10 @@
   iex(44)> Enum.max_by([{8, 1}, {8, 2}], fn {x, _} -> x end)
   {8, 1}
   ```
+  Use `Integer.digits` and `Integer.undigits` for quick converting number to list of digits:
+  ```elixir
+  iex(49)> Integer.digits(123)
+  [1, 2, 3]
+  iex(50)> Integer.undigits([1,2,3])
+  123
+  ```
