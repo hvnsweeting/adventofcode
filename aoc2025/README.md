@@ -14,21 +14,16 @@
   [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
   # RANGE IS INCLUSIVE
   ```
-
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `aoc2025` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:aoc2025, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/aoc2025>.
-
+- Day03: Enum.max raises error if input list is empty, and it returns latest max value, not first one.
+  ```elixr
+  iex(41)> Enum.max([], &>=/2, fn -> 0 end)
+  0
+  iex(42)> Enum.max([])
+  ** (Enum.EmptyError) empty error
+      (elixir 1.18.0-dev) lib/enum.ex:1915: anonymous fn/0 in Enum.max/1
+      iex:42: (file)
+  iex(43)> Enum.max([{8, 1}, {8, 2}])
+  {8, 2}
+  iex(44)> Enum.max_by([{8, 1}, {8, 2}], fn {x, _} -> x end)
+  {8, 1}
+  ```
