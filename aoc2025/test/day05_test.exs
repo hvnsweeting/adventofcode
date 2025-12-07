@@ -21,6 +21,6 @@ defmodule Aoc2025.Day05.Test do
   test "solve2" do
     assert Aoc2025.Day05.solve2(@example) == 14
     {:ok, text} = File.read("test/input05")
-    assert Aoc2025.Day05.solve2(text) == 357674099117260
+    assert Aoc2025.Day05.solve2(text) == 357_674_099_117_260
   end
 end

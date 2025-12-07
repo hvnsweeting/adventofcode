@@ -39,25 +39,25 @@ defmodule Aoc2025.Day05 do
 
   def count_fresh([], _, res) do
     res
-    |> Enum.sum
+    |> Enum.sum()
   end
 
   def count_fresh([h | t], cursor, res) do
     # IO.inspect({h, cursor, res})
     if cursor < h.first do
-         count_fresh(t, h.last, [h.last - h.first + 1 | res])
+      count_fresh(t, h.last, [h.last - h.first + 1 | res])
     else
       # h.fist ... h.last ... cursor
-      if cursor> h.last do
+      if cursor > h.last do
         count_fresh(t, cursor, [0 | res])
       else
-      count_fresh(t, h.last, [h.last - cursor| res])
+        count_fresh(t, h.last, [h.last - cursor | res])
       end
     end
   end
 
   def solve2(input) do
     {ranges, _avail_ids} = parse(input)
-    count_fresh(ranges |> Enum.sort |> Enum.filter(fn r -> r.first <= r.last end) , 0, [])
+    count_fresh(ranges |> Enum.sort() |> Enum.filter(fn r -> r.first <= r.last end), 0, [])
   end
 end
