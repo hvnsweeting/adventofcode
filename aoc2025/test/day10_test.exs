@@ -7,10 +7,12 @@ defmodule Aoc2025Day10Test do
 "
 
   test "solve" do
+    # assert Aoc2025.Day10.combinations(3, [1,2,3,4,5]) == []
     assert Aoc2025.Day10.solve1(@example) == 7
-    assert Aoc2025.Day10.button_to_bits("...#." |> String.graphemes, [0,2,3,4]) == 23
+    assert Aoc2025.Day10.button_to_bits("...#." |> String.graphemes(), [0, 2, 3, 4]) == 23
+
     {:ok, text} = File.read("test/input10")
-    # assert Aoc2025.Day10.solve1(text) == 1168
+    assert Aoc2025.Day10.solve1(text) == 550
   end
 
   test "solve2" do
