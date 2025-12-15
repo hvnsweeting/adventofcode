@@ -2,9 +2,7 @@ defmodule Aoc2025.Day10 do
   def parse_line(line) do
     [left, right] = line |> String.split("]")
     indicator_light_diagram = left |> String.trim("[") |> String.graphemes()
-    indicator_light_diagram
-
-    [buttons_part, rest] = right |> String.split(" {")
+    [buttons_part, _rest] = right |> String.split(" {")
 
     buttons =
       buttons_part
@@ -42,7 +40,7 @@ defmodule Aoc2025.Day10 do
     combinations(n - 1, xs, for(x <- xs, do: [x]))
   end
 
-  def combinations(0, xs, acc), do: acc
+  def combinations(0, _xs, acc), do: acc
 
   def combinations(n, xs, acc) do
     combinations(n - 1, xs, for(x <- xs, y <- acc, x not in y, do: [x | y]))
